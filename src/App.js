@@ -1,13 +1,15 @@
-import './App.css';
+import React from 'react';
+import Maps from './components/Maps';
 
-function App() {
+const App = () => {
+  const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Guitar Store Locator</p>
-      </header>
+    <div>
+      <h1>Guitar Store Locator</h1>
+      <Maps apiKey={apiKey} />
     </div>
   );
-}
+};
 
 export default App;
