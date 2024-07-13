@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
-const Maps = ({ apiKey }) => {
+const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyStores, setNearbyStores] = useState([]);
   const [storesFetched, setStoresFetched] = useState(false);
@@ -58,7 +58,7 @@ const Maps = ({ apiKey }) => {
   }, [handleLocationUpdate]);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: apiKey,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
   if (loadError) {
@@ -76,8 +76,8 @@ const Maps = ({ apiKey }) => {
       zoom={12}
     >
       {currentLocation && (
-        <Marker
-          position={currentLocation}
+        <Marker 
+        position={currentLocation} 
         />
       )}
       {nearbyStores.map((store, index) => (
