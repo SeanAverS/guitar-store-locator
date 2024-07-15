@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
-const Maps = () => {
+const Maps = ({ apiKey }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyStores, setNearbyStores] = useState([]);
   const [storesFetched, setStoresFetched] = useState(false);
@@ -24,41 +24,64 @@ const Maps = () => {
   }, [storesFetched]);
 
   const fetchNearbyStores = useCallback((location) => {
-    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}`;
+    console.log("Fetching nearby stores for location:", location);
+    const storedData = localStorage.getItem('nearbyStores');
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        if (parsedData && Array.isArray(parsedData)) {
+          setNearbyStores(parsedData);
+          setStoresFetched(true);
+          console.log("Fetched from local storage:", parsedData);
+        } else {
+          throw new Error('Stored data is not an array');
+        }
+      } catch (error) {
+        console.error("Error parsing stored data:", error);
+        fetchFromAPI(location);
+      }
+    } else {
+      fetchFromAPI(location);
+    }
+  }, []);
+
+  const fetchFromAPI = useCallback((location) => {
+    const url = `http://localhost:3000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}`;
+    console.log("Fetching from API with URL:", url);
 
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        if (data.results) {
-          setNearbyStores(data.results);
-          setStoresFetched(true); 
+        console.log("Data fetched from API:", data);
+        if (data && Array.isArray(data)) {
+          setNearbyStores(data);
+          setStoresFetched(true);
+          localStorage.setItem('nearbyStores', JSON.stringify(data));
+          console.log("Fetched from API and stored:", data);
+        } else {
+          console.error("Data fetched from API is not an array");
         }
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data from API:", error);
       });
   }, []);
 
   useEffect(() => {
     if (navigator.geolocation) {
-      const watchId = navigator.geolocation.watchPosition(
+      navigator.geolocation.getCurrentPosition(
         handleLocationUpdate,
         (error) => {
           console.error("Error getting the location", error);
         }
       );
-
-      return () => {
-        navigator.geolocation.clearWatch(watchId);
-      };
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
   }, [handleLocationUpdate]);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: apiKey,
   });
 
   if (loadError) {
@@ -76,9 +99,7 @@ const Maps = () => {
       zoom={12}
     >
       {currentLocation && (
-        <Marker 
-        position={currentLocation} 
-        />
+        <Marker position={currentLocation} />
       )}
       {nearbyStores.map((store, index) => (
         <Marker
