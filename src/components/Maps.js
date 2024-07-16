@@ -72,12 +72,28 @@ const Maps = () => {
       });
   }, []);
   
+  const significantLocationChange = (newLocation, oldLocation) => {
+    const distance = Math.sqrt(
+      Math.pow(newLocation.lat - oldLocation.lat, 2) +
+      Math.pow(newLocation.lng - oldLocation.lng, 2)
+    );
+    return distance > 0.005; // ~500 meters
+  };
+  
   useEffect(() => {
     localStorage.removeItem('nearbyStores');
-
+    
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        handleLocationUpdate,
+        (position) => {
+          const newLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          if (!currentLocation || significantLocationChange(newLocation, currentLocation)) {
+            handleLocationUpdate(position);
+          }
+        },
         (error) => {
           console.error("Error getting the location", error);
         }
@@ -85,7 +101,8 @@ const Maps = () => {
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
-  }, [handleLocationUpdate]);
+  }, [handleLocationUpdate, currentLocation]);
+  
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
