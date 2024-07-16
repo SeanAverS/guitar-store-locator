@@ -21,6 +21,7 @@ const Maps = () => {
     if (!storesFetched) {
       fetchNearbyStores(newLocation);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storesFetched]);
 
   const fetchNearbyStores = useCallback((location) => {
@@ -43,6 +44,7 @@ const Maps = () => {
     } else {
       fetchFromAPI(location);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchFromAPI = useCallback((location, limit = 10) => {  
