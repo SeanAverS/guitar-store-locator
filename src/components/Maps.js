@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
-const Maps = ({ apiKey }) => {
+const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyStores, setNearbyStores] = useState([]);
   const [storesFetched, setStoresFetched] = useState(false);
@@ -16,7 +16,7 @@ const Maps = ({ apiKey }) => {
       lat: position.coords.latitude,
       lng: position.coords.longitude,
     };
-    console.log("Current location:", newLocation);
+    console.log("Current location:", newLocation); 
     setCurrentLocation(newLocation);
     if (!storesFetched) {
       fetchNearbyStores(newLocation);
@@ -46,11 +46,16 @@ const Maps = ({ apiKey }) => {
   }, []);
 
   const fetchFromAPI = useCallback((location) => {
-    const url = `http://localhost:3000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}`;
-    console.log("Fetching from API with URL:", url);
-
+    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}`;
+    console.log("Fetching from API with URL:", url); 
+  
     fetch(url)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log("Data fetched from API:", data);
         if (data && Array.isArray(data)) {
@@ -66,8 +71,10 @@ const Maps = ({ apiKey }) => {
         console.error("Error fetching data from API:", error);
       });
   }, []);
-
+  
   useEffect(() => {
+    localStorage.removeItem('nearbyStores');
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         handleLocationUpdate,
@@ -81,7 +88,7 @@ const Maps = ({ apiKey }) => {
   }, [handleLocationUpdate]);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: apiKey,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
   if (loadError) {
