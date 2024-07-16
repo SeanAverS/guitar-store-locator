@@ -45,8 +45,8 @@ const Maps = () => {
     }
   }, []);
 
-  const fetchFromAPI = useCallback((location) => {
-    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}`;
+  const fetchFromAPI = useCallback((location, limit = 10) => {  
+    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
     console.log("Fetching from API with URL:", url); 
   
     fetch(url)
@@ -71,6 +71,7 @@ const Maps = () => {
         console.error("Error fetching data from API:", error);
       });
   }, []);
+  
   
   const significantLocationChange = (newLocation, oldLocation) => {
     const distance = Math.sqrt(

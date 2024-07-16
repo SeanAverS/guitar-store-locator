@@ -11,9 +11,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 
 app.get('/api/nearbyStores', async (req, res) => {
-  const { lat, lng } = req.query;
+  const { lat, lng, limit } = req.query;
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-
+  
   if (!apiKey) {
     return res.status(500).json({ error: 'API key is not set' });
   }
@@ -32,7 +32,13 @@ app.get('/api/nearbyStores', async (req, res) => {
     if (data.status !== 'OK') {
       throw new Error(`Google API error: ${data.status} - ${data.error_message}`);
     }
-    res.json(data.results);
+
+    let results = data.results;
+    if (limit) {
+      results = results.slice(0, parseInt(limit, 10));
+    }
+
+    res.json(results);
   } catch (error) {
     console.error('Error fetching nearby stores:', error);
     res.status(500).json({ error: 'Error fetching nearby stores', details: error.message });
