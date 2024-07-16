@@ -71,7 +71,6 @@ const Maps = () => {
       });
   }, []);
   
-  
   const significantLocationChange = (newLocation, oldLocation) => {
     const distance = Math.sqrt(
       Math.pow(newLocation.lat - oldLocation.lat, 2) +
@@ -103,7 +102,6 @@ const Maps = () => {
     }
   }, [handleLocationUpdate, currentLocation]);
   
-
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -123,7 +121,12 @@ const Maps = () => {
       zoom={12}
     >
       {currentLocation && (
-        <Marker position={currentLocation} />
+        <Marker 
+          position={currentLocation} 
+          icon={{
+            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+          }}
+        />
       )}
       {nearbyStores.map((store, index) => (
         <Marker
@@ -131,6 +134,9 @@ const Maps = () => {
           position={{
             lat: store.geometry.location.lat,
             lng: store.geometry.location.lng,
+          }}
+          icon={{
+            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
           }}
         />
       ))}
