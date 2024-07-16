@@ -16,7 +16,6 @@ const Maps = () => {
       lat: position.coords.latitude,
       lng: position.coords.longitude,
     };
-    console.log("Current location:", newLocation); 
     setCurrentLocation(newLocation);
     if (!storesFetched) {
       fetchNearbyStores(newLocation);
@@ -48,8 +47,7 @@ const Maps = () => {
   }, []);
 
   const fetchFromAPI = useCallback((location, limit = 10) => {  
-    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
-    console.log("Fetching from API with URL:", url); 
+    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`; 
   
     fetch(url)
       .then((response) => {
@@ -59,7 +57,6 @@ const Maps = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Data fetched from API:", data);
         if (data && Array.isArray(data)) {
           setNearbyStores(data);
           setStoresFetched(true);
