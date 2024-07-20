@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
 
 const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyStores, setNearbyStores] = useState([]);
   const [storesFetched, setStoresFetched] = useState(false);
+  const [activeMarker, setActiveMarker] = useState(null);
 
   const mapContainerStyle = {
     width: "100%",
@@ -20,7 +21,7 @@ const Maps = () => {
     if (!storesFetched) {
       fetchNearbyStores(newLocation);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storesFetched]);
 
   const fetchNearbyStores = useCallback((location) => {
@@ -43,7 +44,7 @@ const Maps = () => {
     } else {
       fetchFromAPI(location);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchFromAPI = useCallback((location, limit = 10) => {  
@@ -69,6 +70,7 @@ const Maps = () => {
       .catch((error) => {
         console.error("Error fetching data from API:", error);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   const significantLocationChange = (newLocation, oldLocation) => {
@@ -100,6 +102,7 @@ const Maps = () => {
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleLocationUpdate, currentLocation]);
   
   const { isLoaded, loadError } = useJsApiLoader({
@@ -113,6 +116,14 @@ const Maps = () => {
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
+
+  const handleMouseOver = (store) => {
+    setActiveMarker(store);
+  };
+
+  const handleMouseOut = () => {
+    setActiveMarker(null);
+  };
 
   return (
     <GoogleMap
@@ -138,7 +149,24 @@ const Maps = () => {
           icon={{
             url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
           }}
-        />
+          onMouseOver={() => handleMouseOver(store)}
+          onMouseOut={handleMouseOut}
+        >
+          {activeMarker === store && (
+            <InfoWindow
+              position={{
+                lat: store.geometry.location.lat,
+                lng: store.geometry.location.lng,
+              }}
+              onCloseClick={handleMouseOut}
+            >
+              <div className="info-window">
+                <h4>{store.name}</h4>
+                <p>{store.vicinity}</p>
+              </div>
+            </InfoWindow>
+          )}
+        </Marker>
       ))}
     </GoogleMap>
   );
