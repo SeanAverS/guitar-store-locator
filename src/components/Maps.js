@@ -117,14 +117,6 @@ const Maps = () => {
     return <div>Loading...</div>;
   }
 
-  const handleMouseOver = (store) => {
-    setActiveMarker(store);
-  };
-
-  const handleMouseOut = () => {
-    setActiveMarker(null);
-  };
-
   return (
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
@@ -149,8 +141,7 @@ const Maps = () => {
           icon={{
             url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
           }}
-          onMouseOver={() => handleMouseOver(store)}
-          onMouseOut={handleMouseOut}
+          onClick={() => setActiveMarker(store)}
         >
           {activeMarker === store && (
             <InfoWindow
@@ -158,7 +149,7 @@ const Maps = () => {
                 lat: store.geometry.location.lat,
                 lng: store.geometry.location.lng,
               }}
-              onCloseClick={handleMouseOut}
+              onCloseClick={() => setActiveMarker(null)}
             >
               <div className="info-window">
                 <h4>{store.name}</h4>
