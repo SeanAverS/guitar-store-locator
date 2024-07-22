@@ -117,6 +117,19 @@ const Maps = () => {
     return <div>Loading...</div>;
   }
 
+  const handleMouseOver = (store) => {
+    setActiveMarker(store);
+  };
+
+  const handleMouseOut = () => {
+    setActiveMarker(null);
+  };
+
+  const handleButtonClick = (store) => {
+    const businessDetailsUrl = `https://www.google.com/maps/search/?api=1&query=${store.name}&query_place_id=${store.place_id}`;
+    window.open(businessDetailsUrl, '_blank');
+  };
+
   return (
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
@@ -134,13 +147,8 @@ const Maps = () => {
       {nearbyStores.map((store, index) => (
         <Marker
           key={index}
-          position={{
-            lat: store.geometry.location.lat,
-            lng: store.geometry.location.lng,
-          }}
-          icon={{
-            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-          }}
+          position={{ lat: store.geometry.location.lat, lng: store.geometry.location.lng }}
+          icon={{ url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png" }}
           onClick={() => setActiveMarker(store)}
         >
           {activeMarker === store && (
@@ -149,11 +157,12 @@ const Maps = () => {
                 lat: store.geometry.location.lat,
                 lng: store.geometry.location.lng,
               }}
-              onCloseClick={() => setActiveMarker(null)}
+              onCloseClick={handleMouseOut}
             >
               <div className="info-window">
                 <h4>{store.name}</h4>
                 <p>{store.vicinity}</p>
+                <button onClick={() => handleButtonClick(store)}>Open in Google Maps</button>
               </div>
             </InfoWindow>
           )}
