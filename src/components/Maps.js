@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
+import "../index.css"
 
 const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
