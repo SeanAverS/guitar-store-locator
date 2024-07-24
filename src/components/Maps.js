@@ -117,10 +117,6 @@ const Maps = () => {
     return <div>Loading...</div>;
   }
 
-  const handleMouseOver = (store) => {
-    setActiveMarker(store);
-  };
-
   const handleMouseOut = () => {
     setActiveMarker(null);
   };
