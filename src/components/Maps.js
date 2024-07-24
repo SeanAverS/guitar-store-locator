@@ -126,6 +126,15 @@ const Maps = () => {
     window.open(businessDetailsUrl, '_blank');
   };
 
+  const handleDirectionsClick = () => {
+    if (currentLocation && activeMarker) {
+      const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentLocation.lat},${currentLocation.lng}&destination=${encodeURIComponent(activeMarker.name)}&destination_place_id=${activeMarker.place_id}`;
+      window.open(directionsUrl, '_blank');
+    } else {
+      console.error("Current location or active marker is not available.");
+    }
+  };
+
   return (
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
@@ -158,7 +167,10 @@ const Maps = () => {
               <div className="info-window">
                 <h4>{store.name}</h4>
                 <p>{store.vicinity}</p>
-                <button onClick={() => handleButtonClick(store)}>Open in Google Maps</button>
+                <div className="info-window-buttons">
+                  <button onClick={() => handleButtonClick(store)}>Open in Google Maps</button>
+                  <button onClick={handleDirectionsClick}>Get Directions</button>
+                </div>
               </div>
             </InfoWindow>
           )}
