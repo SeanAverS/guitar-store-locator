@@ -13,14 +13,13 @@ app.use(cors());
 app.get('/api/nearbyStores', async (req, res) => {
   const { lat, lng, limit } = req.query;
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-  
+
   if (!apiKey) {
     return res.status(500).json({ error: 'API key is not set' });
   }
 
-  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=5000&type=store&key=${apiKey}`;
-
-  try {
+  const fetchStores = async (keyword) => {
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=5000&keyword=${keyword}&key=${apiKey}`;
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -33,9 +32,16 @@ app.get('/api/nearbyStores', async (req, res) => {
       throw new Error(`Google API error: ${data.status} - ${data.error_message}`);
     }
 
-    let results = data.results;
+    return data.results;
+  };
+
+  try {
+    const guitarStores = await fetchStores('guitar');
+
+    let results = guitarStores;
+
     if (limit) {
-      results = results.slice(0, parseInt(limit, 10));
+      results = guitarStores.slice(0, parseInt(limit, 10));
     }
 
     res.json(results);
