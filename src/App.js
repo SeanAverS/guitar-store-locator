@@ -7,6 +7,7 @@ const App = () => {
   return (
     <div>
       <h1>Guitar Store Locator</h1>
+      <p>Find guitar stores around your current location</p>
       <Maps apiKey={apiKey} />
     </div>
   );
