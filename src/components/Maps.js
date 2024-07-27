@@ -10,7 +10,7 @@ const Maps = () => {
 
   const mapContainerStyle = {
     width: "100%",
-    height: "700px",
+    height: "550px",
   };
 
   const handleLocationUpdate = useCallback((position) => {
