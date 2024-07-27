@@ -47,6 +47,7 @@ code {
 .info-window p {
   margin: 7px;
   font-size: 14px; 
+  color: #606060;
 }
 
 .info-window-buttons {
