@@ -9,6 +9,14 @@ body {
 }
 
 
+h1 {
+  color: #FFFFFF;
+}
+
+p {
+  color: #D3D3D3;
+}
+
 h1, p {
   text-align: center;
 }
