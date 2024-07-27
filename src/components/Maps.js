@@ -8,11 +8,6 @@ const Maps = () => {
   const [storesFetched, setStoresFetched] = useState(false);
   const [activeMarker, setActiveMarker] = useState(null);
 
-  const mapContainerStyle = {
-    width: "100%",
-    height: "550px",
-  };
-
   const handleLocationUpdate = useCallback((position) => {
     const newLocation = {
       lat: position.coords.latitude,
@@ -48,9 +43,9 @@ const Maps = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchFromAPI = useCallback((location, limit = 10) => {  
-    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`; 
-  
+  const fetchFromAPI = useCallback((location, limit = 10) => {
+    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
+
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -73,7 +68,7 @@ const Maps = () => {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   const significantLocationChange = (newLocation, oldLocation) => {
     const distance = Math.sqrt(
       Math.pow(newLocation.lat - oldLocation.lat, 2) +
@@ -81,10 +76,10 @@ const Maps = () => {
     );
     return distance > 0.005; // ~500 meters
   };
-  
+
   useEffect(() => {
     localStorage.removeItem('nearbyStores');
-    
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -105,7 +100,7 @@ const Maps = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleLocationUpdate, currentLocation]);
-  
+
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
@@ -138,7 +133,7 @@ const Maps = () => {
 
   return (
     <GoogleMap
-      mapContainerStyle={mapContainerStyle}
+      mapContainerClassName="map-container"
       center={currentLocation}
       zoom={12}
     >
