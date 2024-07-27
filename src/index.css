@@ -9,6 +9,10 @@ body {
 }
 
 
+h1, p {
+  text-align: center;
+}
+
 h1 {
   color: #FFFFFF;
 }
@@ -16,16 +20,8 @@ h1 {
 p {
   color: #D3D3D3;
   margin-top: -16px;
-}
-
-h1, p {
-  text-align: center;
-}
-
-p {
   font-size: 1.2em;
 }
-
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
