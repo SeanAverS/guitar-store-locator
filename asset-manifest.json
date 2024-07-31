@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/SeanAverS/guitar-store-locator.git/static/css/main.9e3e0b4d.css",
+    "main.js": "/SeanAverS/guitar-store-locator.git/static/js/main.72fa2956.js",
+    "static/js/453.70513b3b.chunk.js": "/SeanAverS/guitar-store-locator.git/static/js/453.70513b3b.chunk.js",
+    "index.html": "/SeanAverS/guitar-store-locator.git/index.html",
+    "main.9e3e0b4d.css.map": "/SeanAverS/guitar-store-locator.git/static/css/main.9e3e0b4d.css.map",
+    "main.72fa2956.js.map": "/SeanAverS/guitar-store-locator.git/static/js/main.72fa2956.js.map",
+    "453.70513b3b.chunk.js.map": "/SeanAverS/guitar-store-locator.git/static/js/453.70513b3b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9e3e0b4d.css",
+    "static/js/main.72fa2956.js"
+  ]
+}
