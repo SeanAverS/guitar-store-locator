@@ -9,11 +9,11 @@ Install guide
 Open your terminal or command prompt and run the following command:
    git clone <https://github.com/[YourUsername]/guitar-store-locator.git>
 
--**Navigate to the local repo**
+- **Navigate to the local repo**
 
    cd guitar-store-locator
 
--**Run the repo**
+- **Run the repo**
 
 ## `npm start` for the frontend
 
