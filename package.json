@@ -2,7 +2,7 @@
   "name": "guitar-store-locator",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://seanavers.github.io/guitar-store-locator/", 
+  "homepage": "https://SeanAvers.github.io/guitar-store-locator/", 
   "dependencies": {
     "@react-google-maps/api": "^2.19.3",
     "@testing-library/jest-dom": "^5.17.0",
