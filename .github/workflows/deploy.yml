@@ -27,7 +27,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
@@ -56,3 +55,4 @@ jobs:
       uses: actions/deploy-pages@v1
       env:  
         GITHUB_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
+        
