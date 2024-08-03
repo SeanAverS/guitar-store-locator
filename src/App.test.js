@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Maps from './Maps';
+import Maps from './components/Maps';
 
 jest.mock('@react-google-maps/api', () => ({
   useJsApiLoader: jest.fn(() => ({
