@@ -11,6 +11,6 @@ jest.mock('@react-google-maps/api', () => ({
 
 test('renders loading message while maps are loading', () => {
   render(<Maps />);
-  expect(screen.getByText('Loading...')).toBeInTheDocument();
+  expect(screen.getByText('Loading.,..')).toBeInTheDocument();
 });
 
