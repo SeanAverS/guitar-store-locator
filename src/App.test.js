@@ -32,4 +32,4 @@ describe('Maps Component', () => {
     render(<Maps />);
     expect(screen.getByRole('map')).toBeInTheDocument();  
   });
-});
+}); 
