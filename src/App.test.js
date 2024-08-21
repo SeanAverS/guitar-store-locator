@@ -15,7 +15,7 @@ describe('Maps Component', () => {
   test('renders loading messages while maps are loading', () => {
     useJsApiLoader.mockReturnValue({ isLoaded: false, loadError: null });
 
-    render(<Maps />); 
+    render(<Maps />);  
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
