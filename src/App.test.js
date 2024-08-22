@@ -8,7 +8,7 @@ jest.mock('@react-google-maps/api', () => ({
 }));
 
 describe('Maps Component', () => {
-  beforeEach(() => {
+  beforeEach(() => { 
     jest.resetAllMocks();
   });
 
