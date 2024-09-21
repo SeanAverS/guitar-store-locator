@@ -12,7 +12,7 @@ describe('Maps Component', () => {
     jest.resetAllMocks(); 
   }); 
 
-  test('renders loading messages while maps are loading', () => { 
+  test('renders loading messages while maps are loading', () => {  
     useJsApiLoader.mockReturnValue({ isLoaded: false, loadError: null });  
 
     render(<Maps />);  
