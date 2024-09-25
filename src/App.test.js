@@ -16,7 +16,7 @@ describe('Maps Component', () => {
     useJsApiLoader.mockReturnValue({ isLoaded: false, loadError: null });  
 
     render(<Maps />);  
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('Loading...')).toBeInTheDocument(); 
   });
 
   test('renders error message if there is a loadError', () => {
