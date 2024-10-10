@@ -9,7 +9,7 @@ jest.mock('@react-google-maps/api', () => ({
 
 describe('Maps Component', () => {    
   beforeEach(() => { 
-    jest.resetAllMocks();    
+    jest.resetAllMocks();     
   }); 
 
   test('renders loading messages while maps are loading', () => {    
