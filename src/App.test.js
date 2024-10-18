@@ -4,7 +4,7 @@ import Maps from './components/Maps';
 import { useJsApiLoader } from '@react-google-maps/api';
 
 jest.mock('@react-google-maps/api', () => ({
-  useJsApiLoader: jest.fn(),
+  useJsApiLoader: jest.fn(), 
 }));
 
 describe('Maps Component', () => {        
