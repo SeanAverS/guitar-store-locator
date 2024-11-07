@@ -7,7 +7,7 @@ jest.mock('@react-google-maps/api', () => ({
   useJsApiLoader: jest.fn(),          
 }));
 
-describe('Maps Component', () => {        
+describe('Maps Component', () => {         
   beforeEach(() => { 
     jest.resetAllMocks();     
   }); 
