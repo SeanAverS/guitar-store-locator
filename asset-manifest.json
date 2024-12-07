@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/guitar-store-locator/static/css/main.9e3e0b4d.css",
+    "main.js": "/guitar-store-locator/static/js/main.15dce77f.js",
+    "static/js/453.70513b3b.chunk.js": "/guitar-store-locator/static/js/453.70513b3b.chunk.js",
+    "index.html": "/guitar-store-locator/index.html",
+    "main.9e3e0b4d.css.map": "/guitar-store-locator/static/css/main.9e3e0b4d.css.map",
+    "main.15dce77f.js.map": "/guitar-store-locator/static/js/main.15dce77f.js.map",
+    "453.70513b3b.chunk.js.map": "/guitar-store-locator/static/js/453.70513b3b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9e3e0b4d.css",
+    "static/js/main.15dce77f.js"
+  ]
+}
