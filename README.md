@@ -1,4 +1,4 @@
-# Locate guitar stores within your current location
+# Find guitar stores around your current location
 
 
 # Installation
