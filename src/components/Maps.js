@@ -164,8 +164,8 @@ const Maps = () => {
                 <h4>{store.name}</h4>
                 <p>{store.vicinity}</p>
                 <div className="info-window-buttons">
-                  <button onClick={() => handleButtonClick(store)}>Open in Google Maps</button>
-                  <button onClick={handleDirectionsClick}>Get Directions</button>
+                  <button onClick={() => handleButtonClick(store)}>Business Page</button>
+                  <button onClick={handleDirectionsClick}>Directions</button>
                 </div>
               </div>
             </InfoWindow>
