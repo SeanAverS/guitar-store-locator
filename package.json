@@ -5,7 +5,7 @@
   "homepage": "https://SeanAvers.github.io/guitar-store-locator/",
   "dependencies": {
     "@react-google-maps/api": "^2.20.3",
-    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^13.5.0",
     "cors": "^2.8.5",
