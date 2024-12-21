@@ -1,11 +1,30 @@
+/* eslint-disable jsx-a11y/aria-role */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Maps from './components/Maps';
 import { useJsApiLoader } from '@react-google-maps/api';
 
+
 jest.mock('@react-google-maps/api', () => ({
-  useJsApiLoader: jest.fn(),
+  useJsApiLoader: jest.fn(() => ({ isLoaded: true, loadError: null })), 
+  GoogleMap: ({ children, mapContainerClassName, center, zoom }) => (
+    <div
+      role="map"
+      data-center={JSON.stringify(center)}
+      data-zoom={zoom}
+      className={mapContainerClassName}
+    >
+      {children}
+    </div>
+  ),
+  Marker: ({ position }) => <div role="marker" data-position={JSON.stringify(position)} />,
+  InfoWindow: ({ children, position }) => (
+    <div role="infowindow" data-position={JSON.stringify(position)}>
+      {children}
+    </div>
+  ),
 }));
+
 
 describe('Maps Component', () => {
   beforeAll(() => {
