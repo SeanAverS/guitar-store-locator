@@ -132,7 +132,7 @@ const Maps = () => {
   useEffect(() => {
     if (mapInstance && nearbyStores.length > 0) {
       nearbyStores.forEach(store => {
-        const marker = new google.maps.marker.AdvancedMarkerElement({
+        const marker = new window.google.maps.marker.AdvancedMarkerElement({
           position: { lat: store.geometry.location.lat, lng: store.geometry.location.lng },
           map: mapInstance,
           content: `<div class="custom-marker">${store.name}</div>`,
