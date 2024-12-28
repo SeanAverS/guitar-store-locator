@@ -3,6 +3,7 @@ import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-map
 import "../index.css"
 
 const Maps = () => {
+  const [mapInstance, setMapInstance] = useState(null); 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyStores, setNearbyStores] = useState([]);
   const [storesFetched, setStoresFetched] = useState(false);
@@ -69,6 +70,10 @@ const Maps = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const initializeMap = (map) => {
+    setMapInstance(map); 
+  };
+
   const significantLocationChange = (newLocation, oldLocation) => {
     const distance = Math.sqrt(
       Math.pow(newLocation.lat - oldLocation.lat, 2) +
@@ -131,11 +136,28 @@ const Maps = () => {
     }
   };
 
+  useEffect(() => {
+    if (mapInstance && nearbyStores.length > 0) {
+      nearbyStores.forEach(store => {
+        const marker = new google.maps.marker.AdvancedMarkerElement({
+          position: { lat: store.geometry.location.lat, lng: store.geometry.location.lng },
+          map: mapInstance,
+          content: `<div class="custom-marker">${store.name}</div>`,
+        });
+
+        marker.addListener('click', () => {
+          setActiveMarker(store);
+        });
+      });
+    }
+  }, [mapInstance, nearbyStores]);
+
   return (
     <GoogleMap
       mapContainerClassName="map-container"
       center={currentLocation}
       zoom={12}
+      onLoad={initializeMap}
     >
       {currentLocation && (
         <Marker 
