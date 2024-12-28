@@ -108,6 +108,8 @@ const Maps = () => {
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries: ["marker"],
+    version: "beta",
   });
 
   
