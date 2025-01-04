@@ -133,14 +133,16 @@ const Maps = () => {
 
   useEffect(() => {
     if (mapInstance && nearbyStores.length > 0) {
-      nearbyStores.forEach(store => {
+      nearbyStores.forEach((store) => {
+        const contentDiv = document.createElement("div");
+        contentDiv.className = "custom-marker";
+        contentDiv.textContent = store.name;
         const marker = new window.google.maps.marker.AdvancedMarkerElement({
           position: { lat: store.geometry.location.lat, lng: store.geometry.location.lng },
           map: mapInstance,
-          content: `<div class="custom-marker">${store.name}</div>`,
+          content: contentDiv, 
         });
-
-        marker.addListener('click', () => {
+        marker.addListener("click", () => {
           setActiveMarker(store);
         });
       });
