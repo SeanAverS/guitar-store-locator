@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
-import "../index.css"
+import "../index.css";
+
+const googleMapsLibraries = ["marker"];
 
 const Maps = () => {
-  const [mapInstance, setMapInstance] = useState(null); 
+  const [mapInstance, setMapInstance] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyStores, setNearbyStores] = useState([]);
   const [storesFetched, setStoresFetched] = useState(false);
@@ -18,7 +20,6 @@ const Maps = () => {
     if (!storesFetched) {
       fetchNearbyStores(newLocation);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storesFetched]);
 
   const fetchNearbyStores = useCallback((location) => {
@@ -45,7 +46,7 @@ const Maps = () => {
   }, []);
 
   const fetchFromAPI = useCallback((location, limit = 10) => {
-    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;        
+    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
 
     fetch(url)
       .then((response) => {
@@ -67,11 +68,11 @@ const Maps = () => {
       .catch((error) => {
         console.error("Error fetching data from API:", error);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const initializeMap = (map) => {
-    setMapInstance(map); 
+    setMapInstance(map);
   };
 
   const significantLocationChange = (newLocation, oldLocation) => {
@@ -108,11 +109,9 @@ const Maps = () => {
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: ["marker"],
+    libraries: googleMapsLibraries,  
     version: "beta",
   });
-
-  
   const handleMouseOut = () => {
     setActiveMarker(null);
   };
@@ -140,7 +139,7 @@ const Maps = () => {
         const marker = new window.google.maps.marker.AdvancedMarkerElement({
           position: { lat: store.geometry.location.lat, lng: store.geometry.location.lng },
           map: mapInstance,
-          content: contentDiv, 
+          content: contentDiv,
         });
         marker.addListener("click", () => {
           setActiveMarker(store);
@@ -148,6 +147,13 @@ const Maps = () => {
       });
     }
   }, [mapInstance, nearbyStores]);
+
+  useEffect(() => {
+    if (currentLocation && mapInstance) {
+      mapInstance.panTo(currentLocation);
+      console.log("Panning map to current location:", currentLocation);
+    }
+  }, [currentLocation, mapInstance]);
 
   if (loadError) {
     return <div>Error loading maps</div>;
@@ -157,22 +163,23 @@ const Maps = () => {
     return <div>Loading...</div>;
   }
 
-
   return (
     <GoogleMap
       mapContainerClassName="map-container"
-      center={currentLocation}
+      center={currentLocation || { lat: 0, lng: 0 }}
       zoom={12}
       onLoad={initializeMap}
+      mapId="YOUR_MAP_ID_HERE"
     >
       {currentLocation && (
-        <Marker 
-          position={currentLocation} 
+        <Marker
+          position={currentLocation}
           icon={{
             url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
           }}
         />
       )}
+
       {nearbyStores.map((store, index) => (
         <Marker
           key={index}
