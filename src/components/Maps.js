@@ -139,12 +139,13 @@ const Maps = () => {
           map: mapInstance,
           content: contentDiv,
         });
-        marker.addListener("click", () => {
+        marker.addEventListener("gmp-click", () => {
           setActiveMarker(store);
         });
       });
     }
   }, [mapInstance, nearbyStores]);
+  
 
   useEffect(() => {
     if (currentLocation && mapInstance) {
