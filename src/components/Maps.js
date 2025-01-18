@@ -166,7 +166,7 @@ const Maps = () => {
       center={currentLocation || { lat: 0, lng: 0 }}
       zoom={12}
       onLoad={initializeMap}
-      mapId="YOUR_MAP_ID_HERE"
+      mapId={process.env.REACT_APP_MAP_ID}
     >
       {currentLocation && (
         <Marker
