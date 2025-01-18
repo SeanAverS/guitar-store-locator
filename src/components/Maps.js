@@ -23,7 +23,6 @@ const Maps = () => {
   }, [storesFetched]);
 
   const fetchNearbyStores = useCallback((location) => {
-    console.log("Fetching nearby stores for location:", location);
     const storedData = localStorage.getItem('nearbyStores');
     if (storedData) {
       try {
@@ -60,7 +59,6 @@ const Maps = () => {
           setNearbyStores(data);
           setStoresFetched(true);
           localStorage.setItem('nearbyStores', JSON.stringify(data));
-          console.log("Fetched from API and stored:", data);
         } else {
           console.error("Data fetched from API is not an array");
         }
@@ -151,7 +149,6 @@ const Maps = () => {
   useEffect(() => {
     if (currentLocation && mapInstance) {
       mapInstance.panTo(currentLocation);
-      console.log("Panning map to current location:", currentLocation);
     }
   }, [currentLocation, mapInstance]);
 
