@@ -20,6 +20,7 @@ const Maps = () => {
     if (!storesFetched) {
       fetchNearbyStores(newLocation);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storesFetched]);
 
   const fetchNearbyStores = useCallback((location) => {
