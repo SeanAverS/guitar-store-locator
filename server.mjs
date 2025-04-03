@@ -2,11 +2,13 @@ import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import NodeCache from 'node-cache';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const cache = new NodeCache({ stdTTL: 600 }); 
 
 app.use(cors());
 
