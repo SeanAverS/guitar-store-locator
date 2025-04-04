@@ -45,11 +45,7 @@ app.get('/api/nearbyStores', async (req, res) => {
   try {
     const guitarStores = await fetchStores(lat, lng, 'guitar');
 
-    let results = guitarStores;
-
-    if (limit) {
-      results = guitarStores.slice(0, parseInt(limit, 10));
-    }
+    const results = limit ? guitarStores.slice(0, parseInt(limit, 10)) : guitarStores;
 
     res.json(results);
   } catch (error) {
