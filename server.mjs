@@ -39,10 +39,8 @@ const fetchStores = async (lat, lng, keyword) => {
 
 app.get('/api/nearbyStores', async (req, res) => {
   const { lat, lng, limit } = req.query;
-  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({ error: 'API key is not set' });
+  if (!lat || !lng || !apiKey) {
+    return res.status(400).json({ error: 'Invalid parameters or API key' });
   }
   try {
     const guitarStores = await fetchStores('guitar');
