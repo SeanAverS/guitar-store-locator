@@ -43,7 +43,7 @@ app.get('/api/nearbyStores', async (req, res) => {
     return res.status(400).json({ error: 'Invalid parameters or API key' });
   }
   try {
-    const guitarStores = await fetchStores('guitar');
+    const guitarStores = await fetchStores(lat, lng, 'guitar');
 
     let results = guitarStores;
 
