@@ -14,6 +14,11 @@ const Maps = () => {
   const [storesFetched, setStoresFetched] = useState(false);
   const [activeMarker, setActiveMarker] = useState(null);
 
+  const debouncedFetchNearbyStores = useMemo(() =>
+    debounce((location) => {
+      fetchNearbyStores(location);
+    }, 1000), []);  
+  
   const handleLocationUpdate = useCallback((position) => {
     const newLocation = {
       lat: position.coords.latitude,
@@ -22,6 +27,8 @@ const Maps = () => {
     setCurrentLocation(newLocation);
     if (!storesFetched) {
       fetchNearbyStores(newLocation);
+    } else {
+      debouncedFetchNearbyStores(newLocation);  
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storesFetched]);
