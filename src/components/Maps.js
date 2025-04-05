@@ -117,6 +117,41 @@ const Maps = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLocation, handleLocationUpdate]);
   
+  const loadStoreMarkers = useCallback(async () => {
+    if (!window.google?.maps) {
+      console.error("Google Maps API is not available.");
+      return;
+    }
+  
+    try {
+      const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
+  
+      if (!AdvancedMarkerElement) {
+        console.error("Failed to load AdvancedMarkerElement.");
+        return;
+      }
+  
+      const markers = nearbyStores.map((store) => {
+        const marker = new AdvancedMarkerElement({
+          map: mapInstance,
+          position: {
+            lat: store.geometry.location.lat,
+            lng: store.geometry.location.lng,
+          },
+          title: store.name,
+        });
+  
+        marker.addListener("gmp-click", () => setActiveMarker(store));
+        return marker;
+      });
+  
+      mapInstance.markers.push(...markers);
+    } catch (error) {
+      console.error("Error loading markers:", error);
+    }
+  }, [nearbyStores, mapInstance]);
+  
+  
 
   useEffect(() => {
     localStorage.removeItem('nearbyStores');
@@ -149,6 +184,7 @@ const Maps = () => {
 
   useEffect(() => {
     if (mapInstance && nearbyStores.length > 0) {
+      loadStoreMarkers();
       nearbyStores.forEach((store) => {
         const contentDiv = document.createElement("div");
         contentDiv.className = "custom-marker";
@@ -163,7 +199,7 @@ const Maps = () => {
         });
       });
     }
-  }, [mapInstance, nearbyStores]);
+  }, [mapInstance, nearbyStores, loadStoreMarkers]);
   
 
   useEffect(() => {
