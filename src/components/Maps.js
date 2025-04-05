@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo, useRef } from "react"
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
 import "../index.css";
 
+const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // San Francisco fallback
 const googleMapsLibraries = ["marker"];
 
 const Maps = () => {
@@ -82,29 +83,37 @@ const Maps = () => {
     return distance > 0.005; // ~500 meters
   };
 
+  const getUserLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      console.error("Geolocation not supported.");
+      setCurrentLocation(defaultCenter);
+      return;
+    }
+  
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const newLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        if (!currentLocation || significantLocationChange(newLocation, currentLocation)) {
+          handleLocationUpdate(position);
+        }
+      },
+      (error) => {
+        console.error("Error getting the location", error);
+        setCurrentLocation(defaultCenter);
+      }
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentLocation, handleLocationUpdate]);
+  
+
   useEffect(() => {
     localStorage.removeItem('nearbyStores');
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const newLocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          if (!currentLocation || significantLocationChange(newLocation, currentLocation)) {
-            handleLocationUpdate(position);
-          }
-        },
-        (error) => {
-          console.error("Error getting the location", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleLocationUpdate, currentLocation]);
+    getUserLocation();
+  }, [getUserLocation]);
+  
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
