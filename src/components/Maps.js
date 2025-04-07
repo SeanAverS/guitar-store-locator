@@ -118,7 +118,7 @@ const Maps = () => {
   }, [currentLocation, handleLocationUpdate]);
   
   const loadStoreMarkers = useCallback(async () => {
-    if (!window.google?.maps) {
+    if (!window.google?.maps || !mapInstance) {
       console.error("Google Maps API is not available.");
       return;
     }
@@ -130,6 +130,12 @@ const Maps = () => {
         console.error("Failed to load AdvancedMarkerElement.");
         return;
       }
+  
+      // Remove old markers from map if necessary 
+      if (mapInstance.markers && mapInstance.markers.length > 0) {
+        mapInstance.markers.forEach(marker => marker.map = null); 
+      }
+      mapInstance.markers = [];
   
       const markers = nearbyStores.map((store) => {
         const marker = new AdvancedMarkerElement({
@@ -150,6 +156,7 @@ const Maps = () => {
       console.error("Error loading markers:", error);
     }
   }, [nearbyStores, mapInstance]);
+  
   
   
 
@@ -183,22 +190,7 @@ const Maps = () => {
   };
 
   useEffect(() => {
-    if (mapInstance && nearbyStores.length > 0) {
-      loadStoreMarkers();
-      nearbyStores.forEach((store) => {
-        const contentDiv = document.createElement("div");
-        contentDiv.className = "custom-marker";
-        contentDiv.textContent = store.name;
-        const marker = new window.google.maps.marker.AdvancedMarkerElement({
-          position: { lat: store.geometry.location.lat, lng: store.geometry.location.lng },
-          map: mapInstance,
-          content: contentDiv,
-        });
-        marker.addEventListener("gmp-click", () => {
-          setActiveMarker(store);
-        });
-      });
-    }
+    if (mapInstance && nearbyStores.length > 0) { loadStoreMarkers();}
   }, [mapInstance, nearbyStores, loadStoreMarkers]);
   
 
