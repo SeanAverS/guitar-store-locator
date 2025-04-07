@@ -1,40 +1,20 @@
 import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
 import "../index.css";
-import { debounce } from "lodash"; 
-
+import { debounce } from "lodash";
 
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // San Francisco fallback
 const googleMapsLibraries = ["marker"];
 
 const Maps = () => {
-  const [mapInstance, setMapInstance] = useState(null);
+  const mapRef = useRef(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyStores, setNearbyStores] = useState([]);
   const [storesFetched, setStoresFetched] = useState(false);
   const [activeMarker, setActiveMarker] = useState(null);
 
-  const debouncedFetchNearbyStores = useMemo(() =>
-    debounce((location) => {
-      fetchNearbyStores(location);
-    }, 1000), []);  
-  
-  const handleLocationUpdate = useCallback((position) => {
-    const newLocation = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-    };
-    setCurrentLocation(newLocation);
-    if (!storesFetched) {
-      fetchNearbyStores(newLocation);
-    } else {
-      debouncedFetchNearbyStores(newLocation);  
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storesFetched]);
-
   const fetchNearbyStores = useCallback((location) => {
-    const storedData = localStorage.getItem('nearbyStores');
+    const storedData = localStorage.getItem("nearbyStores");
     if (storedData) {
       try {
         const parsedData = JSON.parse(storedData);
@@ -43,7 +23,7 @@ const Maps = () => {
           setStoresFetched(true);
           console.log("Fetched from local storage:", parsedData);
         } else {
-          throw new Error('Stored data is not an array');
+          throw new Error("Stored data is not an array");
         }
       } catch (error) {
         console.error("Error parsing stored data:", error);
@@ -52,8 +32,15 @@ const Maps = () => {
     } else {
       fetchFromAPI(location);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const debouncedFetchNearbyStores = useMemo(
+    () =>
+      debounce((location) => {
+        fetchNearbyStores(location);
+      }, 1000),
+    []
+  );
 
   const fetchFromAPI = useCallback((location, limit = 10) => {
     const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
@@ -69,7 +56,7 @@ const Maps = () => {
         if (data && Array.isArray(data)) {
           setNearbyStores(data);
           setStoresFetched(true);
-          localStorage.setItem('nearbyStores', JSON.stringify(data));
+          localStorage.setItem("nearbyStores", JSON.stringify(data));
         } else {
           console.error("Data fetched from API is not an array");
         }
@@ -77,17 +64,33 @@ const Maps = () => {
       .catch((error) => {
         console.error("Error fetching data from API:", error);
       });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleLocationUpdate = useCallback(
+    (position) => {
+      const newLocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+      setCurrentLocation(newLocation);
+      if (!storesFetched) {
+        fetchNearbyStores(newLocation);
+      } else {
+        debouncedFetchNearbyStores(newLocation);
+      }
+    },
+    [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
+  );
+
   const initializeMap = (map) => {
-    setMapInstance(map);
+    mapRef.current = map;
+    mapRef.current.markers = [];
   };
 
   const significantLocationChange = (newLocation, oldLocation) => {
     const distance = Math.sqrt(
       Math.pow(newLocation.lat - oldLocation.lat, 2) +
-      Math.pow(newLocation.lng - oldLocation.lng, 2)
+        Math.pow(newLocation.lng - oldLocation.lng, 2)
     );
     return distance > 0.005; // ~500 meters
   };
@@ -98,14 +101,17 @@ const Maps = () => {
       setCurrentLocation(defaultCenter);
       return;
     }
-  
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const newLocation = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        if (!currentLocation || significantLocationChange(newLocation, currentLocation)) {
+        if (
+          !currentLocation ||
+          significantLocationChange(newLocation, currentLocation)
+        ) {
           handleLocationUpdate(position);
         }
       },
@@ -114,91 +120,90 @@ const Maps = () => {
         setCurrentLocation(defaultCenter);
       }
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLocation, handleLocationUpdate]);
-  
+
   const loadStoreMarkers = useCallback(async () => {
-    if (!window.google?.maps || !mapInstance) {
+    if (!window.google?.maps || !mapRef.current) {
       console.error("Google Maps API is not available.");
       return;
     }
-  
+
     try {
       const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
-  
+
       if (!AdvancedMarkerElement) {
         console.error("Failed to load AdvancedMarkerElement.");
         return;
       }
-  
-      // Remove old markers from map if necessary 
-      if (mapInstance.markers && mapInstance.markers.length > 0) {
-        mapInstance.markers.forEach(marker => marker.map = null); 
+
+      // Remove old markers from map if necessary
+      if (mapRef.current.markers && mapRef.current.markers.length > 0) {
+        mapRef.current.markers.forEach((marker) => (marker.map = null));
       }
-      mapInstance.markers = [];
-  
+      mapRef.current.markers = [];
+
       const markers = nearbyStores.map((store) => {
         const marker = new AdvancedMarkerElement({
-          map: mapInstance,
+          map: mapRef.current,
           position: {
             lat: store.geometry.location.lat,
             lng: store.geometry.location.lng,
           },
           title: store.name,
         });
-  
+
         marker.addListener("gmp-click", () => setActiveMarker(store));
         return marker;
       });
-  
-      mapInstance.markers.push(...markers);
+
+      mapRef.current.markers.push(...markers);
     } catch (error) {
       console.error("Error loading markers:", error);
     }
-  }, [nearbyStores, mapInstance]);
-  
-  
-  
+  }, [nearbyStores]);
 
   useEffect(() => {
-    localStorage.removeItem('nearbyStores');
+    localStorage.removeItem("nearbyStores");
     getUserLocation();
   }, [getUserLocation]);
-  
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: googleMapsLibraries,  
+    libraries: googleMapsLibraries,
     version: "beta",
   });
+
   const handleMouseOut = () => {
     setActiveMarker(null);
   };
 
   const handleButtonClick = (store) => {
     const businessDetailsUrl = `https://www.google.com/maps/search/?api=1&query=${store.name}&query_place_id=${store.place_id}`;
-    window.open(businessDetailsUrl, '_blank');
+    window.open(businessDetailsUrl, "_blank");
   };
 
   const handleDirectionsClick = () => {
     if (currentLocation && activeMarker) {
-      const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentLocation.lat},${currentLocation.lng}&destination=${encodeURIComponent(activeMarker.name)}&destination_place_id=${activeMarker.place_id}`;
-      window.open(directionsUrl, '_blank');
+      const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentLocation.lat},${currentLocation.lng}&destination=${encodeURIComponent(
+        activeMarker.name
+      )}&destination_place_id=${activeMarker.place_id}`;
+      window.open(directionsUrl, "_blank");
     } else {
       console.error("Current location or active marker is not available.");
     }
   };
 
   useEffect(() => {
-    if (mapInstance && nearbyStores.length > 0) { loadStoreMarkers();}
-  }, [mapInstance, nearbyStores, loadStoreMarkers]);
-  
+    if (mapRef.current && nearbyStores.length > 0) {
+      loadStoreMarkers();
+    }
+  }, [nearbyStores, loadStoreMarkers]);
 
   useEffect(() => {
-    if (currentLocation && mapInstance) {
-      mapInstance.panTo(currentLocation);
+    if (currentLocation && mapRef.current) {
+      mapRef.current.panTo(currentLocation);
     }
-  }, [currentLocation, mapInstance]);
+  }, [currentLocation]);
 
   if (loadError) {
     return <div>Error loading maps</div>;
@@ -220,7 +225,7 @@ const Maps = () => {
         <Marker
           position={currentLocation}
           icon={{
-            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
           }}
         />
       )}
@@ -228,8 +233,13 @@ const Maps = () => {
       {nearbyStores.map((store, index) => (
         <Marker
           key={index}
-          position={{ lat: store.geometry.location.lat, lng: store.geometry.location.lng }}
-          icon={{ url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png" }}
+          position={{
+            lat: store.geometry.location.lat,
+            lng: store.geometry.location.lng,
+          }}
+          icon={{
+            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+          }}
           onClick={() => setActiveMarker(store)}
         >
           {activeMarker === store && (
