@@ -206,6 +206,10 @@ const Maps = () => {
   };
 
   useEffect(() => {
+      if (currentLocation) debouncedFetchNearbyStores(currentLocation.lat, currentLocation.lng);
+    }, [currentLocation, debouncedFetchNearbyStores]);
+
+  useEffect(() => {
     if (isLoaded && mapRef.current && nearbyStores.length > 0) {
       loadStoreMarkers();
     }
