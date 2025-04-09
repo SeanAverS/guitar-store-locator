@@ -4,13 +4,13 @@ import "../index.css";
 import { debounce } from "lodash";
 
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // San Francisco fallback
-const googleMapsLibraries = ["marker"];
+const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: googleMapsLibraries,
-    version: "beta",
+    mapId: process.env.REACT_APP_MAP_ID,
   });
 
   const mapRef = useRef(null);
