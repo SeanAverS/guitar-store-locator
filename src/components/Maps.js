@@ -185,14 +185,6 @@ const Maps = () => {
     getUserLocation();
   }, [getUserLocation]);
 
-  useEffect(() => {
-    if (isLoaded && mapRef.current && currentLocation) {
-      if (mapRef.current.userMarker) {
-        mapRef.current.userMarker.setMap(null);
-      }
-    }
-  }, [isLoaded, currentLocation])
-
   const handleMouseOut = () => {
     setActiveMarker(null);
   };
