@@ -221,47 +221,6 @@ const Maps = () => {
       onLoad={initializeMap}
       mapId={process.env.REACT_APP_MAP_ID}
     >
-      {currentLocation && (
-        <Marker
-          position={currentLocation}
-          icon={{
-            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-          }}
-        />
-      )}
-
-      {nearbyStores.map((store, index) => (
-        <Marker
-          key={index}
-          position={{
-            lat: store.geometry.location.lat,
-            lng: store.geometry.location.lng,
-          }}
-          icon={{
-            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
-          }}
-          onClick={() => setActiveMarker(store)}
-        >
-          {activeMarker === store && (
-            <InfoWindow
-              position={{
-                lat: store.geometry.location.lat,
-                lng: store.geometry.location.lng,
-              }}
-              onCloseClick={handleMouseOut}
-            >
-              <div className="info-window">
-                <h4>{store.name}</h4>
-                <p>{store.vicinity}</p>
-                <div className="info-window-buttons">
-                  <button onClick={() => handleButtonClick(store)}>Business Page</button>
-                  <button onClick={handleDirectionsClick}>Directions</button>
-                </div>
-              </div>
-            </InfoWindow>
-          )}
-        </Marker>
-      ))}
     </GoogleMap>
   );
 };
