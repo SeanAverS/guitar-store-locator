@@ -130,42 +130,55 @@ const Maps = () => {
 
   const loadStoreMarkers = useCallback(async () => {
     if (!window.google?.maps || !mapRef.current) {
-      console.error("Google Maps API is not available.");
-      return;
+        console.error("Google Maps API is not available.");
+        return;
     }
 
     try {
-      const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
+        const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
 
-      if (!AdvancedMarkerElement) {
-        console.error("Failed to load AdvancedMarkerElement.");
-        return;
-      }
+        if (!AdvancedMarkerElement) {
+            console.error("Failed to load AdvancedMarkerElement.");
+            return;
+        }
 
-      if (mapRef.current.markers) {
-        mapRef.current.markers.forEach((marker) => marker.setMap(null));
-      }
-      mapRef.current.markers = []; 
+        if (mapRef.current.markers) {
+            mapRef.current.markers.forEach((marker) => marker.setMap(null));
+        }
 
-      const markers = nearbyStores.map((store) => {
-        const marker = new AdvancedMarkerElement({
-          map: mapRef.current,
-          position: {
-            lat: store.geometry.location.lat,
-            lng: store.geometry.location.lng,
-          },
-          title: store.name,
+        mapRef.current.markers = [];
+
+        const markers = nearbyStores.map((store) => {
+            const marker = new AdvancedMarkerElement({
+                map: mapRef.current,
+                position: {
+                    lat: store.geometry.location.lat,
+                    lng: store.geometry.location.lng,
+                },
+                title: store.name,
+            });
+
+            marker.addListener("gmp-click", () => setActiveMarker(store));
+            return marker;
         });
 
-        marker.addListener("gmp-click", () => setActiveMarker(store));
-        return marker;
-      });
+        const userMarker = new AdvancedMarkerElement({
+            position: currentLocation,
+            map: mapRef.current,
+            title: "Your Location",
+            content: (() => {
+                const img = document.createElement("img");
+                img.src = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+                img.style.width = "24px";
+                return img;
+            })(),
+        });
 
-      mapRef.current.markers.push(...markers);
+        mapRef.current.markers.push(...markers, userMarker);
     } catch (error) {
-      console.error("Error loading markers:", error);
+        console.error("Error loading markers:", error);
     }
-  }, [nearbyStores]);
+}, [nearbyStores, currentLocation]);
 
   useEffect(() => {
     localStorage.removeItem("nearbyStores");
@@ -177,20 +190,6 @@ const Maps = () => {
       if (mapRef.current.userMarker) {
         mapRef.current.userMarker.setMap(null);
       }
-  
-      const userMarker = new window.google.maps.marker.AdvancedMarkerElement({
-        position: currentLocation,
-        map: mapRef.current,
-        title: "Your Location",
-        content: (() => {
-          const img = document.createElement("img");
-          img.src = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-          img.style.width = "24px";
-          return img;
-        })(),
-      });
-  
-      mapRef.current.userMarker = userMarker;
     }
   }, [isLoaded, currentLocation])
 
