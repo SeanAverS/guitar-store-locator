@@ -7,6 +7,12 @@ const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // San Francisco fallbac
 const googleMapsLibraries = ["marker"];
 
 const Maps = () => {
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries: googleMapsLibraries,
+    version: "beta",
+  });
+
   const mapRef = useRef(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyStores, setNearbyStores] = useState([]);
@@ -187,12 +193,6 @@ const Maps = () => {
       mapRef.current.userMarker = userMarker;
     }
   }, [isLoaded, currentLocation])
-
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: googleMapsLibraries,
-    version: "beta",
-  });
 
   const handleMouseOut = () => {
     setActiveMarker(null);
