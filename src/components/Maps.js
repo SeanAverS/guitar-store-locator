@@ -166,6 +166,28 @@ const Maps = () => {
     getUserLocation();
   }, [getUserLocation]);
 
+  useEffect(() => {
+    if (isLoaded && mapRef.current && currentLocation) {
+      if (mapRef.current.userMarker) {
+        mapRef.current.userMarker.setMap(null);
+      }
+  
+      const userMarker = new window.google.maps.marker.AdvancedMarkerElement({
+        position: currentLocation,
+        map: mapRef.current,
+        title: "Your Location",
+        content: (() => {
+          const img = document.createElement("img");
+          img.src = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+          img.style.width = "24px";
+          return img;
+        })(),
+      });
+  
+      mapRef.current.userMarker = userMarker;
+    }
+  }, [isLoaded, currentLocation])
+
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: googleMapsLibraries,
