@@ -136,11 +136,10 @@ const Maps = () => {
         return;
       }
 
-      // Remove old markers from map if necessary
-      if (mapRef.current.markers && mapRef.current.markers.length > 0) {
-        mapRef.current.markers.forEach((marker) => (marker.map = null));
+      if (mapRef.current.markers) {
+        mapRef.current.markers.forEach((marker) => marker.setMap(null));
       }
-      mapRef.current.markers = [];
+      mapRef.current.markers = []; 
 
       const markers = nearbyStores.map((store) => {
         const marker = new AdvancedMarkerElement({
