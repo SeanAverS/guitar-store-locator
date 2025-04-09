@@ -193,10 +193,11 @@ const Maps = () => {
   };
 
   useEffect(() => {
-    if (mapRef.current && nearbyStores.length > 0) {
+    if (isLoaded && mapRef.current && nearbyStores.length > 0) {
       loadStoreMarkers();
     }
-  }, [nearbyStores, loadStoreMarkers]);
+  }, [isLoaded, nearbyStores, loadStoreMarkers]);
+  
 
   useEffect(() => {
     if (currentLocation && mapRef.current) {
