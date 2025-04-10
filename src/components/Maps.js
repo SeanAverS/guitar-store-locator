@@ -51,6 +51,8 @@ const Maps = () => {
   const fetchFromAPI = useCallback((location, limit = 10) => {
     const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
 
+    console.log(url);
+
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -196,26 +198,6 @@ const Maps = () => {
     localStorage.removeItem("nearbyStores");
     getUserLocation();
   }, [getUserLocation]);
-
-  const handleMouseOut = () => {
-    setActiveMarker(null);
-  };
-
-  const handleButtonClick = (store) => {
-    const businessDetailsUrl = `https://www.google.com/maps/search/?api=1&query=${store.name}&query_place_id=${store.place_id}`;
-    window.open(businessDetailsUrl, "_blank");
-  };
-
-  const handleDirectionsClick = () => {
-    if (currentLocation && activeMarker) {
-      const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${currentLocation.lat},${currentLocation.lng}&destination=${encodeURIComponent(
-        activeMarker.name
-      )}&destination_place_id=${activeMarker.place_id}`;
-      window.open(directionsUrl, "_blank");
-    } else {
-      console.error("Current location or active marker is not available.");
-    }
-  };
 
   useEffect(() => {
       if (currentLocation) debouncedFetchNearbyStores(currentLocation.lat, currentLocation.lng);
