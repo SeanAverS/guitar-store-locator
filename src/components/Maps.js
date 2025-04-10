@@ -51,8 +51,6 @@ const Maps = () => {
   const fetchFromAPI = useCallback((location, limit = 10) => {
     const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
 
-    console.log(url);
-
     fetch(url)
       .then((response) => {
         if (!response.ok) {
