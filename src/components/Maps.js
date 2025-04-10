@@ -132,6 +132,14 @@ const Maps = () => {
     );
   }, [currentLocation, handleLocationUpdate]);
 
+  const generateDirectionsUrl = () => {
+    if (!activeMarker || !currentLocation) return "#";
+    const origin = `${currentLocation.lat},${currentLocation.lng}`;
+    const { lat, lng } = activeMarker.geometry.location;
+
+    return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${lat},${lng}&destination_place_id=${activeMarker.place_id}&destination_name=${encodeURIComponent(activeMarker.name)}&travelmode=driving`;
+  };  
+
   const loadStoreMarkers = useCallback(async () => {
     if (!window.google?.maps || !mapRef.current) {
         console.error("Google Maps API is not available.");
@@ -243,6 +251,16 @@ const Maps = () => {
       onUnmount={handleMapUnmount}
       options={{ mapId: process.env.REACT_APP_MAP_ID, mapTypeId: "roadmap" }}
     >
+
+      {activeMarker && (
+        <div className="info-box">
+          <h3>{activeMarker.name}</h3>
+          <p>{activeMarker.vicinity || "No address available"}</p>
+          <a href={generateDirectionsUrl()} target="_blank" rel="noopener noreferrer">
+            Directions
+          </a>
+        </div>
+      )}
     </GoogleMap>
   );
 };
