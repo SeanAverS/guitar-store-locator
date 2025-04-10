@@ -241,7 +241,7 @@ const Maps = () => {
       zoom={12}
       onLoad={handleMapLoad}
       onUnmount={handleMapUnmount}
-      mapId={process.env.REACT_APP_MAP_ID}
+      options={{ mapId: process.env.REACT_APP_MAP_ID, mapTypeId: "roadmap" }}
     >
     </GoogleMap>
   );
