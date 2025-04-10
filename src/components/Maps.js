@@ -88,10 +88,10 @@ const Maps = () => {
     [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
   );
 
-  const initializeMap = (map) => {
-    mapRef.current = map;
-    mapRef.current.markers = [];
-  };
+ const handleMapLoad = useCallback((map) => {
+     mapRef.current = map;
+     mapRef.current.markers = [];
+   }, []);
 
   const significantLocationChange = (newLocation, oldLocation) => {
     const distance = Math.sqrt(
@@ -235,7 +235,7 @@ const Maps = () => {
       mapContainerClassName="map-container"
       center={currentLocation || { lat: 0, lng: 0 }}
       zoom={12}
-      onLoad={initializeMap}
+      onLoad={handleMapLoad}
       mapId={process.env.REACT_APP_MAP_ID}
     >
     </GoogleMap>
