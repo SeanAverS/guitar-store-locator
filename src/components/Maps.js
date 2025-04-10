@@ -93,6 +93,10 @@ const Maps = () => {
      mapRef.current.markers = [];
    }, []);
 
+  const handleMapUnmount = useCallback(() => {
+      mapRef.current = null;
+    }, []);
+
   const significantLocationChange = (newLocation, oldLocation) => {
     const distance = Math.sqrt(
       Math.pow(newLocation.lat - oldLocation.lat, 2) +
@@ -236,6 +240,7 @@ const Maps = () => {
       center={currentLocation || { lat: 0, lng: 0 }}
       zoom={12}
       onLoad={handleMapLoad}
+      onUnmount={handleMapUnmount}
       mapId={process.env.REACT_APP_MAP_ID}
     >
     </GoogleMap>
