@@ -196,8 +196,8 @@ useEffect(() => {
                   title: "Your Location",
                   content: (() => {
                       const img = document.createElement("img");
-                      img.src = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-                      img.style.width = "24px";
+                      img.src = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+                      img.style.width = "40px";
                       return img;
                   })(),
               });
