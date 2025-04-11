@@ -174,23 +174,43 @@ const Maps = () => {
             return marker;
         });
 
-        const userMarker = new AdvancedMarkerElement({
-            position: currentLocation,
-            map: mapRef.current,
-            title: "Your Location",
-            content: (() => {
-                const img = document.createElement("img");
-                img.src = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-                img.style.width = "24px";
-                return img;
-            })(),
-        });
-
-        mapRef.current.markers.push(...markers, userMarker);
+        mapRef.current.markers.push(...markers);
     } catch (error) {
         console.error("Error loading markers:", error);
     }
-}, [nearbyStores, currentLocation]);
+}, [nearbyStores]);
+
+useEffect(() => {
+  const loadUserMarker = async () => {
+      if (isLoaded && mapRef.current && currentLocation) {
+          try {
+              const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
+
+              if (mapRef.current.userMarker) {
+                  mapRef.current.userMarker.setMap(null);
+              }
+
+              const userMarker = new AdvancedMarkerElement({
+                  position: currentLocation,
+                  map: mapRef.current,
+                  title: "Your Location",
+                  content: (() => {
+                      const img = document.createElement("img");
+                      img.src = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+                      img.style.width = "24px";
+                      return img;
+                  })(),
+              });
+
+              mapRef.current.userMarker = userMarker;
+          } catch (error) {
+              console.error("Error loading user marker:", error);
+          }
+      }
+  };
+
+  loadUserMarker();
+}, [currentLocation, isLoaded, mapRef]);
 
   useEffect(() => {
     localStorage.removeItem("nearbyStores");
