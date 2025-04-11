@@ -27,7 +27,6 @@ const Maps = () => {
         if (parsedData && Array.isArray(parsedData)) {
           setNearbyStores(parsedData);
           setStoresFetched(true);
-          console.log("Fetched from local storage:", parsedData);
         } else {
           throw new Error("Stored data is not an array");
         }
