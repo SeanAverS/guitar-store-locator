@@ -16,7 +16,7 @@ const Maps = () => {
   const mapRef = useRef(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyStores, setNearbyStores] = useState([]);
-  const [storesFetched, setStoresFetched] = useState(false);
+  const [storesFetched, setIsStoresFetched] = useState(false);
   const [activeMarker, setActiveMarker] = useState(null);
 
   const fetchFromAPI = useCallback((location, limit = 10) => {
@@ -32,7 +32,7 @@ const Maps = () => {
       .then((data) => {
         if (data && Array.isArray(data)) {
           setNearbyStores(data);
-          setStoresFetched(true);
+          setIsStoresFetched(true);
           localStorage.setItem("nearbyStores", JSON.stringify(data));
         } else {
           console.error("Data fetched from API is not an array");
@@ -50,7 +50,7 @@ const Maps = () => {
         const parsedData = JSON.parse(storedData);
         if (parsedData && Array.isArray(parsedData)) {
           setNearbyStores(parsedData);
-          setStoresFetched(true);
+          setIsStoresFetched(true);
         } else {
           throw new Error("Stored data is not an array");
         }
