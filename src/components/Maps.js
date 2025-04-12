@@ -19,34 +19,6 @@ const Maps = () => {
   const [storesFetched, setStoresFetched] = useState(false);
   const [activeMarker, setActiveMarker] = useState(null);
 
-  const fetchNearbyStores = useCallback((location) => {
-    const storedData = localStorage.getItem("nearbyStores");
-    if (storedData) {
-      try {
-        const parsedData = JSON.parse(storedData);
-        if (parsedData && Array.isArray(parsedData)) {
-          setNearbyStores(parsedData);
-          setStoresFetched(true);
-        } else {
-          throw new Error("Stored data is not an array");
-        }
-      } catch (error) {
-        console.error("Error parsing stored data:", error);
-        fetchFromAPI(location);
-      }
-    } else {
-      fetchFromAPI(location);
-    }
-  }, []);
-
-  const debouncedFetchNearbyStores = useMemo(
-    () =>
-      debounce((location) => {
-        fetchNearbyStores(location);
-      }, 1000),
-    []
-  );
-
   const fetchFromAPI = useCallback((location, limit = 10) => {
     const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
 
@@ -70,6 +42,34 @@ const Maps = () => {
         console.error("Error fetching data from API:", error);
       });
   }, []);
+
+  const fetchNearbyStores = useCallback((location) => {
+    const storedData = localStorage.getItem("nearbyStores");
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        if (parsedData && Array.isArray(parsedData)) {
+          setNearbyStores(parsedData);
+          setStoresFetched(true);
+        } else {
+          throw new Error("Stored data is not an array");
+        }
+      } catch (error) {
+        console.error("Error parsing stored data:", error);
+        fetchFromAPI(location);
+      }
+    } else {
+      fetchFromAPI(location);
+    }
+  }, [fetchFromAPI]);
+
+  const debouncedFetchNearbyStores = useMemo(
+    () =>
+      debounce((location) => {
+        fetchNearbyStores(location);
+      }, 1000),
+    []
+  );
 
   const handleLocationUpdate = useCallback(
     (position) => {
