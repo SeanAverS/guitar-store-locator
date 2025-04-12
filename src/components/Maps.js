@@ -146,7 +146,7 @@ const Maps = () => {
     }
 
     try {
-        const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
+        const { AdvancedMarkerElement, PinElement } = await window.google.maps.importLibrary("marker");
 
         if (!AdvancedMarkerElement) {
             console.error("Failed to load AdvancedMarkerElement.");
@@ -173,16 +173,18 @@ const Maps = () => {
             return marker;
         });
 
+        const pinBackground = new PinElement({
+          background: '#87CEEB',
+          borderColor: '#87CEEB',
+          glyphColor: 'white',
+          scale: 1.3,
+      });
+
         const userMarker = new AdvancedMarkerElement({
             position: currentLocation,
             map: mapRef.current,
             title: "Your Location",
-            content: (() => {
-                const img = document.createElement("img");
-                img.src = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
-                img.style.width = "40px";
-                return img;
-            })(),
+            content: pinBackground.element
         });
 
         mapRef.current.markers.push(...markers, userMarker);
