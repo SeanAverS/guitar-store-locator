@@ -68,7 +68,7 @@ const Maps = () => {
       debounce((location) => {
         fetchNearbyStores(location);
       }, 1000),
-    []
+    [fetchFromAPI]
   );
 
   const handleLocationUpdate = useCallback(
