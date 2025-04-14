@@ -3,6 +3,7 @@ import { GoogleMap, useJsApiLoader} from "@react-google-maps/api";
 import "../index.css";
 import { debounce } from "lodash";
 
+const { AdvancedMarkerElement, PinElement } = await window.google.maps.importLibrary("marker");
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // San Francisco fallback
 const googleMapsLibraries = ["places", "marker"];
 
@@ -146,8 +147,6 @@ const Maps = () => {
     }
 
     try {
-        const { AdvancedMarkerElement, PinElement } = await window.google.maps.importLibrary("marker");
-
         if (!AdvancedMarkerElement) {
             console.error("Failed to load AdvancedMarkerElement.");
             return;
