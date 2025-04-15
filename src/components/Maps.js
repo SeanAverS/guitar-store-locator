@@ -15,7 +15,7 @@ const Maps = () => {
 
   const mapRef = useRef(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [nearbyStores, setNearbyStores] = useState([]);
+  const [stores, setStores] = useState([]);
   const [storesFetched, setIsStoresFetched] = useState(false);
   const [activeMarker, setActiveMarker] = useState(null);
 
@@ -31,7 +31,7 @@ const Maps = () => {
       })
       .then((data) => {
         if (data && Array.isArray(data)) {
-          setNearbyStores(data);
+          setStores(data);
           setIsStoresFetched(true);
           localStorage.setItem("nearbyStores", JSON.stringify(data));
         } else {
@@ -49,7 +49,7 @@ const Maps = () => {
       try {
         const parsedData = JSON.parse(storedData);
         if (parsedData && Array.isArray(parsedData)) {
-          setNearbyStores(parsedData);
+          setStores(parsedData);
           setIsStoresFetched(true);
         } else {
           throw new Error("Stored data is not an array");
@@ -159,7 +159,7 @@ const Maps = () => {
 
         mapRef.current.markers = [];
 
-        const markers = nearbyStores.map((store) => {
+        const markers = stores.map((store) => {
             const marker = new AdvancedMarkerElement({
                 map: mapRef.current,
                 position: {
@@ -191,7 +191,7 @@ const Maps = () => {
     } catch (error) {
         console.error("Error loading markers:", error);
     }
-}, [nearbyStores, currentLocation]);
+}, [stores, currentLocation]);
 
   useEffect(() => {
     localStorage.removeItem("nearbyStores");
@@ -203,10 +203,10 @@ const Maps = () => {
     }, [currentLocation, debouncedFetchNearbyStores]);
 
   useEffect(() => {
-    if (isLoaded && mapRef.current && nearbyStores.length > 0) {
+    if (isLoaded && mapRef.current && stores.length > 0) {
       loadStoreMarkers();
     }
-  }, [isLoaded, nearbyStores, loadStoreMarkers]);
+  }, [isLoaded, stores, loadStoreMarkers]);
   
 
   useEffect(() => {
