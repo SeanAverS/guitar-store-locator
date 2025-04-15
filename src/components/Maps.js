@@ -4,6 +4,7 @@ import "../index.css";
 import { debounce } from "lodash";
 
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // San Francisco fallback
+const SIGNIFICANT_DISTANCE = 0.005; // ~500 meters
 const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
@@ -101,7 +102,7 @@ const Maps = () => {
       Math.pow(newLocation.lat - oldLocation.lat, 2) +
         Math.pow(newLocation.lng - oldLocation.lng, 2)
     );
-    return distance > 0.005; // ~500 meters
+    return distance > SIGNIFICANT_DISTANCE;
   };
 
   const getUserLocation = useCallback(() => {
