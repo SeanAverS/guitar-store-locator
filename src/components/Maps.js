@@ -235,7 +235,7 @@ const Maps = () => {
     >
 
       {activeMarker && (
-        <div className="info-box">
+        <div className="info-window">
           <h3>{activeMarker.name}</h3>
           <p>{activeMarker.vicinity || "No address available"}</p>
           <a href={generateDirectionsUrl()} target="_blank" rel="noopener noreferrer">

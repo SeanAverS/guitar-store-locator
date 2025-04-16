@@ -4,8 +4,6 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 
@@ -23,50 +21,27 @@ p {
   font-size: 1.2em;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 .info-window {
+  position: absolute;
+  top: 60px;
+  left: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px; 
-  font-family: Arial, sans-serif; 
-}
-
-.info-window h4 {
-  margin: 0;
-  font-size: 18px; 
+  padding: 10px;
+  background: rgba(127, 124, 124, 0.4);
+  border-radius: 10px;
 }
 
 .info-window p {
-  margin: 7px;
-  font-size: 12px; 
-  color: #606060;
+  font-size: 1.2rem; 
+  color: #fcf9f9;
 }
 
-.info-window-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px; 
-}
-
-.info-window-buttons button {
-  padding: 6px 10px; 
-  font-size: 12px; 
-  cursor: pointer;
-  border: none; 
-  border-radius: 4px; 
-  background-color: #007bff; 
-  color: white;
-  transition: background-color 0.3s; 
-}
-
-.info-window-buttons button:hover {
-  background-color: #0056b3; 
+.info-window a {
+  font-size: 1.2rem;
+  color: rgb(50, 120, 242);
+  text-decoration: none;
 }
 
 .map-container {
