@@ -9,14 +9,10 @@ body {
 
 h1, p {
   text-align: center;
-}
-
-h1 {
   color: #FFFFFF;
 }
 
 p {
-  color: #D3D3D3;
   margin-top: -16px;
   font-size: 1.2em;
 }
@@ -31,16 +27,12 @@ p {
   padding: 10px;
   background: rgba(127, 124, 124, 0.4);
   border-radius: 10px;
-}
-
-.info-window p {
-  font-size: 1.2rem; 
-  color: #fcf9f9;
+  color: #ffffff;
 }
 
 .info-window a {
-  font-size: 1.2rem;
-  color: rgb(50, 120, 242);
+  font-size: 1.3rem;
+  font-weight: bold;;
   text-decoration: none;
 }
 
@@ -50,10 +42,4 @@ p {
   width: 80%;
   height: 550px;
   border-radius: 15px;
-}
-
-@media only screen and (max-width: 426px) {
-    .map-container {
-      width: 90%;
-    }
 }
