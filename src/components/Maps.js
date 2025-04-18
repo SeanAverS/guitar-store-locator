@@ -200,7 +200,7 @@ const Maps = () => {
   }, [getUserLocation]);
 
   useEffect(() => {
-      if (currentLocation) debouncedFetchNearbyStores(currentLocation.lat, currentLocation.lng);
+      if (currentLocation) debouncedFetchNearbyStores(currentLocation);
     }, [currentLocation, debouncedFetchNearbyStores]);
 
   useEffect(() => {
