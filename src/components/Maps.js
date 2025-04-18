@@ -8,11 +8,13 @@ const SIGNIFICANT_DISTANCE = 0.005; // ~500 meters
 const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
-  const { isLoaded, loadError } = useJsApiLoader({
+  const loaderOptions = useMemo(() => ({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: googleMapsLibraries,
     mapId: process.env.REACT_APP_MAP_ID,
-  });
+  }), []);
+
+  const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
 
   const mapRef = useRef(null);
   const [currentLocation, setCurrentLocation] = useState(null);
