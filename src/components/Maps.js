@@ -1,5 +1,11 @@
-import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
-import { GoogleMap, useJsApiLoader} from "@react-google-maps/api";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import "../index.css";
 import { debounce } from "lodash";
 
@@ -8,11 +14,14 @@ const SIGNIFICANT_DISTANCE = 0.005; // ~500 meters
 const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
-  const loaderOptions = useMemo(() => ({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: googleMapsLibraries,
-    mapId: process.env.REACT_APP_MAP_ID,
-  }), []);
+  const loaderOptions = useMemo(
+    () => ({
+      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+      libraries: googleMapsLibraries,
+      mapId: process.env.REACT_APP_MAP_ID,
+    }),
+    []
+  );
 
   const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
 
@@ -46,25 +55,28 @@ const Maps = () => {
       });
   }, []);
 
-  const fetchNearbyStores = useCallback((location) => {
-    const storedData = localStorage.getItem("nearbyStores");
-    if (storedData) {
-      try {
-        const parsedData = JSON.parse(storedData);
-        if (parsedData && Array.isArray(parsedData)) {
-          setStores(parsedData);
-          setIsStoresFetched(true);
-        } else {
-          throw new Error("Stored data is not an array");
+  const fetchNearbyStores = useCallback(
+    (location) => {
+      const storedData = localStorage.getItem("nearbyStores");
+      if (storedData) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          if (parsedData && Array.isArray(parsedData)) {
+            setStores(parsedData);
+            setIsStoresFetched(true);
+          } else {
+            throw new Error("Stored data is not an array");
+          }
+        } catch (error) {
+          console.error("Error parsing stored data:", error);
+          fetchFromAPI(location);
         }
-      } catch (error) {
-        console.error("Error parsing stored data:", error);
+      } else {
         fetchFromAPI(location);
       }
-    } else {
-      fetchFromAPI(location);
-    }
-  }, [fetchFromAPI]);
+    },
+    [fetchFromAPI]
+  );
 
   const debouncedFetchNearbyStores = useMemo(
     () =>
@@ -90,14 +102,14 @@ const Maps = () => {
     [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
   );
 
- const handleMapLoad = useCallback((map) => {
-     mapRef.current = map;
-     mapRef.current.markers = [];
-   }, []);
+  const handleMapLoad = useCallback((map) => {
+    mapRef.current = map;
+    mapRef.current.markers = [];
+  }, []);
 
   const handleMapUnmount = useCallback(() => {
-      mapRef.current = null;
-    }, []);
+    mapRef.current = null;
+  }, []);
 
   const significantLocationChange = (newLocation, oldLocation) => {
     const distance = Math.sqrt(
@@ -139,62 +151,67 @@ const Maps = () => {
     const origin = `${currentLocation.lat},${currentLocation.lng}`;
     const { lat, lng } = activeMarker.geometry.location;
 
-    return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${lat},${lng}&destination_place_id=${activeMarker.place_id}&destination_name=${encodeURIComponent(activeMarker.name)}&travelmode=driving`;
-  };  
+    return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${lat},${lng}&destination_place_id=${
+      activeMarker.place_id
+    }&destination_name=${encodeURIComponent(
+      activeMarker.name
+    )}&travelmode=driving`;
+  };
 
   const loadStoreMarkers = useCallback(async () => {
     if (!window.google?.maps || !mapRef.current) {
-        console.error("Google Maps API is not available.");
-        return;
+      console.error("Google Maps API is not available.");
+      return;
     }
 
     try {
-        const { AdvancedMarkerElement, PinElement } = await window.google.maps.importLibrary("marker");
+      const { AdvancedMarkerElement, PinElement } =
+        await window.google.maps.importLibrary("marker");
 
-        if (!AdvancedMarkerElement) {
-            console.error("Failed to load AdvancedMarkerElement.");
-            return;
-        }
+      if (!AdvancedMarkerElement) {
+        console.error("Failed to load AdvancedMarkerElement.");
+        return;
+      }
 
-        if (mapRef.current.markers) {
-            mapRef.current.markers.forEach((marker) => marker.setMap(null));
-        }
+      if (mapRef.current.markers) {
+        mapRef.current.markers.forEach((marker) => marker.setMap(null));
+      }
 
-        mapRef.current.markers = [];
+      mapRef.current.markers = [];
 
-        const markers = stores.map((store) => {
-            const marker = new AdvancedMarkerElement({
-                map: mapRef.current,
-                position: {
-                    lat: store.geometry.location.lat,
-                    lng: store.geometry.location.lng,
-                },
-                title: store.name,
-            });
-
-            marker.addListener("gmp-click", () => setActiveMarker(store));
-            return marker;
+      const markers = stores.map((store) => {
+        const marker = new AdvancedMarkerElement({
+          map: mapRef.current,
+          position: {
+            lat: store.geometry.location.lat,
+            lng: store.geometry.location.lng,
+          },
+          title: store.name,
         });
 
-        const pinBackground = new PinElement({
-          background: '#87CEEB',
-          borderColor: '#87CEEB',
-          glyphColor: 'white',
-          scale: 1.3,
+        marker.addListener("gmp-click", () => setActiveMarker(store));
+        return marker;
       });
 
-        const userMarker = new AdvancedMarkerElement({
-            position: currentLocation,
-            map: mapRef.current,
-            title: "Your Location",
-            content: pinBackground.element
-        });
+      const pinBackground = new PinElement({
+        background: "#87CEEB",
+        borderColor: "#87CEEB",
+        glyphColor: "white",
+        scale: 1.3,
+      });
 
-        mapRef.current.markers.push(...markers, userMarker);
+      const userMarker = new AdvancedMarkerElement({
+        position: currentLocation,
+        map: mapRef.current,
+        title: "Your Location",
+        content: pinBackground.element,
+      });
+
+      mapRef.current.markers.push(...markers, userMarker);
     } catch (error) {
-        console.error("Error loading markers:", error);
+      console.error("Error loading markers:", error);
     }
-}, [stores, currentLocation]);
+  }, [stores, currentLocation]);
 
   useEffect(() => {
     localStorage.removeItem("nearbyStores");
@@ -202,15 +219,14 @@ const Maps = () => {
   }, [getUserLocation]);
 
   useEffect(() => {
-      if (currentLocation) debouncedFetchNearbyStores(currentLocation);
-    }, [currentLocation, debouncedFetchNearbyStores]);
+    if (currentLocation) debouncedFetchNearbyStores(currentLocation);
+  }, [currentLocation, debouncedFetchNearbyStores]);
 
   useEffect(() => {
     if (isLoaded && mapRef.current && stores.length > 0) {
       loadStoreMarkers();
     }
   }, [isLoaded, stores, loadStoreMarkers]);
-  
 
   useEffect(() => {
     if (currentLocation && mapRef.current) {
@@ -235,12 +251,15 @@ const Maps = () => {
       onUnmount={handleMapUnmount}
       options={{ mapId: process.env.REACT_APP_MAP_ID, mapTypeId: "roadmap" }}
     >
-
       {activeMarker && (
         <div className="info-window">
           <h3>{activeMarker.name}</h3>
           <p>{activeMarker.vicinity || "No address available"}</p>
-          <a href={generateDirectionsUrl()} target="_blank" rel="noopener noreferrer">
+          <a
+            href={generateDirectionsUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Directions
           </a>
         </div>
