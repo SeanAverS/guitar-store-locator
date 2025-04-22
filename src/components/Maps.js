@@ -214,7 +214,6 @@ const Maps = () => {
   }, [stores, currentLocation]);
 
   useEffect(() => {
-    localStorage.removeItem("nearbyStores");
     getUserLocation();
   }, [getUserLocation]);
 
