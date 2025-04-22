@@ -112,13 +112,11 @@ const Maps = () => {
   }, []);
 
   const significantLocationChange = (newLocation, oldLocation) => {
-    const distance = Math.sqrt(
-      Math.pow(newLocation.lat - oldLocation.lat, 2) +
-        Math.pow(newLocation.lng - oldLocation.lng, 2)
-    );
-    return distance > SIGNIFICANT_DISTANCE;
+    const deltaLat = newLocation.lat - oldLocation.lat;
+    const deltaLng = newLocation.lng - oldLocation.lng;
+    return deltaLat * deltaLat + deltaLng * deltaLng > SIGNIFICANT_DISTANCE * SIGNIFICANT_DISTANCE;
   };
-
+  
   const getUserLocation = useCallback(() => {
     if (!navigator.geolocation) {
       console.error("Geolocation not supported.");
