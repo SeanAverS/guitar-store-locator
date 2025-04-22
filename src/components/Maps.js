@@ -144,17 +144,16 @@ const Maps = () => {
     );
   }, [currentLocation, handleLocationUpdate]);
 
-  const generateDirectionsUrl = () => {
+  const generateDirectionsUrl = useMemo(() => {
     if (!activeMarker || !currentLocation) return "#";
     const origin = `${currentLocation.lat},${currentLocation.lng}`;
     const { lat, lng } = activeMarker.geometry.location;
-
+  
     return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${lat},${lng}&destination_place_id=${
       activeMarker.place_id
-    }&destination_name=${encodeURIComponent(
-      activeMarker.name
-    )}&travelmode=driving`;
-  };
+    }&destination_name=${encodeURIComponent(activeMarker.name)}&travelmode=driving`;
+  }, [activeMarker, currentLocation]);
+  
 
   const loadStoreMarkers = useCallback(async () => {
     if (!window.google?.maps || !mapRef.current) {
