@@ -42,7 +42,7 @@ const Maps = () => {
         return response.json();
       })
       .then((data) => {
-        if (data && Array.isArray(data)) {
+        if (Array.isArray(data)) {
           setStores(data);
           setIsStoresFetched(true);
           localStorage.setItem("nearbyStores", JSON.stringify(data));
