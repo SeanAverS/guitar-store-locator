@@ -61,7 +61,7 @@ const Maps = () => {
       if (storedData) {
         try {
           const parsedData = JSON.parse(storedData);
-          if (parsedData && Array.isArray(parsedData)) {
+          if (Array.isArray(parsedData)) {
             setStores(parsedData);
             setIsStoresFetched(true);
           } else {
