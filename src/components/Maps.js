@@ -165,10 +165,8 @@ const Maps = () => {
       const { AdvancedMarkerElement, PinElement } =
         await window.google.maps.importLibrary("marker");
 
-      if (mapRef.current.markers) {
-        mapRef.current.markers.forEach((marker) => marker.setMap(null));
-      }
-
+      // load advanced markers 
+      mapRef.current.markers.forEach((marker) => marker.setMap(null));
       mapRef.current.markers = [];
 
       const markers = stores.map((store) => {
