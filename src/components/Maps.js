@@ -166,7 +166,10 @@ const Maps = () => {
         await window.google.maps.importLibrary("marker");
 
       // load advanced markers 
-      mapRef.current.markers.forEach((marker) => marker.setMap(null));
+      if (mapRef.current.markers) {
+        mapRef.current.markers.forEach((marker) => marker.setMap(null));
+      }
+      
       mapRef.current.markers = [];
 
       const markers = stores.map((store) => {
