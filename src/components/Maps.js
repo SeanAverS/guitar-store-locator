@@ -172,10 +172,7 @@ const Maps = () => {
       const markers = stores.map((store) => {
         const marker = new AdvancedMarkerElement({
           map: mapRef.current,
-          position: {
-            lat: store.geometry.location.lat,
-            lng: store.geometry.location.lng,
-          },
+          position: store.geometry.location,
           title: store.name,
         });
 
