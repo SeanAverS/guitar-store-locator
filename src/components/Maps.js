@@ -144,7 +144,7 @@ const Maps = () => {
     );
   }, [currentLocation, handleLocationUpdate]);
 
-  const generateDirectionsUrl = useMemo(() => {
+  const generateDirectionsUrl = useCallback(() => {
     if (!activeMarker || !currentLocation) return "#";
     const origin = `${currentLocation.lat},${currentLocation.lng}`;
     const { lat, lng } = activeMarker.geometry.location;
