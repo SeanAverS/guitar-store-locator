@@ -165,11 +165,6 @@ const Maps = () => {
       const { AdvancedMarkerElement, PinElement } =
         await window.google.maps.importLibrary("marker");
 
-      if (!AdvancedMarkerElement) {
-        console.error("Failed to load AdvancedMarkerElement.");
-        return;
-      }
-
       if (mapRef.current.markers) {
         mapRef.current.markers.forEach((marker) => marker.setMap(null));
       }
