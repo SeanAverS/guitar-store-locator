@@ -2,7 +2,7 @@ import { useEffect, useCallback, useState } from "react";
 
 const SIGNIFICANT_DISTANCE = 0.005;
 
-const useTrackLocation = (onLocationChange, defaultLocation) => {
+const useTrackLocation = (onLocationChange, defaultCenter) => {
   const [currentLocation, setCurrentLocation] = useState(null);
 
   const significantLocationChange = (newLocation, oldLocation) => {
@@ -17,7 +17,7 @@ const useTrackLocation = (onLocationChange, defaultLocation) => {
   const getUserLocation = useCallback(() => {
     if (!navigator.geolocation) {
       console.error("Geolocation not supported.");
-      setCurrentLocation(defaultLocation);
+      setCurrentLocation(defaultCenter);
       return;
     }
 
@@ -32,15 +32,17 @@ const useTrackLocation = (onLocationChange, defaultLocation) => {
           significantLocationChange(newLocation, currentLocation)
         ) {
           setCurrentLocation(newLocation);
-          onLocationChange(position);
+          onLocationChange(position); 
         }
       },
       (error) => {
         console.error("Error getting location", error);
-        setCurrentLocation(defaultLocation);
+        setCurrentLocation(defaultCenter);
       }
     );
-  }, [currentLocation, onLocationChange, defaultLocation]);
+    
+  }, [currentLocation, onLocationChange, defaultCenter]);
+
 
   useEffect(() => {
     getUserLocation();
