@@ -2,7 +2,7 @@ import { useEffect, useCallback, useState } from "react";
 
 const SIGNIFICANT_DISTANCE = 0.005;
 
-const useTrackLocation = (onLocationChange, defaultCenter) => {
+const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
   const [currentLocation, setCurrentLocation] = useState(null);
 
   const significantLocationChange = (newLocation, oldLocation) => {
@@ -32,7 +32,7 @@ const useTrackLocation = (onLocationChange, defaultCenter) => {
           significantLocationChange(newLocation, currentLocation)
         ) {
           setCurrentLocation(newLocation);
-          onLocationChange(position); 
+          handleLocationUpdate(position); 
         }
       },
       (error) => {
@@ -41,7 +41,7 @@ const useTrackLocation = (onLocationChange, defaultCenter) => {
       }
     );
     
-  }, [currentLocation, onLocationChange, defaultCenter]);
+  }, [currentLocation, handleLocationUpdate, defaultCenter]);
 
 
   useEffect(() => {
