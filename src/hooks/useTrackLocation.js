@@ -8,7 +8,10 @@ const useTrackLocation = (onLocationChange, defaultLocation) => {
   const significantLocationChange = (newLocation, oldLocation) => {
     const deltaLat = newLocation.lat - oldLocation.lat;
     const deltaLng = newLocation.lng - oldLocation.lng;
-    return deltaLat * deltaLat + deltaLng * deltaLng > SIGNIFICANT_DISTANCE * SIGNIFICANT_DISTANCE;
+    return (
+      deltaLat * deltaLat + deltaLng * deltaLng >
+      SIGNIFICANT_DISTANCE * SIGNIFICANT_DISTANCE
+    );
   };
 
   const getUserLocation = useCallback(() => {
@@ -24,9 +27,12 @@ const useTrackLocation = (onLocationChange, defaultLocation) => {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        if (!currentLocation || significantLocationChange(newLocation, currentLocation)) {
+        if (
+          !currentLocation ||
+          significantLocationChange(newLocation, currentLocation)
+        ) {
           setCurrentLocation(newLocation);
-          // convert handleLocationUpdate output for first parameter 
+          // convert handleLocationUpdate output for first parameter
           onLocationChange(position);
         }
       },

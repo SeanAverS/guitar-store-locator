@@ -2,7 +2,8 @@ import { useCallback } from "react";
 
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadStoreMarkers = useCallback(
-    async (stores, currentLocation) => { // nearby stores and user location 
+    async (stores, currentLocation) => {
+      // nearby stores and user location
       if (!window.google?.maps || !mapRef.current) {
         console.error("Google Maps API is not available.");
         return;
