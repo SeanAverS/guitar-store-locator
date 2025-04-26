@@ -32,7 +32,6 @@ const useTrackLocation = (onLocationChange, defaultLocation) => {
           significantLocationChange(newLocation, currentLocation)
         ) {
           setCurrentLocation(newLocation);
-          // convert handleLocationUpdate output for first parameter
           onLocationChange(position);
         }
       },
