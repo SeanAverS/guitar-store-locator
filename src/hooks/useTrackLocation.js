@@ -5,6 +5,7 @@ const SIGNIFICANT_DISTANCE = 0.005;
 const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
   const [currentLocation, setCurrentLocation] = useState(null);
 
+  // compare a users current location with their previous one
   const significantLocationChange = (newLocation, oldLocation) => {
     const deltaLat = newLocation.lat - oldLocation.lat;
     const deltaLng = newLocation.lng - oldLocation.lng;
@@ -17,7 +18,7 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
   const getUserLocation = useCallback(() => {
     if (!navigator.geolocation) {
       console.error("Geolocation not supported.");
-      setCurrentLocation(defaultCenter);
+      setCurrentLocation(defaultCenter); // Map.js SF Fallback
       return;
     }
 
@@ -31,18 +32,16 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
           !currentLocation ||
           significantLocationChange(newLocation, currentLocation)
         ) {
-          setCurrentLocation(newLocation);
-          handleLocationUpdate(position); 
+          setCurrentLocation(newLocation); // using geolocation 
+          handleLocationUpdate(position); // in Maps.js 
         }
       },
       (error) => {
         console.error("Error getting location", error);
-        setCurrentLocation(defaultCenter);
+        setCurrentLocation(defaultCenter); // Maps.js SF Fallback 
       }
     );
-    
   }, [currentLocation, handleLocationUpdate, defaultCenter]);
-
 
   useEffect(() => {
     getUserLocation();

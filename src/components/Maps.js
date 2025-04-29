@@ -37,9 +37,9 @@ const Maps = () => {
         lng: position.coords.longitude,
       };
       if (!storesFetched) {
-        fetchNearbyStores(newLocation);
+        fetchNearbyStores(newLocation); 
       } else {
-        debouncedFetchNearbyStores(newLocation);
+        debouncedFetchNearbyStores(newLocation); // prevent constant store fetch calls 
       }
     },
     [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
@@ -50,7 +50,7 @@ const Maps = () => {
 
   useEffect(() => {
     if (isLoaded && mapRef.current && stores.length > 0 && currentLocation) {
-      loadStoreMarkers(stores, currentLocation);
+      loadStoreMarkers(stores, currentLocation); // useMarkers.js 
     }
   }, [isLoaded, stores, currentLocation, loadStoreMarkers]);
 

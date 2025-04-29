@@ -16,7 +16,7 @@ const useNearbyStores = () => {
       })
       .then((data) => {
         if (Array.isArray(data)) {
-          setStores(data);
+          setStores(data); // guitar stores 
           setIsStoresFetched(true);
           localStorage.setItem("nearbyStores", JSON.stringify(data));
         } else {
@@ -35,7 +35,7 @@ const useNearbyStores = () => {
         try {
           const parsedData = JSON.parse(storedData);
           if (Array.isArray(parsedData)) {
-            setStores(parsedData);
+            setStores(parsedData); // guitar stores 
             setIsStoresFetched(true);
           } else {
             throw new Error("Stored data is not an array");
@@ -52,7 +52,7 @@ const useNearbyStores = () => {
   );
 
   const debouncedFetchNearbyStores = useMemo(
-    () =>
+    () => // prevent constant api calls 
       debounce((location) => {
         fetchNearbyStores(location);
       }, 1000),
