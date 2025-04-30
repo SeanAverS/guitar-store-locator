@@ -54,5 +54,5 @@ jobs:
       id: deployment
       uses: actions/deploy-pages@v1
       env:  
-        GITHUB_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
