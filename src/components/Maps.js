@@ -46,13 +46,13 @@ const Maps = () => {
   );
 
   const currentLocation = useTrackLocation(handleLocationUpdate, defaultCenter);
-  const { loadStoreMarkers } = useMarkers(mapRef, setActiveMarker);
+  const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
 
   useEffect(() => {
     if (isLoaded && mapRef.current && stores.length > 0 && currentLocation) {
-      loadStoreMarkers(stores, currentLocation); // useMarkers.js 
+      loadMarkers(stores, currentLocation); // useMarkers.js 
     }
-  }, [isLoaded, stores, currentLocation, loadStoreMarkers]);
+  }, [isLoaded, stores, currentLocation, loadMarkers]);
 
   useEffect(() => {
     if (currentLocation && mapRef.current) {

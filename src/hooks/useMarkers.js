@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 const useMarkers = (mapRef, setActiveMarker) => {
-  const loadStoreMarkers = useCallback(
+  const loadMarkers = useCallback(
     async (stores, currentLocation) => {
       // nearby stores and user location
       if (!window.google?.maps || !mapRef.current) {
@@ -48,7 +48,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
     [mapRef, setActiveMarker]
   );
 
-  return { loadStoreMarkers };
+  return { loadMarkers };
 };
 
 export default useMarkers;
