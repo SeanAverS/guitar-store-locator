@@ -19,7 +19,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       mapRef.current.markers = [];
 
-      const markers = stores.map((store) => {
+      const storeMarkers = stores.map((store) => {
         const marker = new AdvancedMarkerElement({
           map: mapRef.current,
           position: store.geometry.location,
@@ -43,7 +43,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         content: pinBackground.element,
       });
 
-      mapRef.current.markers.push(...markers, userMarker);
+      mapRef.current.markers.push(...storeMarkers, userMarker);
     },
     [mapRef, setActiveMarker]
   );
