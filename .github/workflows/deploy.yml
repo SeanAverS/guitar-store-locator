@@ -51,6 +51,8 @@ jobs:
       with:
         name: build
         path: build/
+    - name: Wait for a short period
+      run: sleep 5 # seconds
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v1
