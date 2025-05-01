@@ -57,10 +57,10 @@ describe('Maps Component', () => {
   });
 
   test('renders error message if there is a loadError', () => {
-    useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: new Error('Load Error') });
+    useJsApiLoader.mockReturnValue({ isLoaded: false, loadError: new Error('Load Error') });
 
     render(<Maps />);
-    expect(screen.getByText('Error loading maps')).toBeInTheDocument();
+    expect(screen.getByText('Error loading map')).toBeInTheDocument();
   });
 
   test('renders the map when isLoaded is true and there is no loadError', () => {
