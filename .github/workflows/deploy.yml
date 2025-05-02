@@ -39,10 +39,17 @@ jobs:
         ref: gh-pages
         path: gh-pages
 
+    - name: Configure Git user
+      run: |
+        cd gh-pages
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.name "GitHub Actions Bot"
+
     - name: Copy built artifacts to gh-pages
       run: |
-        rm -rf gh-pages/*
-        cp -r build/* gh-pages/
+        cd gh-pages
+        rm -rf *
+        cp -r ../build/* .
 
     - name: Commit and push changes to gh-pages
       run: |
