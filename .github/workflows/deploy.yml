@@ -10,23 +10,15 @@ env:
   CI: false
 
 jobs:
-  build:
-
+  build-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
     permissions:
-      contents: 'read'
-      id-token: 'write'
-      pages: 'write'
-      actions: 'write'
-      checks: 'write'
-      deployments: 'write'
+      contents: write # gh-pages branch 
+
     strategy:
       matrix:
         node-version: [18.x]
+
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
@@ -35,27 +27,26 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Install dependencies
-      run: |
-        npm ci
+      run: npm ci
     - name: Build the app
-      run: |
-        npm run build
+      run: npm run build
     - name: Run component tests
-      run: |
-        npm run test
-        
-    - name: Setup Pages
-      uses: actions/configure-pages@v3
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      run: npm run test
+
+    - name: Checkout gh-pages branch
+      uses: actions/checkout@v3
       with:
-        name: build
-        path: build/
-    - name: Wait for a short period
-      run: sleep 5 # seconds
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v1.0.4
-      env:  
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+        ref: gh-pages
+        path: gh-pages
+
+    - name: Copy built artifacts to gh-pages
+      run: |
+        rm -rf gh-pages/*
+        cp -r build/* gh-pages/
+
+    - name: Commit and push changes to gh-pages
+      run: |
+        cd gh-pages
+        git add .
+        git commit -m "Deploy website"
+        git push origin gh-pages
