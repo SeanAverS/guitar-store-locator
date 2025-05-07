@@ -5,7 +5,7 @@ import useTrackLocation from "../hooks/useTrackLocation.js";
 import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
 
-const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // San Francisco fallback
+const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
 const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
