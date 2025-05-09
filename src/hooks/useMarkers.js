@@ -1,4 +1,7 @@
 import { useCallback } from "react";
+import ReactDOM from 'react-dom'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGuitar } from '@fortawesome/free-solid-svg-icons';
 
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadMarkers = useCallback(
@@ -20,6 +23,9 @@ const useMarkers = (mapRef, setActiveMarker) => {
       mapRef.current.markers = [];
 
       const storeMarkers = stores.map((store) => {
+        const guitarIcon = document.createElement("div");
+        ReactDOM.render(<FontAwesomeIcon icon={faGuitar} size="lg" style={{ color: '#007bff', cursor: 'pointer' }} />, guitarIcon);
+
         const storePin = new PinElement({
           background: "#007bff",
           borderColor: "#007bff",
@@ -30,7 +36,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
           map: mapRef.current,
           position: store.geometry.location,
           title: store.name,
-          content: storePin.element,
+          content: guitarIcon,
         });
         marker.addListener("gmp-click", () => setActiveMarker(store));
         return marker;
