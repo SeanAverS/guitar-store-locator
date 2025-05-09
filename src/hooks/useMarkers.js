@@ -24,7 +24,17 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       const storeMarkers = stores.map((store) => {
         const guitarIcon = document.createElement("div");
-        ReactDOM.render(<FontAwesomeIcon icon={faGuitar} size="lg" style={{ color: '#007bff', cursor: 'pointer' }} />, guitarIcon);
+        ReactDOM.render(
+          <FontAwesomeIcon
+            icon={faGuitar}
+            size="3x"          
+            style={{
+              color: '#007bff', 
+              cursor: 'pointer',
+            }}
+          />,
+          guitarIcon
+        );
 
         const storePin = new PinElement({
           background: "#007bff",
