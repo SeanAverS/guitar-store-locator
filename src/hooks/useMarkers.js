@@ -10,7 +10,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
       }
 
       const { AdvancedMarkerElement, PinElement } =
-        await window.google.maps.importLibrary("marker");
+        await window.google.maps.importLibrary("marker"); 
 
       // load advanced markers
       if (mapRef.current.markers) {
