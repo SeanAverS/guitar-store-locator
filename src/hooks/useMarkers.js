@@ -36,12 +36,6 @@ const useMarkers = (mapRef, setActiveMarker) => {
           guitarIcon
         );
 
-        const storePin = new PinElement({
-          background: "#007bff",
-          borderColor: "#007bff",
-          glyphColor: "#ffffff", 
-          scale: 1,
-        });
         const marker = new AdvancedMarkerElement({
           map: mapRef.current,
           position: store.geometry.location,
