@@ -36,7 +36,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return marker;
       });
 
-      const pinBackground = new PinElement({
+      const userPin = new PinElement({
         background: "#87CEEB",
         borderColor: "#87CEEB",
         glyphColor: "white",
@@ -47,7 +47,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         map: mapRef.current,
         position: currentLocation,
         title: "Your Location",
-        content: pinBackground.element,
+        content: userPin.element,
       });
 
       mapRef.current.markers.push(...storeMarkers, userMarker);
