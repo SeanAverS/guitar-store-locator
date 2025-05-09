@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import ReactDOM from 'react-dom'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPerson } from '@fortawesome/free-solid-svg-icons';
 import { faGuitar } from '@fortawesome/free-solid-svg-icons';
 
 const useMarkers = (mapRef, setActiveMarker) => {
@@ -53,11 +54,21 @@ const useMarkers = (mapRef, setActiveMarker) => {
         scale: 1.3,
       });
 
+      const userIcon = document.createElement("div");
+      ReactDOM.render(
+        <FontAwesomeIcon
+          icon={faPerson}
+          size="3x"
+          style={{ color: 'green', cursor: 'default' }} 
+        />,
+        userIcon
+      );
+
       const userMarker = new AdvancedMarkerElement({
         map: mapRef.current,
         position: currentLocation,
         title: "Your Location",
-        content: userPin.element,
+        content: userIcon
       });
 
       mapRef.current.markers.push(...storeMarkers, userMarker);
