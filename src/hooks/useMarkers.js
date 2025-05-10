@@ -1,6 +1,5 @@
 import { useCallback } from "react";
-import 
-ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import { faGuitar } from "@fortawesome/free-solid-svg-icons"
@@ -23,9 +22,10 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       mapRef.current.markers = [];
 
+      // Create store markers
       const storeMarkers = stores.map((store) => {
         const guitarIcon = document.createElement("div");
-        ReactDOM.render(
+        createRoot(guitarIcon).render(
           <FontAwesomeIcon
             icon={faGuitar}
             size="3x"
@@ -33,8 +33,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
               color: "#007bff",
               cursor: "pointer",
             }}
-          />,
-          guitarIcon
+          />
         );
 
         const marker = new AdvancedMarkerElement({
@@ -49,13 +48,12 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       // load user location
       const userIcon = document.createElement("div");
-      ReactDOM.render(
+      createRoot(userIcon).render(
         <FontAwesomeIcon
           icon={faPersonRunning}
           size="3x"
           style={{ color: "black", cursor: "default" }}
-        />,
-        userIcon
+        />
       );
 
       const userMarker = new AdvancedMarkerElement({
