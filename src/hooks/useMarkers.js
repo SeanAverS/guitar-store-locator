@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import ReactDOM from 'react-dom'; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPersonRunning } from '@fortawesome/free-solid-svg-icons';
-import { faGuitar } from '@fortawesome/free-solid-svg-icons';
+import ReactDOM from "react-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
+import { faGuitar } from "@fortawesome/free-solid-svg-icons";
 
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadMarkers = useCallback(
@@ -13,8 +13,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return;
       }
 
-      const { AdvancedMarkerElement } =
-        await window.google.maps.importLibrary("marker"); 
+      const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
 
       // load advanced markers
       if (mapRef.current.markers) {
@@ -28,10 +27,10 @@ const useMarkers = (mapRef, setActiveMarker) => {
         ReactDOM.render(
           <FontAwesomeIcon
             icon={faGuitar}
-            size="3x"          
+            size="3x"
             style={{
-              color: '#007bff', 
-              cursor: 'pointer',
+              color: "#007bff",
+              cursor: "pointer",
             }}
           />,
           guitarIcon
@@ -52,7 +51,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         <FontAwesomeIcon
           icon={faPersonRunning}
           size="3x"
-          style={{ color: 'black', cursor: 'default' }} 
+          style={{ color: "black", cursor: "default" }}
         />,
         userIcon
       );
@@ -61,7 +60,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         map: mapRef.current,
         position: currentLocation,
         title: "Your Location",
-        content: userIcon
+        content: userIcon,
       });
 
       mapRef.current.markers.push(...storeMarkers, userMarker);
