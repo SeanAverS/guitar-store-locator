@@ -1,13 +1,14 @@
 import { useCallback } from "react";
-import ReactDOM from "react-dom";
+import 
+ReactDOM from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
-import { faGuitar } from "@fortawesome/free-solid-svg-icons";
+import { faGuitar } from "@fortawesome/free-solid-svg-icons"
 
+// nearby stores and user location
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadMarkers = useCallback(
     async (stores, currentLocation) => {
-      // nearby stores and user location
       if (!window.google?.maps || !mapRef.current) {
         console.error("Google Maps API is not available.");
         return;
@@ -15,7 +16,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
 
-      // load advanced markers
+      // load nearby stores
       if (mapRef.current.markers) {
         mapRef.current.markers?.forEach((marker) => marker.setMap(null));
       }
@@ -46,6 +47,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return marker;
       });
 
+      // load user location
       const userIcon = document.createElement("div");
       ReactDOM.render(
         <FontAwesomeIcon
