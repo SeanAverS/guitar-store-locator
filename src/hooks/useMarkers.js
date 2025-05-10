@@ -13,7 +13,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return;
       }
 
-      const { AdvancedMarkerElement, PinElement } =
+      const { AdvancedMarkerElement } =
         await window.google.maps.importLibrary("marker"); 
 
       // load advanced markers
@@ -47,19 +47,12 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return marker;
       });
 
-      const userPin = new PinElement({
-        background: "#87CEEB",
-        borderColor: "#87CEEB",
-        glyphColor: "white",
-        scale: 1.3,
-      });
-
       const userIcon = document.createElement("div");
       ReactDOM.render(
         <FontAwesomeIcon
           icon={faPerson}
           size="3x"
-          style={{ color: 'green', cursor: 'default' }} 
+          style={{ color: 'black', cursor: 'default' }} 
         />,
         userIcon
       );
