@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import ReactDOM from 'react-dom'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPerson } from '@fortawesome/free-solid-svg-icons';
+import { faPersonRunning } from '@fortawesome/free-solid-svg-icons';
 import { faGuitar } from '@fortawesome/free-solid-svg-icons';
 
 const useMarkers = (mapRef, setActiveMarker) => {
@@ -50,7 +50,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
       const userIcon = document.createElement("div");
       ReactDOM.render(
         <FontAwesomeIcon
-          icon={faPerson}
+          icon={faPersonRunning}
           size="3x"
           style={{ color: 'black', cursor: 'default' }} 
         />,
