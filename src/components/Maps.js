@@ -60,6 +60,28 @@ const Maps = () => {
     }
   }, [currentLocation]);
 
+  const infoWindowRef = useRef(null); 
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        infoWindowRef.current &&
+        !infoWindowRef.current.contains(event.target)
+      ) {
+        setActiveMarker(null); 
+      }
+    };
+
+    if (activeMarker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [activeMarker]);
+
+
   const generateDirectionsUrl = useCallback(() => {
     if (!activeMarker || !currentLocation) return "#";
     const origin = `${currentLocation.lat},${currentLocation.lng}`;
@@ -91,7 +113,7 @@ const Maps = () => {
       }}
     >
       {activeMarker && (
-        <div className="info-window">
+        <div className="info-window" ref={infoWindowRef}>
           <h3>{activeMarker.name}</h3>
           <p>{activeMarker.vicinity || "No address available"}</p>
           <a
