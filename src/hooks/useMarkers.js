@@ -1,10 +1,9 @@
 import { useCallback } from "react";
-import { createRoot } from "react-dom/client"; 
+import { createRoot } from "react-dom/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
-import { faGuitar } from "@fortawesome/free-solid-svg-icons"
+import { faPersonRunning, faGuitar } from "@fortawesome/free-solid-svg-icons";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
-// nearby stores and user location
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadMarkers = useCallback(
     async (stores, currentLocation) => {
@@ -15,14 +14,14 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
 
-      // load nearby stores
+      // Clear previous markers
       if (mapRef.current.markers) {
-        mapRef.current.markers?.forEach((marker) => marker.setMap(null));
+        mapRef.current.markers.forEach((marker) => marker.setMap(null));
       }
 
       mapRef.current.markers = [];
 
-      // Create store markers
+      // Create marker elements
       const storeMarkers = stores.map((store) => {
         const guitarIcon = document.createElement("div");
         createRoot(guitarIcon).render(
@@ -37,16 +36,22 @@ const useMarkers = (mapRef, setActiveMarker) => {
         );
 
         const marker = new AdvancedMarkerElement({
-          map: mapRef.current,
           position: store.geometry.location,
           title: store.name,
           content: guitarIcon,
         });
+
         marker.addListener("gmp-click", () => setActiveMarker(store));
         return marker;
       });
 
-      // load user location
+      // Cluster store markers
+      const clusterer = new MarkerClusterer({
+        markers: storeMarkers,
+        map: mapRef.current,
+      });
+
+      // User location marker
       const userIcon = document.createElement("div");
       createRoot(userIcon).render(
         <FontAwesomeIcon
