@@ -94,6 +94,7 @@ const Maps = () => {
     >
       {activeMarker && (
         <div className="info-window" ref={infoWindowRef}>
+            <button className="close-btn" onClick={() => setActiveMarker(null)}>×</button>
           <h3>{activeMarker.name}</h3>
           <p>{activeMarker.vicinity || "No address available"}</p>
           <a

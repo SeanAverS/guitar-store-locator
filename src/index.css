@@ -37,6 +37,15 @@ p {
   color: #ffffff;
 }
 
+.close-btn {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
 .map-container {
   margin: auto;
   margin-top: 40px;
