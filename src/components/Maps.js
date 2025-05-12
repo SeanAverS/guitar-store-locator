@@ -62,26 +62,6 @@ const Maps = () => {
 
   const infoWindowRef = useRef(null); 
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        infoWindowRef.current &&
-        !infoWindowRef.current.contains(event.target)
-      ) {
-        setActiveMarker(null); 
-      }
-    };
-
-    if (activeMarker) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [activeMarker]);
-
-
   const generateDirectionsUrl = useCallback(() => {
     if (!activeMarker || !currentLocation) return "#";
     const origin = `${currentLocation.lat},${currentLocation.lng}`;
