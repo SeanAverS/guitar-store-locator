@@ -37,9 +37,9 @@ const Maps = () => {
         lng: position.coords.longitude,
       };
       if (!storesFetched) {
-        fetchNearbyStores(newLocation); 
+        fetchNearbyStores(newLocation);
       } else {
-        debouncedFetchNearbyStores(newLocation); // prevent constant store fetch calls 
+        debouncedFetchNearbyStores(newLocation); // prevent constant store fetch calls
       }
     },
     [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
@@ -50,7 +50,7 @@ const Maps = () => {
 
   useEffect(() => {
     if (isLoaded && mapRef.current && stores.length > 0 && currentLocation) {
-      loadMarkers(stores, currentLocation); // useMarkers.js 
+      loadMarkers(stores, currentLocation); // useMarkers.js
     }
   }, [isLoaded, stores, currentLocation, loadMarkers]);
 
@@ -60,7 +60,7 @@ const Maps = () => {
     }
   }, [currentLocation]);
 
-  const infoWindowRef = useRef(null); 
+  const infoWindowRef = useRef(null);
 
   const generateDirectionsUrl = useCallback(() => {
     if (!activeMarker || !currentLocation) return "#";
@@ -94,7 +94,9 @@ const Maps = () => {
     >
       {activeMarker && (
         <div className="info-window" ref={infoWindowRef}>
-            <button className="close-btn" onClick={() => setActiveMarker(null)}>×</button>
+          <button className="close-btn" onClick={() => setActiveMarker(null)}>
+            ×
+          </button>
           <h3>{activeMarker.name}</h3>
           <p>{activeMarker.vicinity || "No address available"}</p>
           <a
