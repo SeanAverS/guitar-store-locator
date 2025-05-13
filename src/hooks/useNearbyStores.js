@@ -6,9 +6,9 @@ const useNearbyStores = () => {
   const [storesFetched, setIsStoresFetched] = useState(false);
 
   const fetchFromAPI = useCallback((location, limit = 10) => {
-    const url = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
+    const storeUrl = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
 
-    fetch(url)
+    fetch(storeUrl)
       .then((response) => {
         if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
