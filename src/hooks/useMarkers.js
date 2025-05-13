@@ -16,7 +16,9 @@ const useMarkers = (mapRef, setActiveMarker) => {
         mapRef.current.clusterer.clearMarkers();
       }
 
-      const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
+      const { AdvancedMarkerElement } = await window.google.maps.importLibrary(
+        "marker"
+      );
 
       // Clear previous markers
       if (mapRef.current.markers) {
@@ -50,25 +52,25 @@ const useMarkers = (mapRef, setActiveMarker) => {
       });
 
       const customClusterRenderer = ({ count, position }) => {
-      const div = document.createElement("div");
-          
-          div.style.background = "#007bff"; 
-          div.style.color = "#fff";         
-          div.style.borderRadius = "50%";
-          div.style.padding = "10px";
-          div.style.width = "10px";
-          div.style.height = "10px";
-          div.style.display = "flex";
-          div.style.alignItems = "center";
-          div.style.justifyContent = "center";
+        const div = document.createElement("div");
 
-          div.textContent = count;
+        div.style.background = "#007bff";
+        div.style.color = "#fff";
+        div.style.borderRadius = "50%";
+        div.style.padding = "10px";
+        div.style.width = "10px";
+        div.style.height = "10px";
+        div.style.display = "flex";
+        div.style.alignItems = "center";
+        div.style.justifyContent = "center";
 
-          return new window.google.maps.marker.AdvancedMarkerElement({
-            position,
-            content: div,
-          });
-};
+        div.textContent = count;
+
+        return new window.google.maps.marker.AdvancedMarkerElement({
+          position,
+          content: div,
+        });
+      };
 
       // Cluster store markers
       mapRef.current.clusterer = new MarkerClusterer({
