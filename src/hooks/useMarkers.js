@@ -12,6 +12,10 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return;
       }
 
+      if (mapRef.current.clusterer) {
+        mapRef.current.clusterer.clearMarkers();
+      }
+
       const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
 
       // Clear previous markers
@@ -67,7 +71,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
 };
 
       // Cluster store markers
-      const clusterer = new MarkerClusterer({
+      mapRef.current.clusterer = new MarkerClusterer({
         markers: storeMarkers,
         map: mapRef.current,
         renderer: {
