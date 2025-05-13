@@ -27,7 +27,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       mapRef.current.markers = [];
 
-      // Early return for no available stores 
+      // Early return for no nearby stores 
        if (!stores || stores.length === 0) return;
 
       // Create marker elements
