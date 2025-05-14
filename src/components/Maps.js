@@ -72,7 +72,6 @@ const Maps = () => {
   }, [activeMarker, currentLocation]);
 
   if (loadError) return <div>Error loading map</div>;
-  if (!isLoaded) return <div>Loading...</div>;
 
   return (
     <GoogleMap
