@@ -5,6 +5,7 @@ import useTrackLocation from "../hooks/useTrackLocation.js";
 import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
 import MapContainer from "../components/MapContainer.js";
+import InfoWindowCard from "../components/InfoWindowCard.js";
 
 
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
@@ -87,28 +88,14 @@ const Maps = () => {
     currentLocation={currentLocation} 
     defaultCenter={defaultCenter}
     >
-      {activeMarker && (
-        <div className="info-window" ref={infoWindowRef}>
-          <button className="close-btn" onClick={() => setActiveMarker(null)}>
-            ×
-          </button>
-          <h3>{activeMarker.name}</h3>
-          <p>{activeMarker.vicinity || "No address available"}</p>
-          {activeMarker.opening_hours?.open_now !== undefined && (
-            <p>
-              <strong>Store Status:</strong>{" "}
-              {activeMarker.opening_hours.open_now ? "Open" : "Closed"}
-            </p>
-          )}
-          <a
-            href={generateDirectionsUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Directions
-          </a>
-        </div>
-      )}
+    
+    {activeMarker && ( <InfoWindowCard
+    marker={activeMarker}
+    onClose={() => setActiveMarker(null)}
+    directionsUrl={generateDirectionsUrl()}
+    />
+)}
+
     </MapContainer>
   );
 };
