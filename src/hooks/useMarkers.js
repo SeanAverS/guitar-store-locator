@@ -30,7 +30,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       // Create markers for nearby stores 
       const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
-      
+
       const storeMarkers = stores.map((store) => {
         const guitarIcon = document.createElement("div");
         createRoot(guitarIcon).render(<GuitarIcon/>);
@@ -61,7 +61,6 @@ const useMarkers = (mapRef, setActiveMarker) => {
       const userMarker = new AdvancedMarkerElement({
         map: mapRef.current,
         position: currentLocation,
-        title: "Your Location",
         content: userIcon,
       });
 
