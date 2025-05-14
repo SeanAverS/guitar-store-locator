@@ -13,7 +13,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return;
       }
 
-      // prevent multiple clusters from rendering 
+      // prevent multiple clusters from rendering
       if (mapRef.current.clusterer) {
         mapRef.current.clusterer.clearMarkers();
       }
@@ -25,15 +25,17 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       mapRef.current.markers = [];
 
-      // Early return for no nearby stores 
-       if (!stores || stores.length === 0) return;
+      // Early return for no nearby stores
+      if (!stores || stores.length === 0) return;
 
-      // Create markers for nearby stores 
-      const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
+      // Create markers for nearby stores
+      const { AdvancedMarkerElement } = await window.google.maps.importLibrary(
+        "marker"
+      );
 
       const storeMarkers = stores.map((store) => {
         const guitarIcon = document.createElement("div");
-        createRoot(guitarIcon).render(<GuitarIcon/>);
+        createRoot(guitarIcon).render(<GuitarIcon />);
 
         const marker = new AdvancedMarkerElement({
           position: store.geometry.location,
@@ -45,7 +47,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return marker;
       });
 
-      // Cluster nearby stores 
+      // Cluster nearby stores
       mapRef.current.clusterer = new MarkerClusterer({
         markers: storeMarkers,
         map: mapRef.current,
@@ -56,7 +58,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       // User location marker
       const userIcon = document.createElement("div");
-      createRoot(userIcon).render(<UserIcon/>);
+      createRoot(userIcon).render(<UserIcon />);
 
       const userMarker = new AdvancedMarkerElement({
         map: mapRef.current,

@@ -5,23 +5,23 @@ const useNearbyStores = () => {
   const [stores, setStores] = useState([]);
   const [storesFetched, setIsStoresFetched] = useState(false);
 
-  // get nearby stores 
+  // get nearby stores
   const fetchFromAPI = useCallback((location, limit = 10) => {
     const storeUrl = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
 
-    // check existing stores 
+    // check existing stores
     fetch(storeUrl)
       .then((response) => {
         if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
         return response.json();
       })
-      .then((data) => { 
+      .then((data) => {
         if (!Array.isArray(data)) {
           console.error("Data fetched from API is not an array");
-        } 
+        }
 
-        // fetch successful data 
+        // fetch successful data
         setStores(data);
         setIsStoresFetched(true);
         localStorage.setItem("nearbyStores", JSON.stringify(data));
@@ -31,36 +31,36 @@ const useNearbyStores = () => {
       });
   }, []);
 
- // authenticate successful data 
- const fetchNearbyStores = useCallback(
-  (location) => {
-    const storedData = localStorage.getItem("nearbyStores");
-    if (!storedData) {
-      fetchFromAPI(location);
-      return;
-    }
-
-    try {
-      const parsedData = JSON.parse(storedData);
-      if (!Array.isArray(parsedData)) {
-        throw new Error("Stored data is not an array");
+  // authenticate successful data
+  const fetchNearbyStores = useCallback(
+    (location) => {
+      const storedData = localStorage.getItem("nearbyStores");
+      if (!storedData) {
+        fetchFromAPI(location);
+        return;
       }
 
-      // prepare data for Maps.js 
-      setStores(parsedData); 
-      setIsStoresFetched(true);
-    } catch (error) {
-      // retry getting nearby stores 
-      console.error("Error parsing stored data:", error);
-      fetchFromAPI(location);
-    }
-  },
-  [fetchFromAPI]
-);
+      try {
+        const parsedData = JSON.parse(storedData);
+        if (!Array.isArray(parsedData)) {
+          throw new Error("Stored data is not an array");
+        }
 
-  // prevent unnecessary constant api calls 
+        // prepare data for Maps.js
+        setStores(parsedData);
+        setIsStoresFetched(true);
+      } catch (error) {
+        // retry getting nearby stores
+        console.error("Error parsing stored data:", error);
+        fetchFromAPI(location);
+      }
+    },
+    [fetchFromAPI]
+  );
+
+  // prevent unnecessary constant api calls
   const debouncedFetchNearbyStores = useMemo(
-    () => 
+    () =>
       debounce((location) => {
         fetchNearbyStores(location);
       }, 1000),

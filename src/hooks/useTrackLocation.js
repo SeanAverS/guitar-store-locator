@@ -22,7 +22,7 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
       return;
     }
 
-     // authenticate user's location used in Maps.js 
+    // authenticate user's location used in Maps.js
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const newLocation = {
@@ -33,13 +33,13 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
           !currentLocation ||
           significantLocationChange(newLocation, currentLocation)
         ) {
-          setCurrentLocation(newLocation); 
-          handleLocationUpdate(position); 
+          setCurrentLocation(newLocation);
+          handleLocationUpdate(position);
         }
       },
       (error) => {
         console.error("Error getting location", error);
-        setCurrentLocation(defaultCenter); // Maps.js SF Fallback 
+        setCurrentLocation(defaultCenter); // Maps.js SF Fallback
       }
     );
   }, [currentLocation, handleLocationUpdate, defaultCenter]);

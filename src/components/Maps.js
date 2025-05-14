@@ -7,7 +7,6 @@ import useMarkers from "../hooks/useMarkers.js";
 import MapContainer from "../components/MapContainer.js";
 import InfoWindowCard from "../components/InfoWindowCard.js";
 
-
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
 const googleMapsLibraries = ["places", "marker"];
 
@@ -49,22 +48,22 @@ const Maps = () => {
   );
   const currentLocation = useTrackLocation(handleLocationUpdate, defaultCenter);
 
-  // show stores based on user location 
+  // show stores based on user location
   const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
   useEffect(() => {
     if (isLoaded && mapRef.current && stores.length > 0 && currentLocation) {
-      loadMarkers(stores, currentLocation); 
+      loadMarkers(stores, currentLocation);
     }
   }, [isLoaded, stores, currentLocation, loadMarkers]);
 
-  // pan to user whenever their location changes 
+  // pan to user whenever their location changes
   useEffect(() => {
     if (currentLocation && mapRef.current) {
       mapRef.current.panTo(currentLocation);
     }
   }, [currentLocation]);
 
-  // google maps directions 
+  // google maps directions
   const generateDirectionsUrl = useCallback(() => {
     if (!activeMarker || !currentLocation) return "#";
     const origin = `${currentLocation.lat},${currentLocation.lng}`;
@@ -77,7 +76,7 @@ const Maps = () => {
     )}&travelmode=driving`;
   }, [activeMarker, currentLocation]);
 
-  // map loading errors 
+  // map loading errors
   if (loadError) return <div>Error loading map</div>;
   if (!isLoaded) return <div>Loading...</div>;
 
