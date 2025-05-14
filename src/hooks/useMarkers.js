@@ -18,10 +18,6 @@ const useMarkers = (mapRef, setActiveMarker) => {
         mapRef.current.clusterer.clearMarkers();
       }
 
-      const { AdvancedMarkerElement } = await window.google.maps.importLibrary(
-        "marker"
-      );
-
       // Clear previous markers
       if (mapRef.current.markers) {
         mapRef.current.markers.forEach((marker) => marker.setMap(null));
@@ -33,6 +29,8 @@ const useMarkers = (mapRef, setActiveMarker) => {
        if (!stores || stores.length === 0) return;
 
       // Create markers for nearby stores 
+      const { AdvancedMarkerElement } = await window.google.maps.importLibrary("marker");
+      
       const storeMarkers = stores.map((store) => {
         const guitarIcon = document.createElement("div");
         createRoot(guitarIcon).render(<GuitarIcon/>);
