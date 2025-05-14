@@ -101,8 +101,8 @@ const Maps = () => {
           <p>{activeMarker.vicinity || "No address available"}</p>
           {activeMarker.opening_hours?.open_now !== undefined && (
             <p>
-              <strong>Store Status:</strong>{" "}
-              {activeMarker.opening_hours.open_now ? "Open" : "Closed"}
+              <strong>Open?</strong>{" "}
+              {activeMarker.opening_hours.open_now ? "Yes" : "No"}
             </p>
           )}
           <a
