@@ -5,20 +5,23 @@ const useNearbyStores = () => {
   const [stores, setStores] = useState([]);
   const [storesFetched, setIsStoresFetched] = useState(false);
 
+  // get nearby stores 
   const fetchFromAPI = useCallback((location, limit = 10) => {
     const storeUrl = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
 
+    // check existing stores 
     fetch(storeUrl)
       .then((response) => {
         if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
         return response.json();
       })
-      .then((data) => {
+      .then((data) => { 
         if (!Array.isArray(data)) {
           console.error("Data fetched from API is not an array");
         } 
 
+        // fetch successful data 
         setStores(data);
         setIsStoresFetched(true);
         localStorage.setItem("nearbyStores", JSON.stringify(data));
@@ -28,6 +31,7 @@ const useNearbyStores = () => {
       });
   }, []);
 
+ // authenticate successful data 
  const fetchNearbyStores = useCallback(
   (location) => {
     const storedData = localStorage.getItem("nearbyStores");
@@ -42,9 +46,11 @@ const useNearbyStores = () => {
         throw new Error("Stored data is not an array");
       }
 
-      setStores(parsedData); // guitar stores 
+      // prepare data for Maps.js 
+      setStores(parsedData); 
       setIsStoresFetched(true);
     } catch (error) {
+      // retry getting nearby stores 
       console.error("Error parsing stored data:", error);
       fetchFromAPI(location);
     }
@@ -52,8 +58,9 @@ const useNearbyStores = () => {
   [fetchFromAPI]
 );
 
+  // prevent unnecessary constant api calls 
   const debouncedFetchNearbyStores = useMemo(
-    () => // prevent constant api calls 
+    () => 
       debounce((location) => {
         fetchNearbyStores(location);
       }, 1000),
