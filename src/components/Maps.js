@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { useJsApiLoader } from "@react-google-maps/api";
 import "../index.css";
 import useTrackLocation from "../hooks/useTrackLocation.js";
 import useNearbyStores from "../hooks/useNearbyStores.js";
