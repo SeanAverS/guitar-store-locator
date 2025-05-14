@@ -100,10 +100,11 @@ const Maps = () => {
           <h3>{activeMarker.name}</h3>
           <p>{activeMarker.vicinity || "No address available"}</p>
           {activeMarker.opening_hours?.open_now !== undefined && (
-          <p>
-            <strong>Store Status:</strong>{" "}
-            {activeMarker.opening_hours.open_now ? "Open" : "Closed"}
-          </p> )}
+            <p>
+              <strong>Store Status:</strong>{" "}
+              {activeMarker.opening_hours.open_now ? "Open" : "Closed"}
+            </p>
+          )}
           <a
             href={generateDirectionsUrl()}
             target="_blank"
