@@ -12,6 +12,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return;
       }
 
+      // prevent multiple clusters from rendering 
       if (mapRef.current.clusterer) {
         mapRef.current.clusterer.clearMarkers();
       }
@@ -30,7 +31,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
       // Early return for no nearby stores 
        if (!stores || stores.length === 0) return;
 
-      // Create marker elements
+      // Create markers for nearby stores 
       const storeMarkers = stores.map((store) => {
         const guitarIcon = document.createElement("div");
         createRoot(guitarIcon).render(
@@ -54,6 +55,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return marker;
       });
 
+      // clustering styling for nearby stores 
       const customClusterRenderer = ({ count, position }) => {
         const div = document.createElement("div");
 
@@ -75,7 +77,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         });
       };
 
-      // Cluster store markers
+      // Cluster nearby stores 
       mapRef.current.clusterer = new MarkerClusterer({
         markers: storeMarkers,
         map: mapRef.current,
