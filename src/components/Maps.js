@@ -64,8 +64,6 @@ const Maps = () => {
     }
   }, [currentLocation]);
 
-  const infoWindowRef = useRef(null);
-
   // google maps directions 
   const generateDirectionsUrl = useCallback(() => {
     if (!activeMarker || !currentLocation) return "#";
