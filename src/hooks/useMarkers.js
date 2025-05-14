@@ -1,8 +1,9 @@
 import { useCallback } from "react";
 import { createRoot } from "react-dom/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPersonRunning, faGuitar } from "@fortawesome/free-solid-svg-icons";
+import { faPersonRunning} from "@fortawesome/free-solid-svg-icons";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import GuitarIcon from "../icons/GuitarIcon.js";
 
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadMarkers = useCallback(
@@ -34,16 +35,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
       // Create markers for nearby stores 
       const storeMarkers = stores.map((store) => {
         const guitarIcon = document.createElement("div");
-        createRoot(guitarIcon).render(
-          <FontAwesomeIcon
-            icon={faGuitar}
-            size="3x"
-            style={{
-              color: "#007bff",
-              cursor: "pointer",
-            }}
-          />
-        );
+        createRoot(guitarIcon).render(<GuitarIcon/>);
 
         const marker = new AdvancedMarkerElement({
           position: store.geometry.location,
