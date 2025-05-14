@@ -81,19 +81,20 @@ const Maps = () => {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
+    // Map container styling
     <MapContainer
-    mapRef={mapRef} 
-    currentLocation={currentLocation} 
-    defaultCenter={defaultCenter}
+      mapRef={mapRef}
+      currentLocation={currentLocation}
+      defaultCenter={defaultCenter}
     >
-    
-    {activeMarker && ( <InfoWindowCard
-    marker={activeMarker}
-    onClose={() => setActiveMarker(null)}
-    directionsUrl={generateDirectionsUrl()}
-    />
-)}
-
+      {/* Clicked store information styling */}
+      {activeMarker && (
+        <InfoWindowCard
+          marker={activeMarker}
+          onClose={() => setActiveMarker(null)}
+          directionsUrl={generateDirectionsUrl()}
+        />
+      )}
     </MapContainer>
   );
 };
