@@ -17,10 +17,11 @@ const Maps = () => {
     }),
     []
   );
+
   const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
-  
   const mapRef = useRef(null);
   const [activeMarker, setActiveMarker] = useState(null);
+  
   const {
     stores,
     storesFetched,
