@@ -1,9 +1,8 @@
 import { useCallback } from "react";
 import { createRoot } from "react-dom/client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPersonRunning} from "@fortawesome/free-solid-svg-icons";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import GuitarIcon from "../icons/GuitarIcon.js";
+import UserIcon from "../icons/UserIcon.js";
 
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadMarkers = useCallback(
@@ -80,13 +79,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       // User location marker
       const userIcon = document.createElement("div");
-      createRoot(userIcon).render(
-        <FontAwesomeIcon
-          icon={faPersonRunning}
-          size="3x"
-          style={{ color: "black", cursor: "default" }}
-        />
-      );
+      createRoot(userIcon).render(<UserIcon/>);
 
       const userMarker = new AdvancedMarkerElement({
         map: mapRef.current,
