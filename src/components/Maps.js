@@ -4,6 +4,8 @@ import "../index.css";
 import useTrackLocation from "../hooks/useTrackLocation.js";
 import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
+import MapContainer from "../components/MapContainer.js";
+
 
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
 const googleMapsLibraries = ["places", "marker"];
@@ -80,19 +82,10 @@ const Maps = () => {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <GoogleMap
-      mapContainerClassName="map-container"
-      center={currentLocation || defaultCenter}
-      zoom={12}
-      onLoad={(map) => {
-        mapRef.current = map;
-        mapRef.current.markers = [];
-      }}
-      onUnmount={() => (mapRef.current = null)}
-      options={{
-        mapId: process.env.REACT_APP_MAP_ID,
-        mapTypeId: "roadmap",
-      }}
+    <MapContainer
+    mapRef={mapRef} 
+    currentLocation={currentLocation} 
+    defaultCenter={defaultCenter}
     >
       {activeMarker && (
         <div className="info-window" ref={infoWindowRef}>
@@ -116,7 +109,7 @@ const Maps = () => {
           </a>
         </div>
       )}
-    </GoogleMap>
+    </MapContainer>
   );
 };
 
