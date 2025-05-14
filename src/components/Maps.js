@@ -20,7 +20,6 @@ const Maps = () => {
   const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
   
   const mapRef = useRef(null);
-  const infoWindowRef = useRef(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const {
     stores,
@@ -59,6 +58,8 @@ const Maps = () => {
     }
   }, [currentLocation]);
 
+  const infoWindowRef = useRef(null);
+
   const generateDirectionsUrl = useCallback(() => {
     if (!activeMarker || !currentLocation) return "#";
     const origin = `${currentLocation.lat},${currentLocation.lng}`;
@@ -72,6 +73,7 @@ const Maps = () => {
   }, [activeMarker, currentLocation]);
 
   if (loadError) return <div>Error loading map</div>;
+  if (!isLoaded) return <div>Loading...</div>;
 
   return (
     <GoogleMap
@@ -97,8 +99,8 @@ const Maps = () => {
           <p>{activeMarker.vicinity || "No address available"}</p>
           {activeMarker.opening_hours?.open_now !== undefined && (
             <p>
-              <strong>Open?</strong>{" "}
-              {activeMarker.opening_hours.open_now ? "Yes" : "No"}
+              <strong>Store Status:</strong>{" "}
+              {activeMarker.opening_hours.open_now ? "Open" : "Closed"}
             </p>
           )}
           <a
