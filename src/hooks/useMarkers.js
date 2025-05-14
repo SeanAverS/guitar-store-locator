@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import GuitarIcon from "../icons/GuitarIcon.js";
 import UserIcon from "../icons/UserIcon.js";
+import { customClusterRenderer } from "../utils/customClusterRenderer.js";
 
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadMarkers = useCallback(
@@ -45,28 +46,6 @@ const useMarkers = (mapRef, setActiveMarker) => {
         marker.addListener("gmp-click", () => setActiveMarker(store));
         return marker;
       });
-
-      // clustering styling for nearby stores 
-      const customClusterRenderer = ({ count, position }) => {
-        const div = document.createElement("div");
-
-        div.style.background = "#007bff";
-        div.style.color = "#fff";
-        div.style.borderRadius = "50%";
-        div.style.padding = "10px";
-        div.style.width = "10px";
-        div.style.height = "10px";
-        div.style.display = "flex";
-        div.style.alignItems = "center";
-        div.style.justifyContent = "center";
-
-        div.textContent = count;
-
-        return new window.google.maps.marker.AdvancedMarkerElement({
-          position,
-          content: div,
-        });
-      };
 
       // Cluster nearby stores 
       mapRef.current.clusterer = new MarkerClusterer({
