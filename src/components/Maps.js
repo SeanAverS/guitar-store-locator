@@ -17,12 +17,11 @@ const Maps = () => {
     }),
     []
   );
-
   const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
-
+  
   const mapRef = useRef(null);
+  const infoWindowRef = useRef(null);
   const [activeMarker, setActiveMarker] = useState(null);
-
   const {
     stores,
     storesFetched,
@@ -44,23 +43,21 @@ const Maps = () => {
     },
     [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
   );
-
   const currentLocation = useTrackLocation(handleLocationUpdate, defaultCenter);
-  const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
 
+  const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
   useEffect(() => {
     if (isLoaded && mapRef.current && stores.length > 0 && currentLocation) {
       loadMarkers(stores, currentLocation); // useMarkers.js
     }
   }, [isLoaded, stores, currentLocation, loadMarkers]);
 
+
   useEffect(() => {
     if (currentLocation && mapRef.current) {
       mapRef.current.panTo(currentLocation);
     }
   }, [currentLocation]);
-
-  const infoWindowRef = useRef(null);
 
   const generateDirectionsUrl = useCallback(() => {
     if (!activeMarker || !currentLocation) return "#";
