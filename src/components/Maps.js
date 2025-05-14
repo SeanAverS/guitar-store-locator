@@ -21,7 +21,7 @@ const Maps = () => {
   const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
   const mapRef = useRef(null);
   const [activeMarker, setActiveMarker] = useState(null);
-  
+
   const {
     stores,
     storesFetched,
@@ -29,6 +29,7 @@ const Maps = () => {
     debouncedFetchNearbyStores,
   } = useNearbyStores();
 
+  // get nearby stores based on user's location
   const handleLocationUpdate = useCallback(
     (position) => {
       const newLocation = {
@@ -38,21 +39,22 @@ const Maps = () => {
       if (!storesFetched) {
         fetchNearbyStores(newLocation);
       } else {
-        debouncedFetchNearbyStores(newLocation); // prevent constant store fetch calls
+        debouncedFetchNearbyStores(newLocation); // prevent constant fetch calls
       }
     },
     [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
   );
   const currentLocation = useTrackLocation(handleLocationUpdate, defaultCenter);
 
+  // show stores based on user location 
   const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
   useEffect(() => {
     if (isLoaded && mapRef.current && stores.length > 0 && currentLocation) {
-      loadMarkers(stores, currentLocation); // useMarkers.js
+      loadMarkers(stores, currentLocation); 
     }
   }, [isLoaded, stores, currentLocation, loadMarkers]);
 
-
+  // pan to user whenever their location changes 
   useEffect(() => {
     if (currentLocation && mapRef.current) {
       mapRef.current.panTo(currentLocation);
@@ -61,6 +63,7 @@ const Maps = () => {
 
   const infoWindowRef = useRef(null);
 
+  // google maps directions 
   const generateDirectionsUrl = useCallback(() => {
     if (!activeMarker || !currentLocation) return "#";
     const origin = `${currentLocation.lat},${currentLocation.lng}`;
