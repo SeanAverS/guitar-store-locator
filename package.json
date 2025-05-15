@@ -2,7 +2,7 @@
   "name": "guitar-store-locator",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://seanavers.github.io/guitar-store-locator/",
+  "homepage": "https://SeanAvers.github.io/guitar-store-locator/",
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",

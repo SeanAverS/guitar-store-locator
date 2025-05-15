@@ -74,7 +74,7 @@ const Maps = () => {
     }&destination_name=${encodeURIComponent(
       activeMarker.name
     )}&travelmode=driving`;
-  }, [activeMarker, currentLocation]); 
+  }, [activeMarker, currentLocation]);  
 
   // map loading errors
   if (loadError) return <div>Error loading map</div>;
