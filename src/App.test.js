@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/aria-role */
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import Maps from './components/Maps';
-import { useJsApiLoader } from '@react-google-maps/api';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import Maps from "./components/Maps";
+import { useJsApiLoader } from "@react-google-maps/api";
 
-
-jest.mock('@react-google-maps/api', () => ({
-  useJsApiLoader: jest.fn(() => ({ isLoaded: true, loadError: null })), 
+jest.mock("@react-google-maps/api", () => ({
+  useJsApiLoader: jest.fn(() => ({ isLoaded: true, loadError: null })),
   GoogleMap: ({ children, mapContainerClassName, center, zoom }) => (
     <div
       role="map"
@@ -17,7 +16,9 @@ jest.mock('@react-google-maps/api', () => ({
       {children}
     </div>
   ),
-  Marker: ({ position }) => <div role="marker" data-position={JSON.stringify(position)} />,
+  Marker: ({ position }) => (
+    <div role="marker" data-position={JSON.stringify(position)} />
+  ),
   InfoWindow: ({ children, position }) => (
     <div role="infowindow" data-position={JSON.stringify(position)}>
       {children}
@@ -25,16 +26,15 @@ jest.mock('@react-google-maps/api', () => ({
   ),
 }));
 
-
-describe('Maps Component', () => {
+describe("Maps Component", () => {
   beforeAll(() => {
     global.navigator.geolocation = {
       getCurrentPosition: jest.fn().mockImplementation((success, error) => {
         success({
-          // Mock location 
-          coords: { 
-            latitude: 37.7749, 
-            longitude: -122.4194, 
+          // Mock location
+          coords: {
+            latitude: 37.7749,
+            longitude: -122.4194,
           },
         });
       }),
@@ -49,28 +49,31 @@ describe('Maps Component', () => {
     jest.resetAllMocks();
   });
 
-  test('renders loading messages while maps are loading', () => {
+  test("renders loading messages while maps are loading", () => {
     useJsApiLoader.mockReturnValue({ isLoaded: false, loadError: null });
 
     render(<Maps />);
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  test('renders error message if there is a loadError', () => {
-    useJsApiLoader.mockReturnValue({ isLoaded: false, loadError: new Error('Load Error') });
+  test("renders error message if there is a loadError", () => {
+    useJsApiLoader.mockReturnValue({
+      isLoaded: false,
+      loadError: new Error("Load Error"),
+    });
 
     render(<Maps />);
-    expect(screen.getByText('Error loading map')).toBeInTheDocument();
+    expect(screen.getByText("Error loading map")).toBeInTheDocument();
   });
 
-  test('renders the map when isLoaded is true and there is no loadError', () => {
+  test("renders the map when isLoaded is true and there is no loadError", () => {
     useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: null });
 
     render(<Maps />);
-    expect(screen.getByRole('map')).toBeInTheDocument();
+    expect(screen.getByRole("map")).toBeInTheDocument();
   });
 
-  test('calls geolocation API to get user location', () => {
+  test("calls geolocation API to get user location", () => {
     useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: null });
 
     render(<Maps />);
