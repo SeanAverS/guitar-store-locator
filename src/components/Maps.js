@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import "../index.css";
-import useTrackLocation from "../hooks/useTrackLocation.js";
+import useTrackLocation from "../hooks/useTrackLocation.js"; 
 import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
 import MapContainer from "../components/MapContainer.js";
