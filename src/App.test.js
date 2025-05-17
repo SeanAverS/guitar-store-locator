@@ -66,12 +66,14 @@ describe("Maps Component", () => {
     expect(screen.getByText("Error loading map")).toBeInTheDocument();
   });
 
-  test("renders the map when isLoaded is true and there is no loadError", () => {
-    useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: null });
+test("renders the map when isLoaded is true and there is no loadError", () => {
+  useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: null });
 
-    render(<Maps />);
-    expect(screen.getByRole("map")).toBeInTheDocument();
-  });
+  render(<Maps />);
+  expect(screen.getByRole("map")).toBeInTheDocument();
+});
+
+
 
   test("calls geolocation API to get user location", () => {
     useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: null });
