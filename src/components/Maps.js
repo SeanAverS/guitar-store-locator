@@ -1,28 +1,28 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import "../index.css";
-import useTrackLocation from "../hooks/useTrackLocation.js";  
-import useNearbyStores from "../hooks/useNearbyStores.js"; 
+import useTrackLocation from "../hooks/useTrackLocation.js";
+import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
 import { lazy, Suspense } from "react";
-import InfoWindowCard from "../components/InfoWindowCard.js";
 
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
-const MapContainer = lazy(() => import("../components/MapContainer.js")); // lazy load 
+const MapContainer = lazy(() => import("../components/MapContainer.js")); // lazy load
+const InfoWindowCard = lazy(() => import("../components/InfoWindowCard.js"));
 const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
-  const loaderOptions = useMemo( 
+  const loaderOptions = useMemo(
     () => ({
       googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
       libraries: googleMapsLibraries,
       mapId: process.env.REACT_APP_MAP_ID,
     }),
-    [] 
+    []
   );
 
   const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
-  const mapRef = useRef(null); 
+  const mapRef = useRef(null);
   const [activeMarker, setActiveMarker] = useState(null);
 
   const {
@@ -75,7 +75,7 @@ const Maps = () => {
     }&destination_name=${encodeURIComponent(
       activeMarker.name
     )}&travelmode=driving`;
-  }, [activeMarker, currentLocation]);  
+  }, [activeMarker, currentLocation]);
 
   // map loading errors
   if (loadError) return <div>Error loading map</div>;
@@ -83,18 +83,20 @@ const Maps = () => {
 
   return (
     // Map container styling
-      <Suspense fallback={<div>Loading Map...</div>}>
+    <Suspense fallback={<div>Loading Map...</div>}>
       <MapContainer
         mapRef={mapRef}
         currentLocation={currentLocation}
         defaultCenter={defaultCenter}
       >
         {activeMarker && (
-          <InfoWindowCard
-            marker={activeMarker}
-            onClose={() => setActiveMarker(null)}
-            directionsUrl={generateDirectionsUrl()}
-          />
+          <Suspense fallback={<div>Loading Info...</div>}>
+            <InfoWindowCard
+              marker={activeMarker}
+              onClose={() => setActiveMarker(null)}
+              directionsUrl={generateDirectionsUrl()}
+            />
+          </Suspense>
         )}
       </MapContainer>
     </Suspense>
