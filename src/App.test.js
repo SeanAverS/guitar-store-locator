@@ -66,12 +66,14 @@ describe("Maps Component", () => {
     expect(screen.getByText("Error loading map")).toBeInTheDocument();
   });
 
-test("renders the map when isLoaded is true and there is no loadError", () => {
+test("renders the map when isLoaded is true and there is no loadError", async () => {
   useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: null });
 
   render(<Maps />);
-  expect(screen.getByRole("map")).toBeInTheDocument();
+  const mapElement = await screen.findByRole("map"); 
+  expect(mapElement).toBeInTheDocument();
 });
+
 
 
 
