@@ -89,7 +89,7 @@ const Maps = () => {
       <MapContainer
         mapRef={mapRef}
         currentLocation={currentLocation}
-        defaultCenter={defaultCenter}
+        defaultCenter={defaultCenter} 
       >
         {activeMarker && (
           <Suspense fallback={<div>Loading Info...</div>}>
