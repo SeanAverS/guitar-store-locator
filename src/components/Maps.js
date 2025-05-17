@@ -4,10 +4,11 @@ import "../index.css";
 import useTrackLocation from "../hooks/useTrackLocation.js";  
 import useNearbyStores from "../hooks/useNearbyStores.js"; 
 import useMarkers from "../hooks/useMarkers.js";
-import MapContainer from "../components/MapContainer.js";
+import { lazy, Suspense } from "react";
 import InfoWindowCard from "../components/InfoWindowCard.js";
 
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
+const MapContainer = lazy(() => import("../components/MapContainer.js")); // lazy load 
 const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
@@ -82,20 +83,21 @@ const Maps = () => {
 
   return (
     // Map container styling
-    <MapContainer
-      mapRef={mapRef}
-      currentLocation={currentLocation}
-      defaultCenter={defaultCenter}
-    >
-      {/* Clicked store information styling */}
-      {activeMarker && (
-        <InfoWindowCard
-          marker={activeMarker}
-          onClose={() => setActiveMarker(null)}
-          directionsUrl={generateDirectionsUrl()}
-        />
-      )}
-    </MapContainer>
+      <Suspense fallback={<div>Loading Map...</div>}>
+      <MapContainer
+        mapRef={mapRef}
+        currentLocation={currentLocation}
+        defaultCenter={defaultCenter}
+      >
+        {activeMarker && (
+          <InfoWindowCard
+            marker={activeMarker}
+            onClose={() => setActiveMarker(null)}
+            directionsUrl={generateDirectionsUrl()}
+          />
+        )}
+      </MapContainer>
+    </Suspense>
   );
 };
 
