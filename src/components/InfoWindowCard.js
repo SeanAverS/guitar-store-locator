@@ -8,8 +8,8 @@ const InfoWindowCard = ({ marker, onClose, directionsUrl }) => {
       <p>{marker.vicinity || "No address available"}</p>
       {marker.opening_hours?.open_now !== undefined && (
         <p>
-          <strong>Store Status:</strong>{" "}
-          {marker.opening_hours.open_now ? "Open" : "Closed"}
+          <strong>Open?</strong>{" "}
+          {marker.opening_hours.open_now ? "Yes" : "No"}
         </p>
       )}
       <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
