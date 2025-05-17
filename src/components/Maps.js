@@ -6,9 +6,11 @@ import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
 import { lazy, Suspense } from "react";
 
-const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
-const MapContainer = lazy(() => import("../components/MapContainer.js")); // lazy load
+// lazy loads
+const MapContainer = lazy(() => import("../components/MapContainer.js")); 
 const InfoWindowCard = lazy(() => import("../components/InfoWindowCard.js"));
+
+const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
 const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
