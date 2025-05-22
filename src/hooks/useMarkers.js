@@ -1,9 +1,11 @@
 import { useCallback } from "react";
 import { createRoot } from "react-dom/client";
-import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import GuitarIcon from "../icons/GuitarIcon.js";
 import UserIcon from "../icons/UserIcon.js";
 import { customClusterRenderer } from "../utils/customClusterRenderer.js";
+
+const loadClusterer = () =>
+  import("@googlemaps/markerclusterer").then((mod) => mod.MarkerClusterer); 
 
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadMarkers = useCallback(
@@ -48,6 +50,8 @@ const useMarkers = (mapRef, setActiveMarker) => {
       });
 
       // Cluster nearby stores
+      const MarkerClusterer = await loadClusterer();
+
       mapRef.current.clusterer = new MarkerClusterer({
         markers: storeMarkers,
         map: mapRef.current,
