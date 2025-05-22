@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import { debounce } from "../utils/debounce.js";
 
+const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 minutes
+
 const useNearbyStores = () => {
   const [stores, setStores] = useState([]);
   const [storesFetched, setIsStoresFetched] = useState(false);
@@ -24,7 +26,12 @@ const useNearbyStores = () => {
         // fetch successful data
         setStores(data);
         setIsStoresFetched(true);
-        localStorage.setItem("nearbyStores", JSON.stringify(data));
+
+        const cacheObject = {
+          timestamp: Date.now(),
+          data,
+        };
+        localStorage.setItem("nearbyStores", JSON.stringify(cacheObject));
       })
       .catch((error) => {
         console.error("Error fetching data from API:", error);
@@ -41,17 +48,26 @@ const useNearbyStores = () => {
       }
 
       try {
-        const parsedData = JSON.parse(storedData);
-        if (!Array.isArray(parsedData)) {
-          throw new Error("Stored data is not an array");
+        const cacheObject = JSON.parse(storedData);
+        if (
+          !cacheObject ||
+          !Array.isArray(cacheObject.data) ||
+          typeof cacheObject.timestamp !== "number"
+        ) {
+          throw new Error("Invalid cache format");
         }
 
-        // prepare data for Maps.js
-        setStores(parsedData);
+        const isExpired = Date.now() - cacheObject.timestamp > CACHE_EXPIRATION;
+        if (isExpired) {
+          fetchFromAPI(location); 
+          return;
+        }
+
+        // Use cached data
+        setStores(cacheObject.data);
         setIsStoresFetched(true);
       } catch (error) {
-        // retry getting nearby stores
-        console.error("Error parsing stored data:", error);
+        console.error("Error parsing stored data or cache expired:", error);
         fetchFromAPI(location);
       }
     },
