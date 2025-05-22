@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { debounce } from "lodash";
+import { debounce } from "../utils/debounce.js";
 
 const useNearbyStores = () => {
   const [stores, setStores] = useState([]);
@@ -59,13 +59,10 @@ const useNearbyStores = () => {
   );
 
   // prevent unnecessary constant api calls
-  const debouncedFetchNearbyStores = useMemo(
-    () =>
-      debounce((location) => {
-        fetchNearbyStores(location);
-      }, 1000),
-    [fetchNearbyStores]
-  );
+ const debouncedFetchNearbyStores = useMemo(
+  () => debounce(fetchNearbyStores, 1000),
+  [fetchNearbyStores] 
+);
 
   return {
     stores,
