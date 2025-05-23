@@ -1,6 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
 import { debounce } from "../utils/debounce.js";
 
+// render backend 
+const isDev = window.location.hostname === "localhost";
+const BASE_URL = isDev
+  ? "http://localhost:5000"
+  : "https://guitar-store-locator.onrender.com";
+
 const CACHE_EXPIRATION = 10 * 60 * 1000; // 10 minutes
 
 const useNearbyStores = () => {
@@ -9,7 +15,7 @@ const useNearbyStores = () => {
 
   // get nearby stores
   const fetchFromAPI = useCallback((location, limit = 10) => {
-    const storeUrl = `http://localhost:5000/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
+    const storeUrl = `${BASE_URL}/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
 
     // check existing stores
     fetch(storeUrl)
