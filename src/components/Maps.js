@@ -11,7 +11,7 @@ const MapContainer = lazy(() => import("../components/MapContainer.js"));
 const InfoWindowCard = lazy(() => import("../components/InfoWindowCard.js"));
 
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
-const googleMapsLibraries = ["places", "marker"];
+const googleMapsLibraries = ["places", "marker"]; 
 
 const Maps = () => {
   const loaderOptions = useMemo(
