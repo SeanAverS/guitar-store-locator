@@ -20,7 +20,7 @@ const Maps = () => {
       libraries: googleMapsLibraries,
       mapId: process.env.REACT_APP_MAP_ID,
     }),
-    []
+    [] 
   );
 
   const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
