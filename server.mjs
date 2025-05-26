@@ -58,6 +58,11 @@ app.get("/api/nearbyStores", async (req, res) => {
   }
 });
 
+app.get("/", (res) => {
+  res.send("Backend is running. Use /api/nearbyStores to access the API.");
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
