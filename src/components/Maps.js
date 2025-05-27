@@ -4,7 +4,7 @@ import "../index.css";
 import useTrackLocation from "../hooks/useTrackLocation.js";
 import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react"; 
 
 // lazy loads
 const MapContainer = lazy(() => import("../components/MapContainer.js")); 
