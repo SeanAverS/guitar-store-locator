@@ -32,15 +32,15 @@ This setup uses `gh-pages` for the frontend and Render for the backend
 ## Local Deployment 
 Navigate to `guitar-store-locator` directory in your terminal
 
-1.   **Frontend:** 
-        ```bash
-        npm start
-        ```
-2.   **Backend:** (in a seperate terminal) 
-        ```bash
-        node server.mjs
-        ```
-## Cloud Deployment 
+1.  **Frontend:**
+    ```bash
+    npm start
+    ```
+    (This usually opens the app at `http://localhost:3000`)
+2.  **Backend:** (in a separate terminal)
+    ```bash
+    node server.mjs
+    ```
 
 1. **Frontend Deployment (Github Pages):**
    - **Configure** `package.json`: Add a `homepage` property to `package.json` that points to your GitHub Pages URL  (e.g., `https://your-github-username.github.io/your-repo-name`).
@@ -58,14 +58,15 @@ Navigate to `guitar-store-locator` directory in your terminal
         "build": "react-scripts build",
          ...
         }
-    - **Run Deployment from your project root:** 
-      ```bash
+        ```
+    * **Run Deployment:** From your project root:
+        ```bash
         npm run deploy
       ```
       This builds the React App and pushes it to the `gh-pages` branch
 2. **Backend Deployment (Render)**: 
 - **Create a New Web Service On Render:**
-     - Go to your Render Dashboard.
+     - Go to your  [Render Dashboard](https://dashboard.render.com/).
      - Click "New" -> "Web Service".
      - Connect your GitHub repository containing the backend code.
 - **Configure Build and Start Commands:**
