@@ -78,3 +78,11 @@ Navigate to `guitar-store-locator` directory in your terminal
 - **Deploy:**
      - Render automatically deploys backend
      - Note the public URL provided  (`e.g., https://your-backend-name.onrender.com`).
+
+## Usage 
+1. **Grant Location Permissions:**
+   - When opening the app, the browsers prompts you for location access. Accept these permissions for the app to operate.
+2. **View Nearby Stores:** 
+   - The map then centers on your location, and markers indicating nearby guitar stores will appear
+3. **Explore Store Details:** 
+   - Click on a marker to view it's business name, address, open or closed status, and directions using Google Maps 
