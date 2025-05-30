@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-const Maps = React.lazy(() => import("./components/Maps.js"));  
+const Maps = React.lazy(() => import("./components/Maps.js"));   
 
 const App = () => {
   return (
