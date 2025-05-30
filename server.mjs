@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import NodeCache from "node-cache";import mongoose from "mongoose"; 
 
-dotenv.config();
+dotenv.config(); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
