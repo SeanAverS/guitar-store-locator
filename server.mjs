@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const apiKey = process.env.Maps_API_KEY;
+const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 const cache = new NodeCache({ stdTTL: 600 });
 
 // MongoDB Connection
