@@ -39,8 +39,15 @@ const useMarkers = (mapRef, setActiveMarker) => {
         const guitarIcon = document.createElement("div");
         createRoot(guitarIcon).render(<GuitarIcon />);
 
+        // marker placement based on google or MongoDB data 
+        const position =
+          store.source === 'google'
+            ? store.geometry.location 
+            : { lat: store.location.coordinates[1], lng: store.location.coordinates[0] }; // MongoDB 
+
+
         const marker = new AdvancedMarkerElement({
-          position: store.geometry.location,
+          position: position,
           title: store.name,
           content: guitarIcon,
         });
