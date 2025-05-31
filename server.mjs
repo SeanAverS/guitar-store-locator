@@ -55,7 +55,6 @@ const fetchStores = async (lat, lng, keyword) => {
   const cacheKey = `google-${lat},${lng},${keyword}`; 
   const cachedData = cache.get(cacheKey);
   if (cachedData) {
-    console.log(`Cache hit for Google search: ${cacheKey}`);
     return cachedData;
   }
 
