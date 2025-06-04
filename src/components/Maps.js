@@ -32,6 +32,8 @@ const Maps = () => {
     storesFetched,
     fetchNearbyStores,
     debouncedFetchNearbyStores,
+    loading: storesLoading, 
+    error: storesError, 
   } = useNearbyStores();
 
   // get nearby stores based on user's location
@@ -49,7 +51,7 @@ const Maps = () => {
     },
     [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
   );
-  const currentLocation = useTrackLocation(handleLocationUpdate, defaultCenter);
+  const { currentLocation, locationError } = useTrackLocation(handleLocationUpdate, defaultCenter); 
 
   // show stores based on user location
   const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
@@ -84,24 +86,43 @@ const Maps = () => {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    // Map container styling
-    <Suspense fallback={<div>Loading Map...</div>}>
-      <MapContainer
-        mapRef={mapRef}
-        currentLocation={currentLocation}
-        defaultCenter={defaultCenter} 
-      >
-        {activeMarker && (
-          <Suspense fallback={<div>Loading Info...</div>}>
-            <InfoWindowCard
-              marker={activeMarker}
-              onClose={() => setActiveMarker(null)}
-              directionsUrl={generateDirectionsUrl()}
-            />
-          </Suspense>
-        )}
-      </MapContainer>
-    </Suspense>
+    <>
+      {locationError && (
+        <div className="error-message">
+          <p>{locationError}</p>
+          <p>Displaying stores near San Francisco as a fallback.</p>
+        </div>
+      )}
+      {storesError && (
+        <div className="error-message">
+          <p>Error fetching stores: {storesError}. Please try again later.</p>
+        </div>
+      )}
+      {/* Map container styling */}
+      <Suspense fallback={<div>Loading Map...</div>}>
+        <MapContainer
+          mapRef={mapRef}
+          currentLocation={currentLocation}
+          defaultCenter={defaultCenter}
+        >
+          {activeMarker && (
+            <Suspense fallback={<div>Loading Info...</div>}>
+              <InfoWindowCard
+                marker={activeMarker}
+                onClose={() => setActiveMarker(null)}
+                directionsUrl={generateDirectionsUrl()}
+              />
+            </Suspense>
+          )}
+        </MapContainer>
+      </Suspense>
+      {storesLoading && <div className="loading-message">Finding nearby stores...</div>}
+      {storesFetched && stores.length === 0 && !locationError && !storesError && (
+        <div className="no-stores-message">
+          No stores found near your location. Try adjusting your location or checking back later.
+        </div>
+      )}
+    </>
   );
 };
 
