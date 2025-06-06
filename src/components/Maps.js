@@ -52,7 +52,7 @@ const Maps = () => {
   );
   const { currentLocation, locationError } = useTrackLocation(handleLocationUpdate, defaultCenter); 
 
-  // show stores based on user location
+  // show stores on map based on user location
   const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
   useEffect(() => {
     if (isLoaded && mapRef.current && stores.length > 0 && currentLocation) {
