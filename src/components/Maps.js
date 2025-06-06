@@ -87,27 +87,27 @@ const Maps = () => {
   return (
     <>
       {storesLoading && (
-        <div className="loading-message">Finding nearby stores...</div>
+        <div className="find-nearby-stores-message">Finding nearby stores...</div>
       )}
-      
+
       {storesFetched &&
         stores.length === 0 &&
         !locationError &&
         !storesError && (
-          <div className="no-stores-message">
+          <div className="no-stores-found-message">
             No stores found near your location. Try adjusting your location or
             checking back later.
           </div>
         )}
 
       {locationError && (
-        <div className="error-message">
+        <div className="sf-fallback-error-message">
           <p>{locationError}</p>
           <p>Displaying stores near San Francisco as a fallback.</p>
         </div>
       )}
       {storesError && (
-        <div className="error-message">
+        <div className="stores-fetched-error-message">
           <p>Error fetching stores: {storesError}. Please try again later.</p>
         </div>
       )}
