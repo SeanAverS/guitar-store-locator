@@ -86,6 +86,20 @@ const Maps = () => {
 
   return (
     <>
+      {storesLoading && (
+        <div className="loading-message">Finding nearby stores...</div>
+      )}
+      
+      {storesFetched &&
+        stores.length === 0 &&
+        !locationError &&
+        !storesError && (
+          <div className="no-stores-message">
+            No stores found near your location. Try adjusting your location or
+            checking back later.
+          </div>
+        )}
+
       {locationError && (
         <div className="error-message">
           <p>{locationError}</p>
@@ -115,12 +129,6 @@ const Maps = () => {
           )}
         </MapContainer>
       </Suspense>
-      {storesLoading && <div className="loading-message">Finding nearby stores...</div>}
-      {storesFetched && stores.length === 0 && !locationError && !storesError && (
-        <div className="no-stores-message">
-          No stores found near your location. Try adjusting your location or checking back later.
-        </div>
-      )}
     </>
   );
 };
