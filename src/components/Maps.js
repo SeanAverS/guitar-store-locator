@@ -111,7 +111,6 @@ const Maps = () => {
           <p>Error fetching stores: {storesError}. Please try again later.</p>
         </div>
       )}
-      {/* Map container styling */}
       <Suspense fallback={<div>Loading Map...</div>}>
         <MapContainer
           mapRef={mapRef}
