@@ -6,8 +6,7 @@ body {
     sans-serif;
 }
 
-h1,
-p {
+h1, p, .loading-message, .no-stores-message {
   text-align: center;
   color: #ffffff;
 }
@@ -57,24 +56,4 @@ p {
 .error-message {
   padding: 10px;
   font-weight: bold;
-}
-
-.no-stores-message {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeeba;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.loading-message {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  text-align: center;
 }
