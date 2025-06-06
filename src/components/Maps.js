@@ -31,7 +31,6 @@ const Maps = () => {
     storesFetched,
     fetchNearbyStores,
     debouncedFetchNearbyStores,
-    loading: storesLoading, 
     error: storesError, 
   } = useNearbyStores();
 
@@ -86,10 +85,6 @@ const Maps = () => {
 
   return (
     <>
-      {storesLoading && (
-        <div className="find-nearby-stores-message">Finding nearby stores...</div>
-      )}
-
       {storesFetched &&
         stores.length === 0 &&
         !locationError &&
@@ -111,14 +106,14 @@ const Maps = () => {
           <p>Error fetching stores: {storesError}. Please try again later.</p>
         </div>
       )}
-      <Suspense fallback={<div>Loading Map...</div>}>
+      <Suspense>
         <MapContainer
           mapRef={mapRef}
           currentLocation={currentLocation}
           defaultCenter={defaultCenter}
         >
           {activeMarker && (
-            <Suspense fallback={<div>Loading Info...</div>}>
+            <Suspense>
               <InfoWindowCard
                 marker={activeMarker}
                 onClose={() => setActiveMarker(null)}
