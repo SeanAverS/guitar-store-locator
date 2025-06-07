@@ -6,7 +6,7 @@ const App = () => {
     <div>
       <h1>Guitar Store Locator</h1>
       <p>Locate and get directions to guitar stores around you</p>
-      <Suspense fallback={<div>Loading map...</div>}>
+      <Suspense>
         <Maps />
       </Suspense>
     </div>

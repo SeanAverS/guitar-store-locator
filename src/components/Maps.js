@@ -80,8 +80,8 @@ const Maps = () => {
   }, [activeMarker, currentLocation]);
 
   // map loading errors
-  if (loadError) return <div>Error loading map</div>;
-  if (!isLoaded) return <div>Loading...</div>;
+  if (loadError) return null;
+  if (!isLoaded) return null;
 
   return (
     <>
