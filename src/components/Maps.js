@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect, useMemo, lazy, Suspense } from "react";
+import { useState, useCallback, useRef, useEffect, useMemo, lazy, } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import "../index.css";
 import useTrackLocation from "../hooks/useTrackLocation.js";
@@ -106,23 +106,19 @@ const Maps = () => {
           <p>Error fetching stores: {storesError}. Please try again later.</p>
         </div>
       )}
-      <Suspense>
         <MapContainer
           mapRef={mapRef}
           currentLocation={currentLocation}
           defaultCenter={defaultCenter}
         >
           {activeMarker && (
-            <Suspense>
               <InfoWindowCard
                 marker={activeMarker}
                 onClose={() => setActiveMarker(null)}
                 directionsUrl={generateDirectionsUrl()}
               />
-            </Suspense>
           )}
         </MapContainer>
-      </Suspense>
     </>
   );
 };
