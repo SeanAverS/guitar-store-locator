@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import GuitarIcon from "../icons/GuitarIcon.js";
 import UserIcon from "../icons/UserIcon.js";
 import { customClusterRenderer } from "../utils/customClusterRenderer.js";
+import { startTransition } from "react";
 
 const loadClusterer = () =>
   import("@googlemaps/markerclusterer").then((mod) => mod.MarkerClusterer); 
@@ -52,7 +53,11 @@ const useMarkers = (mapRef, setActiveMarker) => {
           content: guitarIcon,
         });
 
-        marker.addListener("gmp-click", () => setActiveMarker(store));
+           marker.addListener("gmp-click", () => {
+             startTransition(() => {
+               setActiveMarker(store);
+             });
+           });
         return marker;
       });
 
