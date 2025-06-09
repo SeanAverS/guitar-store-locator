@@ -5,7 +5,7 @@ const App = () => {
   return (
     <div>
       <h1>Guitar Store Locator</h1>
-      <p>Locate and get directions to guitar stores around you</p>
+      <p>Locate guitar stores near you</p>
         <Maps />
     </div>
   );
