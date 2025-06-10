@@ -64,16 +64,13 @@ describe("Maps Component", () => {
     render(<Maps />);
   });
 
-test("renders the map when isLoaded is true and there is no loadError", async () => {
-  useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: null });
+  test("renders the map when isLoaded is true and there is no loadError", async () => {
+    useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: null });
 
-  render(<Maps />);
-  const mapElement = await screen.findByRole("map"); 
-  expect(mapElement).toBeInTheDocument();
-});
-
-
-
+    render(<Maps />);
+    const mapElement = await screen.findByRole("map");
+    expect(mapElement).toBeInTheDocument();
+  });
 
   test("calls geolocation API to get user location", () => {
     useJsApiLoader.mockReturnValue({ isLoaded: true, loadError: null });

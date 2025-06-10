@@ -6,7 +6,12 @@ body {
     sans-serif;
 }
 
-h1, p, find-nearby-stores-message, no-stores-found-message, sf-fallback-error-message, stores-fetched-error-message {
+h1,
+p,
+find-nearby-stores-message,
+no-stores-found-message,
+sf-fallback-error-message,
+stores-fetched-error-message {
   text-align: center;
   color: #ffffff;
 }
@@ -66,4 +71,3 @@ p {
   height: 550px;
   border-radius: 15px;
 }
-

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect, useMemo, lazy, } from "react";
+import { useState, useCallback, useRef, useEffect, useMemo, lazy } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 import "../index.css";
 import useTrackLocation from "../hooks/useTrackLocation.js";
@@ -6,11 +6,11 @@ import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
 
 // lazy loads
-const MapContainer = lazy(() => import("../components/MapContainer.js")); 
+const MapContainer = lazy(() => import("../components/MapContainer.js"));
 const InfoWindowCard = lazy(() => import("../components/InfoWindowCard.js"));
 
 const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
-const googleMapsLibraries = ["places", "marker"]; 
+const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
   const loaderOptions = useMemo(
@@ -19,7 +19,7 @@ const Maps = () => {
       libraries: googleMapsLibraries,
       mapId: process.env.REACT_APP_MAP_ID,
     }),
-    []  
+    []
   );
 
   const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
@@ -31,7 +31,7 @@ const Maps = () => {
     storesFetched,
     fetchNearbyStores,
     debouncedFetchNearbyStores,
-    error: storesError, 
+    error: storesError,
   } = useNearbyStores();
 
   // get nearby stores based on user's location
@@ -49,7 +49,10 @@ const Maps = () => {
     },
     [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
   );
-  const { currentLocation, locationError } = useTrackLocation(handleLocationUpdate, defaultCenter); 
+  const { currentLocation, locationError } = useTrackLocation(
+    handleLocationUpdate,
+    defaultCenter
+  );
 
   // show stores on map based on user location
   const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
@@ -106,19 +109,19 @@ const Maps = () => {
           <p>Error fetching stores: {storesError}. Please try again later.</p>
         </div>
       )}
-        <MapContainer
-          mapRef={mapRef}
-          currentLocation={currentLocation}
-          defaultCenter={defaultCenter}
-        >
-          {activeMarker && (
-              <InfoWindowCard
-                marker={activeMarker}
-                onClose={() => setActiveMarker(null)}
-                directionsUrl={generateDirectionsUrl()}
-              />
-          )}
-        </MapContainer>
+      <MapContainer
+        mapRef={mapRef}
+        currentLocation={currentLocation}
+        defaultCenter={defaultCenter}
+      >
+        {activeMarker && (
+          <InfoWindowCard
+            marker={activeMarker}
+            onClose={() => setActiveMarker(null)}
+            directionsUrl={generateDirectionsUrl()}
+          />
+        )}
+      </MapContainer>
     </>
   );
 };

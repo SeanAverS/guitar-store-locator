@@ -2,7 +2,7 @@ import { GoogleMap } from "@react-google-maps/api";
 
 const MapContainer = ({ mapRef, currentLocation, defaultCenter, children }) => {
   return (
-    <div data-testid="google-map"> 
+    <div data-testid="google-map">
       <GoogleMap
         mapContainerClassName="map-container"
         center={currentLocation || defaultCenter}

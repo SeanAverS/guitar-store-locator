@@ -6,7 +6,7 @@ import { customClusterRenderer } from "../utils/customClusterRenderer.js";
 import { startTransition } from "react";
 
 const loadClusterer = () =>
-  import("@googlemaps/markerclusterer").then((mod) => mod.MarkerClusterer); 
+  import("@googlemaps/markerclusterer").then((mod) => mod.MarkerClusterer);
 
 const useMarkers = (mapRef, setActiveMarker) => {
   const loadMarkers = useCallback(
@@ -40,12 +40,14 @@ const useMarkers = (mapRef, setActiveMarker) => {
         const guitarIcon = document.createElement("div");
         createRoot(guitarIcon).render(<GuitarIcon />);
 
-        // marker placement based on google or MongoDB data 
+        // marker placement based on google or MongoDB data
         const position =
-          store.source === 'google'
-            ? store.geometry.location 
-            : { lat: store.location.coordinates[1], lng: store.location.coordinates[0] }; // MongoDB 
-
+          store.source === "google"
+            ? store.geometry.location
+            : {
+                lat: store.location.coordinates[1],
+                lng: store.location.coordinates[0],
+              }; // MongoDB
 
         const marker = new AdvancedMarkerElement({
           position: position,
@@ -53,11 +55,11 @@ const useMarkers = (mapRef, setActiveMarker) => {
           content: guitarIcon,
         });
 
-           marker.addListener("gmp-click", () => {
-             startTransition(() => {
-               setActiveMarker(store);
-             });
-           });
+        marker.addListener("gmp-click", () => {
+          startTransition(() => {
+            setActiveMarker(store);
+          });
+        });
         return marker;
       });
 
