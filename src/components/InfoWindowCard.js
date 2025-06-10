@@ -102,7 +102,7 @@ const InfoWindowCard = ({ marker, onClose, directionsUrl }) => {
 
       {showSaveButton && (
         <div>
-          <button onClick={handleSaveStore} disabled={isSaving}>
+          <button className="save-to-stores-button" onClick={handleSaveStore} disabled={isSaving}>
             {isSaving ? 'Saving...' : 'Save to My Stores'}
           </button>
           {saveMessage && <p className="save-message">{saveMessage}</p>}

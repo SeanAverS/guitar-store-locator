@@ -16,6 +16,20 @@ p {
   font-size: 1.2em;
 }
 
+.save-to-stores-button {
+  padding: 7px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  transition-duration: 0.4s;
+}
+
+.save-to-stores-button:hover {
+  background-color: darkcyan;
+}
+
 .info-window {
   position: absolute;
   top: 60px;
