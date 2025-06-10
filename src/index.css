@@ -23,11 +23,6 @@ p {
   border: none;
   font-size: 1rem;
   font-weight: bold;
-  transition-duration: 0.4s;
-}
-
-.save-to-stores-button:hover {
-  background-color: darkcyan;
 }
 
 .store-directions-link:hover {
