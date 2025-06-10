@@ -96,7 +96,7 @@ const InfoWindowCard = ({ marker, onClose, directionsUrl }) => {
       {marker.phone && <p>Phone: {marker.phone}</p>}
       {marker.website && <p><a href={marker.website} target="_blank" rel="noopener noreferrer">Website</a></p>}
 
-      <a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+      <a className="store-directions-link" href={directionsUrl} target="_blank" rel="noopener noreferrer">
         Directions
       </a>
 

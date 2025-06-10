@@ -30,6 +30,10 @@ p {
   background-color: darkcyan;
 }
 
+.store-directions-link:hover {
+  color: cyan;
+}
+
 .info-window {
   position: absolute;
   top: 60px;
