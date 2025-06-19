@@ -2,6 +2,8 @@
 
 This app locates nearby guitar stores using your location and Google Maps 
 
+![Demo of App Interaction](gifs/app-demo.gif)
+
 ---
 
 ## Installation
