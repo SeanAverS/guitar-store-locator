@@ -54,6 +54,12 @@ const Maps = () => {
     defaultCenter
   );
 
+  useEffect(() => {
+    if (isLoaded && currentLocation && !storesFetched && !storesError) {
+      fetchNearbyStores(currentLocation);
+    }
+  }, [isLoaded, currentLocation, storesFetched, fetchNearbyStores, storesError]);
+
   // show stores on map based on user location
   const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
   useEffect(() => {
