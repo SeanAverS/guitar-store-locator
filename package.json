@@ -8,8 +8,6 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@googlemaps/markerclusterer": "^2.5.3",
     "@react-google-maps/api": "^2.20.3",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -57,7 +55,10 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "eslint-config-react-app": "^7.0.1",
+    "jest": "^27.5.1",
     "source-map-explorer": "^2.5.3"
   }
 }
