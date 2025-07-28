@@ -41,13 +41,9 @@ const Maps = () => {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
-      if (!storesFetched) {
-        fetchNearbyStores(newLocation);
-      } else {
-        debouncedFetchNearbyStores(newLocation); // prevent constant fetch calls
-      }
+      debouncedFetchNearbyStores(newLocation);
     },
-    [storesFetched, debouncedFetchNearbyStores, fetchNearbyStores]
+    [debouncedFetchNearbyStores]
   );
   const { currentLocation, locationError } = useTrackLocation(
     handleLocationUpdate,
@@ -58,7 +54,13 @@ const Maps = () => {
     if (isLoaded && currentLocation && !storesFetched && !storesError) {
       fetchNearbyStores(currentLocation);
     }
-  }, [isLoaded, currentLocation, storesFetched, fetchNearbyStores, storesError]); 
+  }, [
+    isLoaded,
+    currentLocation,
+    storesFetched,
+    fetchNearbyStores,
+    storesError,
+  ]);
 
   // show stores on map based on user location
   const { loadMarkers } = useMarkers(mapRef, setActiveMarker);
