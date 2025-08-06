@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React, { Suspense } from "react";
-import Maps from "./Maps";
+import Maps from "../components/Maps";
 
 // Create individual mock functions
 const mockUseJsApiLoader = jest.fn();
