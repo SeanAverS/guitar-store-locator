@@ -1,109 +1,166 @@
-import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import React, { Suspense } from "react";
+import Maps from "./Maps";
 
-// The component we are testing
-import Maps from './Maps';
+// Create individual mock functions
+const mockUseJsApiLoader = jest.fn();
+const mockUseTrackLocation = jest.fn();
+const mockUseNearbyStores = jest.fn();
+const mockUseMarkers = jest.fn();
 
-// Import hooks to mock them
-import useNearbyStores from '../hooks/useNearbyStores';
-import { useJsApiLoader } from '@react-google-maps/api'; // Import useJsApiLoader to mock it
-
-// Mock the lazy loaded components (still needed)
-jest.mock('./MapContainer', () => ({ children, ...props }) => (
-  <div data-testid="mock-map-container" {...props}>
-    {children}
-  </div>
-));
-jest.mock('./InfoWindowCard', () => ({ marker, onClose, directionsUrl }) => (
-  <div data-testid="mock-info-window-card">
-    {marker.name}
-    <button onClick={onClose}>Close</button>
-  </div>
-));
-
-// Mocks for hooks
-jest.mock('../hooks/useNearbyStores');
-
-// NEW MOCK: Mock useJsApiLoader to control its loading state
-jest.mock('@react-google-maps/api', () => ({
-  // Keep the original module functionality for everything else
-  ...jest.requireActual('@react-google-maps/api'),
-  useJsApiLoader: jest.fn(), // Mock only useJsApiLoader
+// Mocks
+jest.mock("@react-google-maps/api", () => ({
+  useJsApiLoader: (...args) => mockUseJsApiLoader(...args),
+  GoogleMap: ({ children }) => <div>{children}</div>,
+  Marker: () => null,
+  InfoWindow: ({ children }) => <div>{children}</div>,
 }));
 
+jest.mock("../hooks/useTrackLocation.js", () => ({
+  __esModule: true,
+  default: (...args) => mockUseTrackLocation(...args),
+}));
 
-describe('Maps Component - Initial Load', () => {
-  const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback coordinates
+jest.mock("../hooks/useNearbyStores.js", () => ({
+  __esModule: true,
+  default: (...args) => mockUseNearbyStores(...args),
+}));
 
-  let mockFetchNearbyStores;
+jest.mock("../hooks/useMarkers.js", () => ({
+  __esModule: true,
+  default: (...args) => mockUseMarkers(...args),
+}));
+
+jest.mock("../components/MapContainer.js", () => ({
+  __esModule: true,
+  default: ({ children }) => <div data-testid="map-container">{children}</div>,
+}));
+
+jest.mock("../components/InfoWindowCard.js", () => ({
+  __esModule: true,
+  default: ({ marker }) => (
+    <div data-testid="infowindow-card">{marker?.name}</div>
+  ),
+}));
+
+// Reusable helper to wrap Maps in Suspense
+const renderWithSuspense = (ui) =>
+  render(<Suspense fallback={<div>Loading...</div>}>{ui}</Suspense>);
+
+describe("Maps component", () => {
+  const mockLocation = { lat: 40.7128, lng: -74.006 };
+  const mockStores = [
+    {
+      place_id: "1",
+      name: "Guitar Store A",
+      geometry: { location: { lat: 40.7, lng: -74.0 } },
+    },
+  ];
 
   beforeEach(() => {
     jest.clearAllMocks();
 
-    mockFetchNearbyStores = jest.fn();
-
-    // Configure useJsApiLoader mock to immediately return loaded state
-    useJsApiLoader.mockReturnValue({
-      isLoaded: true, // Crucial: Simulate the API being loaded
+    // Default "happy path"
+    mockUseJsApiLoader.mockReturnValue({
+      isLoaded: true,
       loadError: null,
     });
 
+    mockUseTrackLocation.mockReturnValue({
+      currentLocation: mockLocation,
+      locationError: null,
+    });
 
-    // Mock useNearbyStores as before
-    useNearbyStores.mockReturnValue({
+    mockUseNearbyStores.mockReturnValue({
       stores: [],
       storesFetched: false,
-      fetchNearbyStores: mockFetchNearbyStores,
+      fetchNearbyStores: jest.fn(),
       debouncedFetchNearbyStores: jest.fn(),
-      loading: false,
       error: null,
     });
 
-    // Mock navigator.geolocation.getCurrentPosition to call the error callback
-    Object.defineProperty(navigator, 'geolocation', {
-      value: {
-        getCurrentPosition: jest.fn((successCallback, errorCallback) => {
-          Promise.resolve().then(() => {
-            // Pass an error object that includes the code AND the constants
-            const mockError = {
-              code: 1, // This is the numerical code for PERMISSION_DENIED
-              message: "User denied geolocation permission."
-            };
-            // Manually add the constants to the mock error object for the switch statement to work
-            mockError.PERMISSION_DENIED = 1;
-            mockError.POSITION_UNAVAILABLE = 2;
-            mockError.TIMEOUT = 3;
+    mockUseMarkers.mockReturnValue({
+      loadMarkers: jest.fn(),
+    });
+  });
 
-            errorCallback(mockError);
-          });
-        }),
-        watchPosition: jest.fn(),
-        clearWatch: jest.fn(),
-      },
-      configurable: true,
+  test("should not render anything when the Google Maps API is not loaded", () => {
+    mockUseJsApiLoader.mockReturnValue({
+      isLoaded: false,
+      loadError: null,
     });
 
-    // Also mock console.error
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    const { container } = renderWithSuspense(<Maps />);
+    expect(container).toBeEmptyDOMElement();
   });
 
-  afterEach(() => {
-    jest.restoreAllMocks();
+  test("should not render anything when the Google Maps API fails to load", () => {
+    mockUseJsApiLoader.mockReturnValue({
+      isLoaded: false,
+      loadError: new Error("API failed to load"),
+    });
+
+    const { container } = renderWithSuspense(<Maps />);
+    expect(container).toBeEmptyDOMElement();
   });
 
-  test('handles initial load when geolocation permission is denied', async () => {
-    render(<Maps defaultCenter={defaultCenter} />);
-
+  test("should render the MapContainer when the API is loaded", async () => {
+    renderWithSuspense(<Maps />);
     await waitFor(() => {
-      expect(mockFetchNearbyStores).toHaveBeenCalledTimes(1);
-    }, { timeout: 3000 });
+      expect(screen.getByTestId("map-container")).toBeInTheDocument();
+    });
+  });
 
-    expect(mockFetchNearbyStores).toHaveBeenCalledWith(defaultCenter);
+  test("should display a message when no stores are found near the user's location", async () => {
+    mockUseNearbyStores.mockReturnValue({
+      stores: [],
+      storesFetched: true,
+      fetchNearbyStores: jest.fn(),
+      debouncedFetchNearbyStores: jest.fn(),
+      error: null,
+    });
 
-    expect(screen.getByText(/Location access denied\. Please enable your location in the browser\./i)).toBeInTheDocument();
-    expect(screen.getByText(/Displaying stores near San Francisco as a fallback\./i)).toBeInTheDocument();
-    expect(screen.queryByText(/No stores found near your location\./i)).not.toBeInTheDocument();
-    expect(screen.getByTestId('mock-map-container')).toBeInTheDocument();
+    renderWithSuspense(<Maps />);
+    await waitFor(() => {
+      expect(screen.getByText(/no stores found/i)).toBeInTheDocument();
+    });
+  });
+
+  test("should display a fallback message if location tracking fails", async () => {
+    mockUseTrackLocation.mockReturnValue({
+      currentLocation: null,
+      locationError: "Geolocation access denied.",
+    });
+
+    mockUseNearbyStores.mockReturnValue({
+      stores: mockStores,
+      storesFetched: true,
+      fetchNearbyStores: jest.fn(),
+      debouncedFetchNearbyStores: jest.fn(),
+      error: null,
+    });
+
+    renderWithSuspense(<Maps />);
+    await waitFor(() => {
+      expect(
+        screen.getByText(/displaying stores near san francisco/i)
+      ).toBeInTheDocument();
+    });
+  });
+
+  test("should display an error message if fetching nearby stores fails", async () => {
+    mockUseNearbyStores.mockReturnValue({
+      stores: [],
+      storesFetched: true,
+      fetchNearbyStores: jest.fn(),
+      debouncedFetchNearbyStores: jest.fn(),
+      error: "Network error",
+    });
+
+    renderWithSuspense(<Maps />);
+    await waitFor(() => {
+      expect(screen.getByText(/error fetching stores/i)).toBeInTheDocument();
+    });
   });
 });
