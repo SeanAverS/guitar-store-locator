@@ -79,7 +79,13 @@ const Maps = () => {
 
   // google maps directions
   const generateDirectionsUrl = useCallback(() => {
-    if (!activeMarker || !currentLocation) return "#";
+    if (
+      !activeMarker ||
+      !currentLocation ||
+      !activeMarker.geometry ||
+      !activeMarker.geometry.location
+    )
+      return "#";
     const origin = `${currentLocation.lat},${currentLocation.lng}`;
     const { lat, lng } = activeMarker.geometry.location;
 
