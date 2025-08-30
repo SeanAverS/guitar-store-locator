@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 
 const SIGNIFICANT_DISTANCE = 0.005;
 
@@ -6,7 +6,8 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [locationError, setLocationError] = useState(null);
 
-  // compare a users current location with their previous one
+ useEffect(() => {
+   // compare a users current location with their previous one
   const significantLocationChange = (newLocation, oldLocation) => {
     const deltaLat = newLocation.lat - oldLocation.lat;
     const deltaLng = newLocation.lng - oldLocation.lng;
@@ -15,8 +16,6 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
       SIGNIFICANT_DISTANCE * SIGNIFICANT_DISTANCE
     );
   };
-
-  const getUserLocation = useCallback(() => {
     if (!navigator.geolocation) {
       console.error("Geolocation not supported.");
       setCurrentLocation(defaultCenter); // Maps.js SF Fallback
@@ -44,7 +43,7 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
       },
       (error) => {
         console.error("Error getting location", error);
-        setCurrentLocation(defaultCenter); // Maps.js SF Fallback
+        setCurrentLocation(defaultCenter);
         // Specific location error messages for user
         switch (error.code) {
           case error.PERMISSION_DENIED:
@@ -71,10 +70,6 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
       }
     );
   }, [currentLocation, handleLocationUpdate, defaultCenter]);
-
-  useEffect(() => {
-    getUserLocation();
-  }, [getUserLocation]);
 
   return { currentLocation, locationError };
 };
