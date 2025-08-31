@@ -27,17 +27,17 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
 
     // authenticate user's location used in Maps.js
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      (userPosition) => {
         const newLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
+          lat: userPosition.coords.latitude,
+          lng: userPosition.coords.longitude,
         };
         if (
           !currentLocation ||
           significantLocationChange(newLocation, currentLocation)
         ) {
           setCurrentLocation(newLocation);
-          handleLocationUpdate(position);
+          handleLocationUpdate(userPosition);
           setLocationError(null);
         }
       },

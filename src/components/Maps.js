@@ -36,10 +36,10 @@ const Maps = () => {
 
   // get nearby stores based on user's location
   const handleLocationUpdate = useCallback(
-    (position) => {
+    (userPosition) => {
       const newLocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
+        lat: userPosition.coords.latitude,
+        lng: userPosition.coords.longitude,
       };
       debouncedFetchNearbyStores(newLocation);
     },
