@@ -4,8 +4,8 @@ const SIGNIFICANT_DISTANCE = 0.005;
 
 /**
  * A hook to get and track the user's location
- * @param {function} handleLocationUpdate This callback function handles a users new location
- * @param {object} defaultCenter - Display this is a users location can't be found
+ * @param {function} handleLocationUpdate This handles a users new location
+ * @param {object} defaultCenter - Display this if a users location can't be found
  * @returns {{ currentLocation: object, locationError: string }} The user's location and location errors
  */
 
@@ -14,7 +14,7 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
   const [locationError, setLocationError] = useState(null);
 
  useEffect(() => {
-   // check if a users new location is far from their last location (prevent re-renders)
+   // compare a users new and old location (prevent re-renders)
   const significantLocationChange = (newLocation, oldLocation) => {
     const deltaLat = newLocation.lat - oldLocation.lat;
     const deltaLng = newLocation.lng - oldLocation.lng;
