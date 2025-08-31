@@ -2,12 +2,19 @@ import { useEffect, useState } from "react";
 
 const SIGNIFICANT_DISTANCE = 0.005;
 
+/**
+ * A hook to get and track the user's location
+ * @param {function} handleLocationUpdate This callback function handles a users new location
+ * @param {object} defaultCenter - Display this is a users location can't be found
+ * @returns {{ currentLocation: object, locationError: string }} The user's location and location errors
+ */
+
 const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [locationError, setLocationError] = useState(null);
 
  useEffect(() => {
-   // compare a users current location with their previous one
+   // check if a users new location is far from their last location (prevent re-renders)
   const significantLocationChange = (newLocation, oldLocation) => {
     const deltaLat = newLocation.lat - oldLocation.lat;
     const deltaLng = newLocation.lng - oldLocation.lng;
@@ -16,16 +23,18 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
       SIGNIFICANT_DISTANCE * SIGNIFICANT_DISTANCE
     );
   };
+
+  // check geolocation status
     if (!navigator.geolocation) {
       console.error("Geolocation not supported.");
-      setCurrentLocation(defaultCenter); // Maps.js SF Fallback
+      setCurrentLocation(defaultCenter); 
       setLocationError(
         "Geolocation is not supported by your browser. Please try a different browser or enable location services."
       );
       return;
     }
 
-    // authenticate user's location used in Maps.js
+    // get the user's location 
     navigator.geolocation.getCurrentPosition(
       (userPosition) => {
         const newLocation = {
@@ -44,7 +53,8 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
       (error) => {
         console.error("Error getting location", error);
         setCurrentLocation(defaultCenter);
-        // Specific location error messages for user
+
+        // specific location error ui messages
         switch (error.code) {
           case error.PERMISSION_DENIED:
             setLocationError(
