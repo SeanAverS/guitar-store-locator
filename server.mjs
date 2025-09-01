@@ -59,6 +59,7 @@ app.use(
 app.use(express.json()); // parse
 
 const fetchStoresFromGoogle = async (lat, lng, keyword) => {
+  // check if store is already stored in server 
   const cacheKey = `google-${lat},${lng},${keyword}`;
   const cachedData = cache.get(cacheKey);
   if (cachedData) {
