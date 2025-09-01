@@ -58,7 +58,7 @@ app.use(
 );
 app.use(express.json()); // parse
 
-const fetchStores = async (lat, lng, keyword) => {
+const fetchStoresFromGoogle = async (lat, lng, keyword) => {
   const cacheKey = `google-${lat},${lng},${keyword}`;
   const cachedData = cache.get(cacheKey);
   if (cachedData) {
@@ -88,7 +88,7 @@ app.get("/api/nearbyStores", async (req, res) => {
     return res.status(400).json({ error: "Invalid parameters or API key" });
   }
   try {
-    const guitarStores = await fetchStores(lat, lng, "guitar");
+    const guitarStores = await fetchStoresFromGoogle(lat, lng, "guitar");
 
     const results = limit
       ? guitarStores.slice(0, parseInt(limit, 10))
