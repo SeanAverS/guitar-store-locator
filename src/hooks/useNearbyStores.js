@@ -30,7 +30,6 @@ const useNearbyStores = () => {
         return [];
       }
 
-      // data source
       const googleResults = data.map((store) => ({
         ...store,
         source: "google",
