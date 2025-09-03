@@ -165,7 +165,7 @@ app.post("/api/stores", async (req, res) => {
 // Get store data from MongoDB
 app.get("/api/stores", async (req, res) => {
   try {
-    const stores = await Store.find({}); // 'stores' collection
+    const stores = await Store.find({}); 
     res.status(200).json(stores);
   } catch (error) {
     console.error("Error fetching stores from MongoDB:", error);
