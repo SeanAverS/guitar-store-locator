@@ -16,12 +16,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
         return;
       }
 
-      // prevent multiple clusters from rendering
-      if (mapRef.current.clusterer) {
-        mapRef.current.clusterer.clearMarkers();
-      }
-
-      // Clear previous markers
+      // Clear markers from previous renders
       if (mapRef.current.markers) {
         mapRef.current.markers.forEach((marker) => marker.setMap(null));
       }
