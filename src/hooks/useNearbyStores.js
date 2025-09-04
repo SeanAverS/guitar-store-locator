@@ -129,7 +129,7 @@ const useNearbyStores = () => {
 
       setStores(Array.from(uniqueStores.values()));
       setIsStoresFetched(true);
-      setLoading(false); // End combined loading
+      setLoading(false);
     },
     [fetchGoogleStoresFromAPI, fetchMongoStoresFromAPI]
   );
