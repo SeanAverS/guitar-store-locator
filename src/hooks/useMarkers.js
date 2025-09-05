@@ -52,6 +52,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
           content: guitarIcon,
         });
 
+        // prevent repeat renders of store info
         marker.addListener("gmp-click", () => {
           startTransition(() => {
             setActiveMarker(store);
