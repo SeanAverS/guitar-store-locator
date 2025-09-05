@@ -23,7 +23,6 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
       mapRef.current.markers = [];
 
-      // Early return for no nearby stores
       if (!stores || stores.length === 0) return;
 
       // Create markers for nearby stores
@@ -43,6 +42,8 @@ const useMarkers = (mapRef, setActiveMarker) => {
                 lat: store.location.coordinates[1],
                 lng: store.location.coordinates[0],
               }; // MongoDB
+
+        // rewrite into if else ternary sucks
 
         const marker = new AdvancedMarkerElement({
           position: position,
