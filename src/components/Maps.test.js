@@ -130,7 +130,7 @@ describe("Maps component", () => {
   test("should display a fallback message if location tracking fails", async () => {
     mockUseTrackLocation.mockReturnValue({
       currentLocation: null,
-      locationError: "Geolocation access denied.",
+      locationError: "Location access denied. Please enable your location in the browser.",
     });
 
     mockUseNearbyStores.mockReturnValue({
@@ -144,7 +144,7 @@ describe("Maps component", () => {
     renderWithSuspense(<Maps />);
     await waitFor(() => {
       expect(
-        screen.getByText(/displaying stores near san francisco/i)
+      screen.getByText(/location access denied\. please enable your location in the browser\./i)
       ).toBeInTheDocument();
     });
   });
