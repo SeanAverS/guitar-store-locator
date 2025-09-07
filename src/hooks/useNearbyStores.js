@@ -1,6 +1,20 @@
 import { useCallback, useMemo, useState } from "react";
 import { debounce } from "../utils/debounce.js";
 
+/**
+ * A hook to get stores near the users location
+ * It provides a loading state for store fetching and error information
+ * 
+ * @returns {{
+ * stores: Array,
+ * storesFetched: boolean,
+ * fetchNearbyStores: function,
+ * debouncedFetchNearbyStores: function,
+ * loading: boolean,
+ * error: string
+ * }} contains the states and functions to handle nearby stores
+ */
+
 // render backend
 const isDev = window.location.hostname === "localhost";
 const BASE_URL = isDev
