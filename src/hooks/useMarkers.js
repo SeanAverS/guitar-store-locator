@@ -5,6 +5,16 @@ import UserIcon from "../icons/UserIcon.js";
 import { customClusterRenderer } from "../utils/customClusterRenderer.js";
 import { startTransition } from "react";
 
+
+/**
+ * A hook to generate user and store markers on the map
+ * @param {object} mapRef - keep track of the current maps state
+ * @param {function} setActiveMarker - handle the state and information of the store being currently clicked
+ * @returns {{
+ * loadMarkers: function
+ * }} An object containing the function that displays all markers on the map
+ */
+
 const loadClusterer = () =>
   import("@googlemaps/markerclusterer").then((mod) => mod.MarkerClusterer);
 
