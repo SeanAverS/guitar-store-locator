@@ -9,7 +9,6 @@ import useMarkers from "../hooks/useMarkers.js";
 const MapContainer = lazy(() => import("../components/MapContainer.js"));
 const InfoWindowCard = lazy(() => import("../components/InfoWindowCard.js"));
 
-const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // SF fallback
 const googleMapsLibraries = ["places", "marker"];
 
 const Maps = () => {
@@ -46,8 +45,7 @@ const Maps = () => {
     [debouncedFetchNearbyStores]
   );
   const { currentLocation, locationError } = useTrackLocation(
-    handleLocationUpdate,
-    defaultCenter
+    handleLocationUpdate
   );
 
   useEffect(() => {
@@ -115,7 +113,6 @@ const Maps = () => {
       {locationError && (
         <div className="sf-fallback-error-message">
           <p>{locationError}</p>
-          <p>Displaying stores near San Francisco as a fallback.</p>
         </div>
       )}
       {storesError && (
@@ -126,7 +123,6 @@ const Maps = () => {
       <MapContainer
         mapRef={mapRef}
         currentLocation={currentLocation}
-        defaultCenter={defaultCenter}
       >
         {activeMarker && (
           <InfoWindowCard

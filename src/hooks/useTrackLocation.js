@@ -5,11 +5,10 @@ const SIGNIFICANT_DISTANCE = 0.005;
 /**
  * A hook to get and track the user's location
  * @param {function} handleLocationUpdate This handles a users new location
- * @param {object} defaultCenter - Display this if a users location can't be found
  * @returns {{ currentLocation: object, locationError: string }} The user's location and location errors
  */
 
-const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
+const useTrackLocation = (handleLocationUpdate) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [locationError, setLocationError] = useState(null);
 
@@ -27,7 +26,6 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
   // check geolocation status
     if (!navigator.geolocation) {
       console.error("Geolocation not supported.");
-      setCurrentLocation(defaultCenter); 
       setLocationError(
         "Geolocation is not supported by your browser. Please try a different browser or enable location services."
       );
@@ -52,7 +50,6 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
       },
       (error) => {
         console.error("Error getting location", error);
-        setCurrentLocation(defaultCenter);
 
         // specific location error ui messages
         switch (error.code) {
@@ -79,7 +76,7 @@ const useTrackLocation = (handleLocationUpdate, defaultCenter) => {
         }
       }
     );
-  }, [currentLocation, handleLocationUpdate, defaultCenter]);
+  }, [currentLocation, handleLocationUpdate]);
 
   return { currentLocation, locationError };
 };
