@@ -20,6 +20,7 @@ const InfoWindowCard = ({ marker, onClose, directionsUrl }) => {
       const address = marker.vicinity || marker.address;
       const phone = marker.formatted_phone_number || marker.phone;
       const website = marker.website;
+      const opening_hours = marker.opening_hours;
 
       let latitude, longitude;
       if (marker.source === "google") {
@@ -48,6 +49,7 @@ const InfoWindowCard = ({ marker, onClose, directionsUrl }) => {
         website,
         latitude,
         longitude,
+        opening_hours,
       };
 
       const response = await fetch(`${BASE_URL}/api/stores`, {

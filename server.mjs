@@ -42,6 +42,10 @@ const storeSchema = new mongoose.Schema(
         required: false,
       },
     },
+    opening_hours: {
+      open_now: Boolean,
+      weekday_text: [String],
+    },
   },
   { timestamps: true }
 );
@@ -110,7 +114,7 @@ app.get("/api/nearbyStores", async (req, res) => {
 // store data MongoDB routing
 app.post("/api/stores", async (req, res) => {
   try {
-    const { placeId, name, address, phone, website, latitude, longitude } =
+    const { placeId, name, address, phone, website, latitude, longitude, opening_hours, } =
       req.body;
 
     if (!placeId || !name) {
@@ -125,6 +129,7 @@ app.post("/api/stores", async (req, res) => {
       address,
       phone,
       website,
+      opening_hours,
     };
 
     if (latitude !== undefined && longitude !== undefined) {
