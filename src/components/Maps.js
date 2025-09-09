@@ -4,6 +4,7 @@ import "../index.css";
 import useTrackLocation from "../hooks/useTrackLocation.js";
 import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
+import StoreErrorMessages from "./StoreErrorMessages.js";
 
 // lazy loads
 const MapContainer = lazy(() => import("../components/MapContainer.js"));
@@ -100,20 +101,12 @@ const Maps = () => {
 
   return (
     <>
-      {storesFetched &&
-        stores.length === 0 &&
-        !locationError &&
-        !storesError && (
-          <div className="no-stores-found-message">
-            No stores found near your location. Try adjusting your location or
-            checking back later.
-          </div>
-        )}
-      {storesError && (
-        <div className="stores-fetched-error-message">
-          <p>Error fetching stores: {storesError}. Please try again later.</p>
-        </div>
-      )}
+       <StoreErrorMessages
+      storesFetched={storesFetched}
+      stores={stores}
+      locationError={locationError}
+      storesError={storesError}
+    />
       <MapContainer
         mapRef={mapRef}
         currentLocation={currentLocation}
