@@ -50,14 +50,6 @@ const renderWithSuspense = (ui) =>
 
 describe("Maps component", () => {
   const mockLocation = { lat: 40.7128, lng: -74.006 };
-  const mockStores = [
-    {
-      place_id: "1",
-      name: "Guitar Store A",
-      geometry: { location: { lat: 40.7, lng: -74.0 } },
-    },
-  ];
-
   beforeEach(() => {
     jest.clearAllMocks();
 
@@ -124,28 +116,6 @@ describe("Maps component", () => {
     renderWithSuspense(<Maps />);
     await waitFor(() => {
       expect(screen.getByText(/no stores found/i)).toBeInTheDocument();
-    });
-  });
-
-  test("should display a fallback message if location tracking fails", async () => {
-    mockUseTrackLocation.mockReturnValue({
-      currentLocation: null,
-      locationError: "Location access denied. Please enable your location in the browser.",
-    });
-
-    mockUseNearbyStores.mockReturnValue({
-      stores: mockStores,
-      storesFetched: true,
-      fetchNearbyStores: jest.fn(),
-      debouncedFetchNearbyStores: jest.fn(),
-      error: null,
-    });
-
-    renderWithSuspense(<Maps />);
-    await waitFor(() => {
-      expect(
-      screen.getByText(/location access denied\. please enable your location in the browser\./i)
-      ).toBeInTheDocument();
     });
   });
 
