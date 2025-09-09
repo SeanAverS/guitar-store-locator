@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getLocationErrorMessage } from "../utils/locationErrorMessages.js";
 
 const SIGNIFICANT_DISTANCE = 0.005;
 
@@ -50,30 +51,7 @@ const useTrackLocation = (handleLocationUpdate) => {
       },
       (error) => {
         console.error("Error getting location", error);
-
-        // specific location error ui messages
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            setLocationError(
-              "Location access denied. Please enable your location in the browser."
-            );
-            break;
-          case error.POSITION_UNAVAILABLE:
-            setLocationError(
-              "Your location information is unavailable. Please check device settings."
-            );
-            break;
-          case error.TIMEOUT:
-            setLocationError(
-              "Timed out while trying to retrieve your location. Please try again."
-            );
-            break;
-          default:
-            setLocationError(
-              "An unknown error occurred while trying to get your location."
-            );
-            break;
-        }
+        setLocationError(getLocationErrorMessage(error.code));
       }
     );
   }, [currentLocation, handleLocationUpdate]);
