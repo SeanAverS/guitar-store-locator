@@ -109,12 +109,6 @@ const Maps = () => {
             checking back later.
           </div>
         )}
-
-      {locationError && (
-        <div className="sf-fallback-error-message">
-          <p>{locationError}</p>
-        </div>
-      )}
       {storesError && (
         <div className="stores-fetched-error-message">
           <p>Error fetching stores: {storesError}. Please try again later.</p>
