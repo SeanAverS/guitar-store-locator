@@ -51,7 +51,7 @@ const renderWithSuspense = (ui) =>
 describe("Maps component", () => {
   const mockLocation = { lat: 40.7128, lng: -74.006 };
   beforeEach(() => {
-    jest.clearAllMocks();
+  jest.clearAllMocks();  
 
     // Default "happy path"
     mockUseJsApiLoader.mockReturnValue({
