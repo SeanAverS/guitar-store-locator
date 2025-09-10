@@ -1,6 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * Display message if stores and/or location can't be found
+ * @param {object} props - The component's props.
+ * @param {boolean} props.storesFetched - True if the stores have been fetched.
+ * @param {array} props.stores - The array of stores.
+ * @param {string} props.locationError - The error message from the location tracking hook.
+ * @param {string} props.storesError - The error message from the stores fetching hook.
+ */
+
 const StoreErrorMessages = ({ storesFetched, stores, locationError, storesError }) => {
   if (storesFetched && stores.length === 0 && !locationError && !storesError) {
     return (

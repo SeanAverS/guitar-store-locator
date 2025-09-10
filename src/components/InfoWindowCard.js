@@ -1,5 +1,17 @@
 import React, { useCallback, useState } from "react";
 
+/**
+ * Display a card for a selected store on the map.
+ * This component: 
+ * displays store information 
+ * provides a link for Google Maps directions
+ * includes ability to save stores to a database.
+ * @param {object} props - The component's props.
+ * @param {object} props.marker - The selected store marker object.
+ * @param {Function} props.onClose - Function to call when the info window is closed.
+ * @param {string} props.directionsUrl - The URL for Google Maps directions.
+ */
+
 const isDev = window.location.hostname === "localhost";
 const BASE_URL = isDev
   ? "http://localhost:5000"
