@@ -6,7 +6,15 @@ import useNearbyStores from "../hooks/useNearbyStores.js";
 import useMarkers from "../hooks/useMarkers.js";
 import StoreErrorMessages from "./StoreErrorMessages.js";
 
-// lazy loads
+/**
+ * The main component for the Guitar Store Locator application.
+ * This component: 
+ * loads the google map
+ * tracks the users location
+ * gets nearby stores and displays them on the map
+ * integrates multiple hooks to handle all the necessary logic.
+ */
+
 const MapContainer = lazy(() => import("../components/MapContainer.js"));
 const InfoWindowCard = lazy(() => import("../components/InfoWindowCard.js"));
 
@@ -49,6 +57,7 @@ const Maps = () => {
     handleLocationUpdate
   );
 
+  // get nearby stores when user location changes
   useEffect(() => {
     if (isLoaded && currentLocation && !storesFetched && !storesError) {
       fetchNearbyStores(currentLocation);
@@ -114,8 +123,8 @@ const Maps = () => {
         {activeMarker && (
           <InfoWindowCard
             marker={activeMarker}
-            onClose={() => setActiveMarker(null)}
             directionsUrl={generateDirectionsUrl()}
+            onClose={() => setActiveMarker(null)}
           />
         )}
       </MapContainer>
