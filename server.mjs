@@ -5,6 +5,13 @@ import dotenv from "dotenv";
 import NodeCache from "node-cache";
 import mongoose from "mongoose";
 
+/**
+ * This file: 
+ * handles all server-side logic for the guitar store locator application.
+ * manages different API routes for retrieving, saving, and managing store data in MongoDB,
+ * also manages stores found using Google API and those saved by the user in MongoDB
+ */
+
 dotenv.config();
 
 const app = express();
@@ -23,7 +30,7 @@ mongoose
     process.exit(1);
   });
 
-// guitar store schema
+// MongoDB store properties
 const storeSchema = new mongoose.Schema(
   {
     placeId: { type: String, required: true, unique: true },
@@ -60,7 +67,7 @@ app.use(
     origin: process.env.FRONTEND_URL || "http://localhost:3000",
   })
 );
-app.use(express.json()); // parse
+app.use(express.json()); 
 
 const fetchStoresFromGoogle = async (lat, lng, keyword) => {
   // check if store is already stored in server 
@@ -86,7 +93,6 @@ const fetchStoresFromGoogle = async (lat, lng, keyword) => {
   cache.set(cacheKey, data.results);
   return data.results;
 };
-
 app.get("/api/nearbyStores", async (req, res) => {
   const { lat, lng, limit } = req.query;
   if (!lat || !lng || !apiKey) {
@@ -111,7 +117,7 @@ app.get("/api/nearbyStores", async (req, res) => {
   }
 });
 
-// store data MongoDB routing
+// prepare store data for MongoDB
 app.post("/api/stores", async (req, res) => {
   try {
     const { placeId, name, address, phone, website, latitude, longitude, opening_hours, } =
@@ -167,7 +173,7 @@ app.post("/api/stores", async (req, res) => {
   }
 });
 
-// Get store data from MongoDB
+// get existing store data from MongoDB
 app.get("/api/stores", async (req, res) => {
   try {
     const stores = await Store.find({}); 
@@ -183,7 +189,7 @@ app.get("/api/stores", async (req, res) => {
   }
 });
 
-// custom stores intergration
+// show custom, saved stores
 app.get("/api/stores/nearby", async (req, res) => {
   const { lat, lng, maxDistance = 5000 } = req.query;
 
@@ -195,6 +201,7 @@ app.get("/api/stores/nearby", async (req, res) => {
       });
   }
 
+  // find custom saved stores (saved by user using Google API) in MongoDB
   try {
     const nearbyStores = await Store.find({
       location: {
