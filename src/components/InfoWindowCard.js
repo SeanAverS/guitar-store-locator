@@ -128,7 +128,7 @@ const InfoWindowCard = ({ marker, onClose, directionsUrl }) => {
         Directions
       </a>
 
-      {showSaveButton && (
+      {(showSaveButton && window.location.hostname === 'localhost') && (
         <div>
           <button
             className="save-to-stores-button"
