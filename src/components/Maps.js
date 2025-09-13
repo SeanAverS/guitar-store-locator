@@ -105,10 +105,10 @@ const Maps = () => {
       return "#";
     }
 
-    const origin = `${currentLocation.lat},${currentLocation.lng}`;
-    const destination = `${lat},${lng}`;
+    const userLocation = `${currentLocation.lat},${currentLocation.lng}`;
+    const guitarStore = `${lat},${lng}`;
     
-    return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&destination_place_id=${activeMarker.place_id}&destination_name=${encodeURIComponent(activeMarker.name)}&travelmode=driving`;
+    return `https://www.google.com/maps/dir/?api=1&origin=${userLocation}&destination=${guitarStore}&destination_place_id=${activeMarker.place_id}&destination_name=${encodeURIComponent(activeMarker.name)}&travelmode=driving`;
   }, [activeMarker, currentLocation]);
 
   // map loading errors
