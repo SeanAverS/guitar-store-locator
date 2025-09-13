@@ -87,21 +87,28 @@ const Maps = () => {
 
   // google maps directions
   const generateDirectionsUrl = useCallback(() => {
-    if (
-      !activeMarker ||
-      !currentLocation ||
-      !activeMarker.geometry ||
-      !activeMarker.geometry.location
-    )
+    if (!activeMarker || !currentLocation) {
       return "#";
-    const origin = `${currentLocation.lat},${currentLocation.lng}`;
-    const { lat, lng } = activeMarker.geometry.location;
+    }
 
-    return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${lat},${lng}&destination_place_id=${
-      activeMarker.place_id
-    }&destination_name=${encodeURIComponent(
-      activeMarker.name
-    )}&travelmode=driving`;
+    let lat, lng;
+
+    // format Google or MongoDB coordinates
+    if (activeMarker.geometry && activeMarker.geometry.location) { // Google
+      lat = activeMarker.geometry.location.lat;
+      lng = activeMarker.geometry.location.lng;
+    }
+    else if (activeMarker.location && activeMarker.location.coordinates) { // MongoDB
+      lat = activeMarker.location.coordinates[1];
+      lng = activeMarker.location.coordinates[0];
+    } else {
+      return "#";
+    }
+
+    const origin = `${currentLocation.lat},${currentLocation.lng}`;
+    const destination = `${lat},${lng}`;
+    
+    return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&destination_place_id=${activeMarker.place_id}&destination_name=${encodeURIComponent(activeMarker.name)}&travelmode=driving`;
   }, [activeMarker, currentLocation]);
 
   // map loading errors
