@@ -29,9 +29,10 @@ const Maps = () => {
     }),
     []
   );
-
   const { isLoaded, loadError } = useJsApiLoader(loaderOptions);
+
   const mapRef = useRef(null);
+  
   const [activeMarker, setActiveMarker] = useState(null);
 
   const {
@@ -42,7 +43,7 @@ const Maps = () => {
     error: storesError,
   } = useNearbyStores();
 
-  // get nearby stores based on user's location
+  // get new nearby stores if user location changes
   const handleLocationUpdate = useCallback(
     (userPosition) => {
       const newLocation = {
