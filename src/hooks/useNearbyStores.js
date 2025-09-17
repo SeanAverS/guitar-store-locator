@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { debounce } from "../utils/debounce.js";
+import { fetchData } from "../utils/fetchStoreData.js";
 
 /**
  * A hook to get stores near the users location
@@ -34,15 +35,7 @@ const useNearbyStores = () => {
     const storeUrl = `${BASE_URL}/api/nearbyStores?lat=${location.lat}&lng=${location.lng}&limit=${limit}`;
 
     try {
-      const response = await fetch(storeUrl);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      if (!Array.isArray(data)) {
-        console.error("Data fetched from API is not an array");
-        return [];
-      }
+      const data = await fetchData(storeUrl);
 
       const googleResults = data.map((store) => ({
         ...store,
@@ -68,15 +61,8 @@ const useNearbyStores = () => {
       const mongoStoreUrl = `${BASE_URL}/api/stores/nearby?lat=${location.lat}&lng=${location.lng}&maxDistance=${maxDistance}`;
 
       try {
-        const response = await fetch(mongoStoreUrl);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        if (!Array.isArray(data)) {
-          console.error("Data fetched from MongoDB API is not an array");
-          return [];
-        }
+        const data = await fetchData(mongoStoreUrl);
+        
         // data source
         return data.map((store) => ({ ...store, source: "mongodb" }));
       } catch (error) {
