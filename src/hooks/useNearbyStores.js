@@ -74,43 +74,47 @@ const useNearbyStores = () => {
     []
   );
 
+  // get already cached stores or call them from API
+  const getGoogleStoresFromCacheOrAPI = useCallback(
+    async (location) => {
+      const storedData = localStorage.getItem("nearbyStores");
+      if (!storedData) {
+        return await fetchGoogleStoresFromAPI(location);
+      }
+
+      // get non-expired stores from cache
+      try {
+        const cacheObject = JSON.parse(storedData);
+        if (
+          !cacheObject ||
+          !Array.isArray(cacheObject.data) ||
+          typeof cacheObject.timestamp !== "number"
+        ) {
+          throw new Error("Invalid cache format");
+        }
+
+        const isCacheExpired =
+          Date.now() - cacheObject.timestamp > CACHE_EXPIRATION;
+        if (isCacheExpired) {
+          return await fetchGoogleStoresFromAPI(location);
+        }
+
+        return cacheObject.data;
+      } catch (error) {
+        console.error("Cache validation failed, fetching new data:", error);
+        return await fetchGoogleStoresFromAPI(location);
+      }
+    },
+    [fetchGoogleStoresFromAPI]
+  );
+
   // get nearby stores from Google and MongoDB
   const fetchNearbyStores = useCallback(
     async (location) => {
       setLoading(true);
       setError(null);
-
-      let googleResults = [];
-      const storedData = localStorage.getItem("nearbyStores");
-      if (!storedData) {
-        googleResults = await fetchGoogleStoresFromAPI(location);
-      } else {
-        try {
-          const cacheObject = JSON.parse(storedData);
-          if (
-            !cacheObject ||
-            !Array.isArray(cacheObject.data) ||
-            typeof cacheObject.timestamp !== "number"
-          ) {
-            throw new Error("Invalid cache format");
-          }
-
-          const isExpired =
-            Date.now() - cacheObject.timestamp > CACHE_EXPIRATION;
-          if (isExpired) {
-            googleResults = await fetchGoogleStoresFromAPI(location);
-          } else {
-            googleResults = cacheObject.data;
-          }
-        } catch (error) {
-          console.error(
-            "Error parsing stored Google data or cache expired:",
-            error
-          );
-          googleResults = await fetchGoogleStoresFromAPI(location);
-        }
-      }
-
+      
+      const googleResults = await getGoogleStoresFromCacheOrAPI(location);
       const mongoResults = await fetchMongoStoresFromAPI(location);
 
       const uniqueStores = new Map();
@@ -131,7 +135,7 @@ const useNearbyStores = () => {
       setIsStoresFetched(true);
       setLoading(false);
     },
-    [fetchGoogleStoresFromAPI, fetchMongoStoresFromAPI]
+    [fetchMongoStoresFromAPI, getGoogleStoresFromCacheOrAPI]
   );
 
   const debouncedFetchNearbyStores = useMemo(
