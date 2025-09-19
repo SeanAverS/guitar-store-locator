@@ -106,6 +106,7 @@ const Maps = () => {
       return "#";
     }
 
+    // redirect to google maps directions
     const userLocation = `${currentLocation.lat},${currentLocation.lng}`;
     const guitarStore = `${lat},${lng}`;
     

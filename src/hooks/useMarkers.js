@@ -49,7 +49,7 @@ const useMarkers = (mapRef, setActiveMarker) => {
 
         if (store.source === "google") {
           position = store.geometry.location;
-        } else { 
+        } else { // MongoDB
           position = {
             lat: store.location.coordinates[1],
             lng: store.location.coordinates[0],
