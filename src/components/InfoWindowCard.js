@@ -14,7 +14,7 @@ import React, { useCallback, useState } from "react";
 
 const isDev = window.location.hostname === "localhost";
 const BASE_URL = isDev
-  ? "http://localhost:5000"
+  ? "http://localhost:5050"
   : "https://guitar-store-locator.onrender.com";
 
 const InfoWindowCard = ({ marker, onClose, directionsUrl }) => {
