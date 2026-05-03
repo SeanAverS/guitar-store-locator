@@ -15,6 +15,8 @@ import StoreErrorMessages from "./StoreErrorMessages.js";
  * integrates multiple hooks to handle all the necessary logic.
  */
 
+
+// Core Web Vitals: delay loading these to make LCP (the map) load fast
 const MapContainer = lazy(() => import("../components/MapContainer.js"));
 const InfoWindowCard = lazy(() => import("../components/InfoWindowCard.js"));
 
